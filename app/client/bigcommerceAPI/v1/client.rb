@@ -1,9 +1,9 @@
 class BigcommerceAPI::V1::Client
 
-  STORE_HASH = '70covblalz'
-  ACCESS_TOKEN = '9vu6pchwo4ypwc3l2tqkyfs9kxb8c8k'
-  CLIENT_ID = 'g25s8ax976sxptx8owok977yemgpv9r'
-  CLIENT_SECRET = 'e344c95fa48b77d6ed5324220a0a27761e08d80d03d18ecc49e1509f9740b123'
+  STORE_HASH = Rails.application.credentials[:big_commerce_api][:store_hash]
+  ACCESS_TOKEN = Rails.application.credentials.big_commerce_api[:access_token]
+  CLIENT_ID = Rails.application.credentials.big_commerce_api[:client_id]
+  CLIENT_SECRET = Rails.application.credentials.big_commerce_api[:client_secret]
   BASE_URL = "https://api.bigcommerce.com".freeze
 
   def get_products
