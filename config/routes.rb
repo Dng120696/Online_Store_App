@@ -2,6 +2,17 @@ Rails.application.routes.draw do
   devise_for :users
   devise_for :admins
   root 'owner/products#index'
+
+  namespace :owner do
+    resources :products
+    resources :owners
+    resources :orders
+  end
+  namespace :customer_client do
+    resources :products
+
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

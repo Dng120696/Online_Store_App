@@ -13,22 +13,11 @@ class BigcommerceAPI::V1::Client
     )
   end
 
-  def create_product
+  def create_product(params)
     request(
       method: :post,
       endpoint: "/stores/#{STORE_HASH}/v3/catalog/products",
-      body: {
-        "name": "Nike T-shirt",
-        "type": "physical",
-        "price": "9.99",
-        "weight": 1,
-        "categories": [23],
-        "description": "This is a nike product tshirt with  a price of 9.99",
-        "availability": "available",
-        "brand_id": 0,
-        "inventory_level": 100,
-        "images": []
-      }
+      body: params
     )
   end
   def create_customer
@@ -63,10 +52,17 @@ class BigcommerceAPI::V1::Client
       endpoint: "/stores/#{STORE_HASH}/v3/catalog/products/113",
      )
   end
-  def get_image_of_single_product
+  def get_image_of_single_product(id)
     request(
       method: :get,
-      endpoint: "/stores/#{STORE_HASH}/v3/catalog/products/113/images",
+      endpoint: "/stores/#{STORE_HASH}/v3/catalog/products/#{id}/images",
+     )
+  end
+
+  def get_all_categories
+    request(
+      method: :get,
+      endpoint: "/stores/#{STORE_HASH}/v3/catalog/categories",
      )
   end
 
