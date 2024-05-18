@@ -1,27 +1,20 @@
 <%= link_to 'Add Product', new_owner_product_path %>
 <div>
-  <ul class = 'grid grid-cols-[1fr,1fr,2fr,1fr,2fr] gap-4 font-bold text-xl'>
-    <li>Image</li>
+  <ul class = 'grid grid-cols-[1fr,2fr,1fr,2fr] gap-4 font-bold text-xl'>
     <li>Stock Level</li>
     <li>Product Name</li>
     <li>Price</li>
     <li>Action</li>
   </ul>
-  <ul class = 'grid grid-cols-[1fr,1fr,2fr,1fr,2fr] gap-4'>
+  <ul class = 'grid grid-cols-[1fr,2fr,1fr,2fr] gap-4'>
     <%@products.reverse.each do |product| %>
-      <% image_url = @client.get_image_of_single_product(product[:api_id].to_i) %>
-      <% if image_url && image_url["data"] && image_url["data"].first && image_url["data"].first["url_tiny"].present? %>
-        <li class = ''><%= image_tag image_url["data"].first["url_tiny"] %></li>
-      <%else%>
-        <li> No Image </li>
-      <%end %>
       <li><%= product[:inventory_level] %> </li>
       <li class = ''><%= product[:name] %> </li>
       <li><%= product[:price] %> </li>
       <li>
-        <%= link_to 'Show', owner_product_path(product[:id]) %>
-        <%= link_to 'Edit', edit_owner_product_path(product[:id]) %>
-        <%= link_to 'Delete', owner_product_path(product[:id]),  data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?'} %>
+        <%= link_to 'Show', owner_product_path(product) %>
+        <%= link_to 'Edit', edit_owner_product_path(product) %>
+        <%= link_to 'Delete', owner_product_path(product),  data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?'} %>
       </li>
     <%end%>
   </ul>

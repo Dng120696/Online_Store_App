@@ -7,9 +7,10 @@ Rails.application.routes.draw do
     resources :products
     resources :owners
     resources :orders
+    resources :categories
+
   end
   namespace :customer_client do
-    resources :products
 
   end
 

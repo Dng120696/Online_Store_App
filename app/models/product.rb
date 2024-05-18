@@ -1,7 +1,16 @@
 class Product < ApplicationRecord
   belongs_to :admin
+  has_many :product_categories
+  has_many :products, through: :product_categories
+  has_many :order_items
+  has_many :orders, through: :order_items
+  has_many :order_items
+  has_many :orders, through: :order_items
+  has_many :cart_items
+  has_many :cart, through: :cart_items
 
-  validates :name, presence: true, uniqueness: true
+
+  validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
   validates :weight, presence: true, numericality: { greater_than: 0 }
   validates :categories, presence: true

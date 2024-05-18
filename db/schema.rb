@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_17_085040) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_18_151825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "city"
+    t.string "country"
+    t.string "firstname"
+    t.string "lastname"
+    t.string "email"
+    t.integer "zip"
+    t.string "street"
+    t.string "address_type", default: "billing"
+    t.bigint "user_id", null: false
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_addresses_on_order_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -28,6 +45,55 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_17_085040) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "products_id", null: false
+    t.bigint "cart_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["products_id"], name: "index_cart_items_on_products_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "admin_id", null: false
+    t.index ["admin_id"], name: "index_categories_on_admin_id"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "products_id", null: false
+    t.bigint "orders_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["orders_id"], name: "index_order_items_on_orders_id"
+    t.index ["products_id"], name: "index_order_items_on_products_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "product_categories", force: :cascade do |t|
+    t.bigint "products_id", null: false
+    t.bigint "categories_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["categories_id"], name: "index_product_categories_on_categories_id"
+    t.index ["products_id"], name: "index_product_categories_on_products_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.decimal "price"
@@ -40,7 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_17_085040) do
     t.datetime "updated_at", null: false
     t.bigint "admin_id", null: false
     t.string "product_type", default: "physical"
-    t.integer "api_id"
     t.index ["admin_id"], name: "index_products_on_admin_id"
   end
 
@@ -52,9 +117,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_17_085040) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_id", null: false
+    t.string "firstname"
+    t.string "lastname"
+    t.index ["admin_id"], name: "index_users_on_admin_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "addresses", "orders"
+  add_foreign_key "addresses", "users"
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products", column: "products_id"
+  add_foreign_key "carts", "users"
+  add_foreign_key "categories", "admins"
+  add_foreign_key "order_items", "orders", column: "orders_id"
+  add_foreign_key "order_items", "products", column: "products_id"
+  add_foreign_key "orders", "users"
+  add_foreign_key "product_categories", "categories", column: "categories_id"
+  add_foreign_key "product_categories", "products", column: "products_id"
   add_foreign_key "products", "admins"
+  add_foreign_key "users", "admins"
 end

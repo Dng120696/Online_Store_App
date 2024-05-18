@@ -1,0 +1,50 @@
+<%= form_with model: @product, url: @product.new_record? ? owner_products_path : owner_product_path(@product), local: true,data:{turbo: false} do |form| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul>
+        <% @product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>s
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+  <div class="field">
+    <%= form.label :weight %>
+    <%= form.text_field :weight %>
+  </div>
+  <div class="field">
+    <%= form.label :type %>
+    <%= form.select :product_type ,options_for_select(["physical", "digital"])%>
+  </div>
+  <div class="field">
+    <%= form.label :categories %><br>
+    <% current_admin.categories.each do |category| %>
+      <%= check_box_tag "product[categories][]", category.id, @product.categories.include?(category.id) %>
+      <%= label_tag "product_category_ids_#{category.id}", category.title %><br>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  <div class="field">
+    <%= form.label :brand_id %>
+    <%= form.number_field :brand_id %>
+  </div>
+  <div class="field">
+    <%= form.label :inventory_level %>
+    <%= form.number_field :inventory_level %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
