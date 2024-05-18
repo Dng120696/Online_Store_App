@@ -28,7 +28,7 @@
   <div class="field">
     <%= form.label :categories %><br>
     <% current_admin.categories.each do |category| %>
-      <%= check_box_tag "product[categories][]", category.id, @product.categories.include?(category.id) %>
+      <%= check_box_tag "product[category_ids][]", category.id, @product.categories.include?(category) %>
       <%= label_tag "product_category_ids_#{category.id}", category.title %><br>
     <% end %>
   </div>

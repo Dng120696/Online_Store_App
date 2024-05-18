@@ -8,5 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-user = Admin.first
-user.categories.create(title:"Shop All")
+Admin.create(firstname: 'Patrick',lastname: 'Nebab', email: 'admin@admin.com',password:'password123')
+admin = Admin.first
+admin.categories.create(title:"Shop All")

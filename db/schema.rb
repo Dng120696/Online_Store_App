@@ -46,12 +46,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_151825) do
   end
 
   create_table "cart_items", force: :cascade do |t|
-    t.bigint "products_id", null: false
+    t.bigint "product_id", null: false
     t.bigint "cart_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
-    t.index ["products_id"], name: "index_cart_items_on_products_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -70,12 +70,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_151825) do
   end
 
   create_table "order_items", force: :cascade do |t|
-    t.bigint "products_id", null: false
-    t.bigint "orders_id", null: false
+    t.bigint "product_id", null: false
+    t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["orders_id"], name: "index_order_items_on_orders_id"
-    t.index ["products_id"], name: "index_order_items_on_products_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -86,12 +86,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_151825) do
   end
 
   create_table "product_categories", force: :cascade do |t|
-    t.bigint "products_id", null: false
-    t.bigint "categories_id", null: false
+    t.bigint "product_id", null: false
+    t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["categories_id"], name: "index_product_categories_on_categories_id"
-    t.index ["products_id"], name: "index_product_categories_on_products_id"
+    t.index ["category_id"], name: "index_product_categories_on_category_id"
+    t.index ["product_id"], name: "index_product_categories_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -128,14 +128,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_151825) do
   add_foreign_key "addresses", "orders"
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "carts"
-  add_foreign_key "cart_items", "products", column: "products_id"
+  add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
   add_foreign_key "categories", "admins"
-  add_foreign_key "order_items", "orders", column: "orders_id"
-  add_foreign_key "order_items", "products", column: "products_id"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
-  add_foreign_key "product_categories", "categories", column: "categories_id"
-  add_foreign_key "product_categories", "products", column: "products_id"
+  add_foreign_key "product_categories", "categories"
+  add_foreign_key "product_categories", "products"
   add_foreign_key "products", "admins"
   add_foreign_key "users", "admins"
 end

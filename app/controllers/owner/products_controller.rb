@@ -4,6 +4,7 @@ class Owner::ProductsController < ApplicationController
   before_action :categories,only: [:new,:edit, :update]
 
   def index
+    p current_admin.products
     @products = current_admin.products
   end
 
@@ -21,9 +22,10 @@ class Owner::ProductsController < ApplicationController
     if @product.save
       redirect_to owner_products_path, notice: 'Product was successfully created.'
     else
-      render new_owner_product_path
+      render :new
     end
   end
+
 
   def update
     if @product.update(product_params)
@@ -50,6 +52,7 @@ class Owner::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :price, :weight, :description, :brand_id, :inventory_level,:product_type, categories: [])
+    params.require(:product).permit(:name, :price, :weight, :description, :brand_id, :inventory_level, :product_type, category_ids: [])
   end
+
 end
