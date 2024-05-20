@@ -24,10 +24,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_124428) do
     t.string "street"
     t.string "address_type", default: "billing"
     t.bigint "user_id", null: false
-    t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["order_id"], name: "index_addresses_on_order_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -126,7 +124,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_124428) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "addresses", "orders"
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"

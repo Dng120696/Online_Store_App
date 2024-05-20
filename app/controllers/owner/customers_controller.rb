@@ -1,10 +1,14 @@
 class Owner::CustomersController < ApplicationController
+  before_action :authenticate_admin!
   before_action :find_user, only: [:update,:show, :edit,:destroy]
 
   def index
       @users =  current_admin.user
   end
-  def edit; end
+  def edit
+   @addresses = @user.addresses
+   p @addresses
+  end
   def show; end
   def new
     @user = current_admin.user.new
@@ -13,7 +17,7 @@ class Owner::CustomersController < ApplicationController
   def create
     @user = current_admin.user.new(user_params)
     if @user.save
-      redirect_to owner_customers_path
+      redirect_to new_owner_customer_addresses_path(@user)
     else
       render :new
     end

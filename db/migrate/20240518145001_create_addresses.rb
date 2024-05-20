@@ -10,9 +10,6 @@ class CreateAddresses < ActiveRecord::Migration[7.1]
       t.string :street
       t.string :address_type, default: 'billing'
       t.references :user, null: false, foreign_key: true
-      t.references :order, null: false, foreign_key: true
-
-
       t.timestamps
     end
   end
