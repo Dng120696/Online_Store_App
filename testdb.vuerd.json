@@ -3,9 +3,9 @@
     "version": "2.2.13",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -138.8013,
-    "scrollLeft": -60.4607,
-    "zoomLevel": 0.9,
+    "scrollTop": -147,
+    "scrollLeft": -157,
+    "zoomLevel": 0.8,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -188,9 +188,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 125.6943,
-          "top": 311.8618,
-          "zIndex": 12,
+          "left": 118.1943,
+          "top": 309.3618,
+          "zIndex": 27,
           "widthName": 60,
           "widthComment": 60
         },
@@ -319,9 +319,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 602.1125,
-          "top": 153.6951,
-          "zIndex": 9,
+          "left": 710.8625,
+          "top": 214.9451,
+          "zIndex": 70,
           "widthName": 60,
           "widthComment": 60
         },
@@ -404,9 +404,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 603.5014,
-          "top": 13.25,
-          "zIndex": 11,
+          "left": 646.0014,
+          "top": 39.5,
+          "zIndex": 17,
           "widthName": 60,
           "widthComment": 60
         },
@@ -593,13 +593,36 @@
               "widthDataType": 60,
               "widthDefault": 60
             }
+          },
+          {
+            "id": "9e642533-1436-4a0e-9a9f-5bc7a77c9f53",
+            "name": "status",
+            "comment": "",
+            "dataType": "integer",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
           }
         ],
         "ui": {
           "active": false,
-          "left": 800.3765,
-          "top": 420.9808,
-          "zIndex": 8,
+          "left": 826.6265,
+          "top": 443.4808,
+          "zIndex": 78,
           "widthName": 60,
           "widthComment": 60
         },
@@ -974,9 +997,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 327.6391,
-          "top": 515.6676,
-          "zIndex": 6,
+          "left": 351.3891,
+          "top": 535.6676,
+          "zIndex": 81,
           "widthName": 63.419921875,
           "widthComment": 60
         },
@@ -1036,9 +1059,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 119.1395,
-          "top": 832.7768,
-          "zIndex": 7,
+          "left": 86.6395,
+          "top": 841.5268,
+          "zIndex": 54,
           "widthName": 60,
           "widthComment": 60
         },
@@ -1121,9 +1144,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 877.1325,
-          "top": 711.2217,
-          "zIndex": 5,
+          "left": 800.8823,
+          "top": 764.9716,
+          "zIndex": 51,
           "widthName": 64.84814453125,
           "widthComment": 60
         },
@@ -1183,9 +1206,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 1307.2028,
-          "top": 418.8,
-          "zIndex": 1,
+          "left": 1305.9528,
+          "top": 433.8,
+          "zIndex": 46,
           "widthName": 60,
           "widthComment": 60
         },
@@ -1245,9 +1268,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 1304.389,
+          "left": 1305.639,
           "top": 564.2445,
-          "zIndex": 2,
+          "zIndex": 45,
           "widthName": 60,
           "widthComment": 60
         },
@@ -1330,9 +1353,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 1111.5565,
-          "top": 45.75,
-          "zIndex": 4,
+          "left": 1107.8065,
+          "top": 69.5,
+          "zIndex": 26,
           "widthName": 114.0107421875,
           "widthComment": 60
         },
@@ -1365,8 +1388,8 @@
           "columnIds": [
             "60c8f820-53f5-42eb-a60e-559eb0277a9c"
           ],
-          "x": 305.598352734375,
-          "y": 311.8618,
+          "x": 298.098352734375,
+          "y": 309.3618,
           "direction": "top"
         },
         "constraintName": "fk_admin_to_customer",
@@ -1391,8 +1414,8 @@
           "columnIds": [
             "7f33b81a-9ec1-4003-a652-06dc37b3ac7c"
           ],
-          "x": 602.1125,
-          "y": 239.4451,
+          "x": 710.8625,
+          "y": 300.6951,
           "direction": "left"
         },
         "constraintName": "fk_admin_to_product",
@@ -1408,8 +1431,8 @@
           "columnIds": [
             "53c5220f-dbe0-4d60-9a97-8a57df1eac95"
           ],
-          "x": 485.50240546875,
-          "y": 359.8618,
+          "x": 478.00240546875,
+          "y": 357.3618,
           "direction": "right"
         },
         "end": {
@@ -1417,8 +1440,8 @@
           "columnIds": [
             "970b7476-e0e3-4eb7-9685-5fca3417a114"
           ],
-          "x": 800.3765,
-          "y": 448.4808,
+          "x": 826.6265,
+          "y": 476.1058,
           "direction": "left"
         },
         "constraintName": "fk_customer_to_order",
@@ -1434,8 +1457,8 @@
           "columnIds": [
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
-          "x": 1160.1846054687499,
-          "y": 439.31413333333336,
+          "x": 1186.4346054687499,
+          "y": 465.2308,
           "direction": "right"
         },
         "end": {
@@ -1460,8 +1483,8 @@
           "columnIds": [
             "7778f45b-2224-4806-aa20-823fa8e3aa3a"
           ],
-          "x": 958.321484375,
-          "y": 282.3201,
+          "x": 1067.071484375,
+          "y": 343.5701,
           "direction": "right"
         },
         "end": {
@@ -1486,8 +1509,8 @@
           "columnIds": [
             "53c5220f-dbe0-4d60-9a97-8a57df1eac95"
           ],
-          "x": 485.50240546875,
-          "y": 455.8618,
+          "x": 478.00240546875,
+          "y": 453.3618,
           "direction": "right"
         },
         "end": {
@@ -1495,8 +1518,8 @@
           "columnIds": [
             "df3e002e-b3dc-4fb4-b4db-17e62b0d2cdd"
           ],
-          "x": 526.6107796875,
-          "y": 515.6676,
+          "x": 550.3607796875,
+          "y": 535.6676,
           "direction": "top"
         },
         "constraintName": "fk_customer_to_billing_address",
@@ -1512,8 +1535,8 @@
           "columnIds": [
             "53c5220f-dbe0-4d60-9a97-8a57df1eac95"
           ],
-          "x": 305.598352734375,
-          "y": 503.8618,
+          "x": 298.098352734375,
+          "y": 501.3618,
           "direction": "bottom"
         },
         "end": {
@@ -1521,8 +1544,8 @@
           "columnIds": [
             "1ac7e4be-8d2b-4da8-b229-380f6425fb9e"
           ],
-          "x": 299.043552734375,
-          "y": 832.7768,
+          "x": 266.543552734375,
+          "y": 841.5268,
           "direction": "top"
         },
         "constraintName": "fk_customer_to_cart",
@@ -1538,8 +1561,8 @@
           "columnIds": [
             "7778f45b-2224-4806-aa20-823fa8e3aa3a"
           ],
-          "x": 780.2169921875,
-          "y": 325.1951,
+          "x": 888.9669921875,
+          "y": 386.4451,
           "direction": "bottom"
         },
         "end": {
@@ -1547,9 +1570,9 @@
           "columnIds": [
             "b49f5fc7-c88c-40b4-b2c4-19eea72fda14"
           ],
-          "x": 877.1325,
-          "y": 743.8467,
-          "direction": "left"
+          "x": 984.036352734375,
+          "y": 764.9716,
+          "direction": "top"
         },
         "constraintName": "fk_product_to_cart_items",
         "visible": true
@@ -1564,8 +1587,8 @@
           "columnIds": [
             "f67389c7-e3ea-4dfe-a064-05b38d463d86"
           ],
-          "x": 478.94760546875,
-          "y": 887.7768,
+          "x": 446.44760546875,
+          "y": 896.5268,
           "direction": "right"
         },
         "end": {
@@ -1573,8 +1596,8 @@
           "columnIds": [
             "b4b4dffb-ab7b-43d0-9ee1-d548e72f3e6a"
           ],
-          "x": 877.1325,
-          "y": 809.0967,
+          "x": 800.8823,
+          "y": 830.2216,
           "direction": "left"
         },
         "constraintName": "fk_cart_to_product_items",
@@ -1590,8 +1613,8 @@
           "columnIds": [
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
-          "x": 1160.1846054687499,
-          "y": 512.6474666666667,
+          "x": 1186.4346054687499,
+          "y": 552.2308,
           "direction": "right"
         },
         "end": {
@@ -1599,7 +1622,7 @@
           "columnIds": [
             "7c13b7d9-4509-443f-915d-9fedab771789"
           ],
-          "x": 1304.389,
+          "x": 1305.639,
           "y": 619.2445,
           "direction": "left"
         },
@@ -1616,8 +1639,8 @@
           "columnIds": [
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
-          "x": 1160.1846054687499,
-          "y": 475.98080000000004,
+          "x": 1186.4346054687499,
+          "y": 508.7308,
           "direction": "right"
         },
         "end": {
@@ -1625,8 +1648,8 @@
           "columnIds": [
             "02c6a372-3b9f-4a88-a216-8131e7b80819"
           ],
-          "x": 1307.2028,
-          "y": 473.8,
+          "x": 1305.9528,
+          "y": 488.8,
           "direction": "left"
         },
         "constraintName": "fk_order_to_checkout",
@@ -1642,8 +1665,8 @@
           "columnIds": [
             "201d1126-f4f5-4cf2-bd4f-1de7ee1828fd"
           ],
-          "x": 959.710384375,
-          "y": 78.5,
+          "x": 1002.210384375,
+          "y": 104.75,
           "direction": "right"
         },
         "end": {
@@ -1651,8 +1674,8 @@
           "columnIds": [
             "2b475c99-981a-464c-91c6-1aaa365882ad"
           ],
-          "x": 1111.5565,
-          "y": 78.375,
+          "x": 1107.8065,
+          "y": 102.125,
           "direction": "left"
         },
         "constraintName": "fk_category_to_product_categories",
@@ -1668,8 +1691,8 @@
           "columnIds": [
             "7778f45b-2224-4806-aa20-823fa8e3aa3a"
           ],
-          "x": 958.321484375,
-          "y": 196.5701,
+          "x": 1067.071484375,
+          "y": 257.8201,
           "direction": "right"
         },
         "end": {
@@ -1677,8 +1700,8 @@
           "columnIds": [
             "28f4c58c-5947-4711-9f94-dbcdfac3b80d"
           ],
-          "x": 1111.5565,
-          "y": 143.625,
+          "x": 1107.8065,
+          "y": 167.375,
           "direction": "left"
         },
         "constraintName": "fk_product_to_product_categories",
@@ -1694,8 +1717,8 @@
           "columnIds": [
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
-          "x": 800.3765,
-          "y": 503.4808,
+          "x": 826.6265,
+          "y": 541.3558,
           "direction": "left"
         },
         "end": {
@@ -1703,8 +1726,8 @@
           "columnIds": [
             "964c254c-d2bf-48fa-94ed-8091ff4a4349"
           ],
-          "x": 725.582459375,
-          "y": 662.9176,
+          "x": 749.332459375,
+          "y": 682.9176,
           "direction": "right"
         },
         "constraintName": "fk_order_to_address",
@@ -1729,8 +1752,8 @@
           "columnIds": [
             "12f12af6-5047-41f0-8091-f399830e3a08"
           ],
-          "x": 603.5014,
-          "y": 78.5,
+          "x": 646.0014,
+          "y": 104.75,
           "direction": "left"
         },
         "constraintName": "fk_owner_to_category",

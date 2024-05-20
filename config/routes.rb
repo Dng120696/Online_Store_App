@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
-  devise_for :users
-  devise_for :admins
-  root 'owner/products#index'
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+  devise_for :admins, controllers: {
+    sessions: 'admin_users/sessions'
+  }
+  root 'home#index'
 
   namespace :owner do
     resources :products
-    resources :owners
+    resources :customers
     resources :orders
     resources :categories
+    resources :dashboard, only: [:index]
 
   end
   namespace :customer_client do
