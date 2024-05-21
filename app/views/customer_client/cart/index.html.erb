@@ -1,15 +1,3 @@
-<h1>Products</h1>
-<% @products.each do |product| %>
-  <div class="product">
-    <h2><%= product.name %></h2>
-    <p>Price: <%= number_to_currency(product.price) %></p>
-    <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true do |form| %>
-      <%= form.hidden_field :product_id, value: product.id %>
-      <%= form.number_field :quantity, value: 1, min: 1 %>
-      <%= form.submit "Add to Cart" %>
-    <% end %>
-  </div>
-<% end %>
 <h1>Your Cart</h1>
 <% if @cart.cart_items.any? %>
   <table>

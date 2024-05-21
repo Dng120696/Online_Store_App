@@ -10,5 +10,5 @@
 
 Admin.create(firstname: 'Patrick',lastname: 'Nebab', email: 'admin@admin.com',password:'password123')
 admin = Admin.first
-admin.user.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123')
+User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123')
 admin.categories.create(title:"Shop All")

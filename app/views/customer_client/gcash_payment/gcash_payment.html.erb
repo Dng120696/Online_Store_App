@@ -1,0 +1,18 @@
+<h1>GCash Payment</h1>
+<p>Please enter your GCash payment details:</p>
+<%= form_tag(confirm_customer_client_checkout_index_path, method: :post) do %>
+  <div>
+    <%= label_tag :name, 'Name' %>
+    <%= text_field_tag :name %>
+  </div>
+  <div>
+    <%= label_tag :phone, 'Phone Number' %>
+    <%= text_field_tag :phone %>
+  </div>
+  <div>
+    <%= label_tag :email, 'Email' %>
+    <%= email_field_tag :email %>
+  </div>
+  <%= hidden_field_tag :payment_method, 'gcash' %>
+  <%= submit_tag 'Confirm Payment' %>
+<% end %>
