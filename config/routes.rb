@@ -18,7 +18,9 @@ Rails.application.routes.draw do
 
   end
   namespace :customer_client do
-
+    resources :dashboard, only: [:index]
+    resource :cart, only: [:show]
+    resources :cart_items, only: [:create, :destroy]
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
