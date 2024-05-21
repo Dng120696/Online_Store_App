@@ -5,5 +5,4 @@ class Admin < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :products, dependent: :destroy
   has_many :categories, dependent: :destroy
-  has_many :user
 end
