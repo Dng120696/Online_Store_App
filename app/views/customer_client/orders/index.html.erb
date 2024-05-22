@@ -1,0 +1,14 @@
+<h1>Order Summary</h1>
+<% @orders.each do |order| %>
+  <div class = 'border' >
+    <h2>Order <%= order.id %> - Status: <%= order.status %> - Total: <%= number_to_currency(order.total) %></h2>
+    <ul>
+      <% order.order_items.each do |order_item| %>
+        <li>
+          Product: <%= order_item.product.name %><br>
+          Quantity: <%= order_item.quantity %><br>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -1,12 +1,12 @@
 class Order < ApplicationRecord
-  belongs_to :users
+  belongs_to :user
   has_many :order_items
   has_many :products, through: :order_items
 
 
 
   enum status: {
-    active: 0,
+    pending: 0,
     abandoned: 1,
     cancelled: 2,
     paid: 3,

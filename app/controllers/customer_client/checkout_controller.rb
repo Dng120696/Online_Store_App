@@ -1,13 +1,14 @@
 class CustomerClient::CheckoutController < ApplicationController
   def index
 
-    @cart_items = current_user.cart.cart_items
+    @cart_items = current_user&.cart&.cart_items || []
     @total_amount = calculate_total_amount(@cart_items)
   end
   def calculate_total_amount(cart_items)
     # Logic to calculate total amount based on cart items
     # Example:
     cart_items.sum { |item| item.product.price * item.quantity }
+
   end
 
   def process_checkout
@@ -43,11 +44,30 @@ class CustomerClient::CheckoutController < ApplicationController
           payment_intent_id = intent_response['data']['id']
           client_key = intent_response['data']['attributes']['client_key']
           payment_method_id = payment_method_response['data']['id']
-          return_url = "http://127.0.0.1:3000/customer_client/order_confirmation"
+            return_url = "http://127.0.0.1:3000/customer_client/orders"
           attach_response = client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
 
-          p 'Success'
-          redirect_to attach_response['data']['attributes']['next_action']['redirect']['url'],allow_other_host: true
+          redirect_url = attach_response['data']['attributes']['next_action']['redirect']['url']
+          @cart_items = current_user.cart.cart_items
+          @total_amount = calculate_total_amount(@cart_items)
+          @cart = current_user.cart
+          @order = Order.new(user_id: current_user.id)
+          @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
+
+          if @order.save
+            @cart.cart_items.each do |cart_item|
+              @order.order_items.create(
+                product: cart_item.product,
+                quantity: cart_item.quantity,
+                price: cart_item.product.price
+              )
+            end
+            @cart.destroy
+            redirect_to customer_client_order_confirmation_path, notice: 'Order placed successfully.'
+          else
+            redirect_to customer_client_cart_index_path, alert: 'Unable to place order.'
+          end
+          session[:paymongo_url] = redirect_url
 
         when 'card'
           intent_response = client.create_payment_intent(amount, 'PHP')
@@ -62,7 +82,7 @@ class CustomerClient::CheckoutController < ApplicationController
           payment_intent_id = intent_response['data']['id']
           client_key = intent_response['data']['attributes']['client_key']
           payment_method_id = payment_method_response['data']['id']
-          return_url = "http://127.0.0.1:3000/customer_client/order_confirmation"
+          return_url = "http://127.0.0.1:3000/customer_client/orders"
           client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
 
         else

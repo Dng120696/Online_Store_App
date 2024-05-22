@@ -11,7 +11,7 @@
   </div>
 <% end %>
 <h1>Your Cart</h1>
-<% if @cart.cart_items.any? %>
+<% if @cart_items.any? %>
   <table>
     <thead>
       <tr>
@@ -23,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @cart.cart_items.each do |item| %>
+      <% @cart_items.each do |item| %>
         <tr>
           <td><%= item.product.name %></td>
           <td><%= item.quantity %></td>
@@ -36,7 +36,7 @@
       <% end %>
     </tbody>
   </table>
-  <p>Total: <%= number_to_currency(@cart.cart_items.sum { |item| item.product.price * item.quantity }) %></p>
+  <p>Total: <%= number_to_currency(@cart_items.sum { |item| item.product.price * item.quantity }) %></p>
   <div>
     <%= link_to 'Checkout',customer_client_checkout_index_path %>
     <%= link_to 'View Cart', customer_client_cart_index_path %>
