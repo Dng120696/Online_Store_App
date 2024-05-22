@@ -1,4 +1,7 @@
-Home Page hello there
+Home Page
+<div>
+  <%= link_to 'Dashboard', customer_client_dashboard_index_path %>
+</div>
 <div class="flex items-center gap-4">
   <% if !user_signed_in? && !admin_signed_in? %>
     <%= link_to 'User Sign In', new_user_session_path, class: ' ' %>

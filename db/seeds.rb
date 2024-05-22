@@ -10,4 +10,5 @@
 
 Admin.create(firstname: 'Patrick',lastname: 'Nebab', email: 'admin@admin.com',password:'password123')
 admin = Admin.first
+User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123')
 admin.categories.create(title:"Shop All")
