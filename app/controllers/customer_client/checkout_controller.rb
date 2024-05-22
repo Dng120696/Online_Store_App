@@ -44,9 +44,10 @@ class CustomerClient::CheckoutController < ApplicationController
           client_key = intent_response['data']['attributes']['client_key']
           payment_method_id = payment_method_response['data']['id']
           return_url = "http://127.0.0.1:3000/customer_client/order_confirmation"
-          client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
+          attach_response = client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
 
           p 'Success'
+          redirect_to attach_response['data']['attributes']['next_action']['redirect']['url'],allow_other_host: true
 
         when 'card'
           intent_response = client.create_payment_intent(amount, 'PHP')
@@ -57,15 +58,18 @@ class CustomerClient::CheckoutController < ApplicationController
             cvc: params[:cvc]
           }
           payment_method_response = client.create_payment_method_card(card_details)
-          client.attach_payment_method_to_intent(intent_response['data']['id'], payment_method_response['data']['id'])
+
+          payment_intent_id = intent_response['data']['id']
+          client_key = intent_response['data']['attributes']['client_key']
+          payment_method_id = payment_method_response['data']['id']
+          return_url = "http://127.0.0.1:3000/customer_client/order_confirmation"
+          client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
 
         else
           flash[:error] = 'Please select a valid payment method.'
           redirect_to customer_client_checkout_index_path and return
         end
-        p 'Successs'
-        # Redirect to order confirmation page
-        redirect_to customer_client_order_confirmation_path
+
       rescue StandardError => e
         flash[:error] = "Payment processing error: #{e.message}"
         p "Payment processing error: #{e.message}"

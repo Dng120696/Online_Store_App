@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :cart_items, only: [:create, :destroy]
 
 
+
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'gcash_payment',to: 'gcash_payment#gcash_payment'
     get 'card_payment',to: 'card_payment#card_payment'
