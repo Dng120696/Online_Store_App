@@ -100,7 +100,7 @@ class CustomerClient::CheckoutController < ApplicationController
     private
 
     def calculate_total_amount(cart_items)
-      cart_items.sum { |item| item.product.price * item.quantity }
+      cart_items.sum { |item| (item.product.price) * item.quantity }
     end
 
 end
