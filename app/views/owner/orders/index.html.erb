@@ -1,0 +1,27 @@
+<%= link_to 'Create Order', new_owner_order_path%>
+<h1>Order List</h1>
+<ul class = 'grid grid-cols-6'>
+  <li>Date</li>
+  <li>Order ID</li>
+  <li>Customer</li>
+  <li>Status</li>
+  <li>Total</li>
+  <li>Action</li>
+</ul>
+<% @orders.each do |order| %>
+  <ul class = 'grid grid-cols-6' >
+    <% order_date = order[:created_at] + 8.hours%>
+    <li><%= order_date.strftime("%B %d, %Y") %></li>
+    <li><%= order[:id] %></li>
+    <li>
+      <% if order.user&.firstname %>
+        <%= order.user&.firstname %>
+      <%else%>
+        Patrick Nebab
+      <%end %>
+    </li>
+    <li><%= order[:status] %></li>
+    <li><%= order[:total] %></li>
+    <li>Action</li>
+  </ul>
+<% end %>

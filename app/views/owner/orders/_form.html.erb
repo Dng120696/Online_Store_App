@@ -1,0 +1,10 @@
+<h1>Create Order for <%= user.firstname %></h1>
+<%= form_with(model: order, url: new_owner_order_path) do |form| %>
+  <%= form.hidden_field :user_id, value: user.id %>
+  <%= form.hidden_field :status, value: :shipped %>
+  <div class="field">
+    <%= form.label :product_ids, "Select Products" %>
+    <%= form.collection_check_boxes :product_ids, Product.all, :id, :name, include_hidden: false %>
+  </div>
+  <%= form.submit "Create Order" %>
+<% end %>

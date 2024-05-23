@@ -4,13 +4,8 @@ class CustomerClient::CheckoutController < ApplicationController
     @cart_items = current_user&.cart&.cart_items || []
     @total_amount = calculate_total_amount(@cart_items)
   end
-  def calculate_total_amount(cart_items)
-    # Logic to calculate total amount based on cart items
-    # Example:
-    cart_items.sum { |item| item.product.price * item.quantity }
 
-  end
-
+# GET
   def process_checkout
     payment_method = params[:payment_method]
     case payment_method
@@ -25,51 +20,39 @@ class CustomerClient::CheckoutController < ApplicationController
     end
   end
 
+  # POST
   def confirm_payment
       payment_method = params[:payment_method]
       client = PaymongoAPI::V1::Client.new
       amount = calculate_total_amount(current_user.cart.cart_items)
 
+      success_url = "http://127.0.0.1:3000/customer_client/success"
+      failed_url = "http://127.0.0.1:3000/customer_client/failed"
+
       begin
         case payment_method
         when 'gcash'
-          intent_response = client.create_payment_intent(amount, 'PHP')
+          puts 'gcash'
           payment_method_details ={
               name: params[:name],
               email: params[:email],
               phone: params[:phone]
           }
-          payment_method_response = client.create_payment_method_gcash(payment_method_details)
 
-          payment_intent_id = intent_response['data']['id']
-          client_key = intent_response['data']['attributes']['client_key']
-          payment_method_id = payment_method_response['data']['id']
-            return_url = "http://127.0.0.1:3000/customer_client/orders"
-          attach_response = client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
+          payment_sources = client.create_payment_source(amount,'gcash',success_url,failed_url,billing_details: payment_method_details)
+          checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
+          status = payment_sources["data"]["attributes"]["status"]
 
-          redirect_url = attach_response['data']['attributes']['next_action']['redirect']['url']
-          @cart_items = current_user.cart.cart_items
-          @total_amount = calculate_total_amount(@cart_items)
-          @cart = current_user.cart
-          @order = Order.new(user_id: current_user.id)
-          @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
+          if status == "pending"
+            session[:checkout_url] = checkout_url
 
-          if @order.save
-            @cart.cart_items.each do |cart_item|
-              @order.order_items.create(
-                product: cart_item.product,
-                quantity: cart_item.quantity,
-                price: cart_item.product.price
-              )
-            end
-            @cart.destroy
-            redirect_to customer_client_order_confirmation_path, notice: 'Order placed successfully.'
-          else
-            redirect_to customer_client_cart_index_path, alert: 'Unable to place order.'
+            session[:amount] = payment_sources["data"]["attributes"]["amount"]
+            session[:src_id] = payment_sources["data"]["id"]
+           redirect_to customer_client_order_confirmation_path
           end
-          session[:paymongo_url] = redirect_url
 
         when 'card'
+          puts 'card'
           intent_response = client.create_payment_intent(amount, 'PHP')
           card_details = {
             card_number: params[:number].gsub(/\s+/, "") ,
@@ -82,9 +65,12 @@ class CustomerClient::CheckoutController < ApplicationController
           payment_intent_id = intent_response['data']['id']
           client_key = intent_response['data']['attributes']['client_key']
           payment_method_id = payment_method_response['data']['id']
-          return_url = "http://127.0.0.1:3000/customer_client/orders"
-          client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,return_url)
-
+          attach_res = client.attach_payment_method_to_intent(payment_intent_id,client_key,payment_method_id,success_url)
+          if attach_res["data"]["attributes"]["status"] == 'succeeded'
+            redirect_to customer_client_success_path
+          else
+            redirect_to customer_client_failed_path
+          end
         else
           flash[:error] = 'Please select a valid payment method.'
           redirect_to customer_client_checkout_index_path and return

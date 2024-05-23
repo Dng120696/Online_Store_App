@@ -7,9 +7,9 @@ class PaymongoAPI::V1::Client
     body = {
       data: {
         attributes: {
-          amount: amount.to_i,
+          amount: amount.to_i * 100,
           currency: currency,
-          payment_method_allowed: ['card', 'gcash'],
+          payment_method_allowed: ['card'],
           payment_method_options: {
             card: {
               request_three_d_secure: 'any'
@@ -62,28 +62,65 @@ class PaymongoAPI::V1::Client
     )
   end
 
-  def create_payment_method_gcash(billing_details)
 
 
-    p 'gcash'
+  def create_payment_source(amount,type,success_url,failed_url,billing_details:{})
     request(
       method: :post,
-      endpoint: '/payment_methods',
+      endpoint: '/sources',
       body: {
         data: {
           attributes: {
-            type: 'gcash',
+            type: type,
+            amount: amount.to_i * 100,
+            currency: 'PHP',
+            redirect:{
+                success:success_url,
+                failed: failed_url
+            },
             billing: billing_details
+              }
+            }
+        },
+        key: PUBLIC_KEY
+    )
+
+  end
+  def retrieve_payment_source(id)
+    request(
+      method: :get,
+      endpoint: "/sources/#{id}",
+      body: {},
+      key: PUBLIC_KEY
+    )
+
+  end
+
+  def create_payment(amount, src_id, description="GCash Payment")
+    request(
+      method: :post,
+      endpoint: '/payments',
+      body: {
+        data: {
+        attributes: {
+          amount: amount.to_i,
+          currency: 'PHP',
+          description: description,
+          source: {
+            id: src_id,
+            type: 'source'
+            }
           }
         }
       },
-      key: PUBLIC_KEY
+      key: SECRET_KEY
     )
   end
 
+
   private
 
-  def request(method:, endpoint:, body: {},key:)
+  def request(method:, endpoint:, body: {},key:'')
     response = connection.public_send(method, endpoint) do |request|
       request.headers['Content-Type'] = 'application/json'
       request.headers['Authorization'] = "Basic #{Base64.strict_encode64(key + ':')}"
