@@ -21,6 +21,11 @@ Rails.application.routes.draw do
 
   end
 
+  get 'chatbot/create_customer', to: 'chatbot#create_customer'
+  post 'chatbot/create_customer', to: 'chatbot#create_customer'
+  get 'chatbot/send_message', to: 'chatbot#send_message'
+  post 'chatbot/send_message', to: 'chatbot#send_message'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
