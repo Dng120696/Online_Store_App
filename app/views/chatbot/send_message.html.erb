@@ -1,0 +1,10 @@
+<h1>Send Message</h1>
+<%= form_with url: chatbot_send_message_path(format: :html), method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :message %>
+    <%= form.text_area :message %>
+  </div>
+  <div>
+    <%= form.submit "Send Message" %>
+  </div>
+<% end %>
