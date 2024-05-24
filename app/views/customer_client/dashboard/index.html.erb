@@ -1,6 +1,5 @@
 <h1>All Products</h1>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
   <% @products.each do |product| %>
     <div class="product border p-4 rounded-lg shadow-lg">
       <h2 class="text-2xl font-extrabold mb-2"><%= product.name %></h2>
@@ -13,7 +12,10 @@
     </div>
   <% end %>
 </div>
-
+<%= link_to "Logout", destroy_user_session_path, data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              } %>
 <!-- Modal -->
 <div id="cart-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center">
   <div class="bg-white w-full max-w-3xl rounded-lg shadow-lg">

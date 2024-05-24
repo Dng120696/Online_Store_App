@@ -8,6 +8,7 @@ class CustomerClient::CheckoutController < ApplicationController
 # GET
   def process_checkout
     payment_method = params[:payment_method]
+    session[:payment_method] = payment_method
     case payment_method
     when 'gcash'
       redirect_to customer_client_gcash_payment_path
@@ -28,18 +29,21 @@ class CustomerClient::CheckoutController < ApplicationController
 
       success_url = "http://127.0.0.1:3000/customer_client/success"
       failed_url = "http://127.0.0.1:3000/customer_client/failed"
-
+      user_address = current_user.addresses.first
+      address_details =  {
+        state: user_address&.state_or_province || 'Cagayan',
+        postal_code: user_address&.zip_code ||  3519,
+        city: user_address&.city || 'Tuguegarao',
+        country: 'PH'
+        }
       begin
         case payment_method
         when 'gcash'
-          puts 'gcash'
           payment_method_details ={
               name: params[:name],
               email: params[:email],
               phone: params[:phone],
-              address: {
-                  state:
-              }
+              address: address_details
           }
 
           payment_sources = client.create_payment_source(amount,'gcash',success_url,failed_url,billing_details: payment_method_details)
@@ -55,7 +59,6 @@ class CustomerClient::CheckoutController < ApplicationController
           end
 
         when 'card'
-          puts 'card'
           intent_response = client.create_payment_intent(amount, 'PHP')
           card_details = {
             card_number: params[:number].gsub(/\s+/, "") ,
@@ -63,7 +66,9 @@ class CustomerClient::CheckoutController < ApplicationController
             exp_year: params[:exp_year].to_i,
             cvc: params[:cvc]
           }
-          payment_method_response = client.create_payment_method_card(card_details)
+
+
+          payment_method_response = client.create_payment_method_card(card_details,address_details,current_user)
 
           payment_intent_id = intent_response['data']['id']
           client_key = intent_response['data']['attributes']['client_key']
