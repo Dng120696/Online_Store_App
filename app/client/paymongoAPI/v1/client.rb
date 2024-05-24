@@ -46,7 +46,7 @@ class PaymongoAPI::V1::Client
   end
 
 
-  def create_payment_method_card(card_details)
+  def create_payment_method_card(card_details,address_details,user_details)
     request(
       method: :post,
       endpoint: '/payment_methods',
@@ -54,7 +54,14 @@ class PaymongoAPI::V1::Client
         data: {
           attributes: {
             type: 'card',
-            details: card_details
+            details: card_details,
+            billing:{
+              address: address_details,
+              name: "#{user_details[:firstname]} #{user_details[:lastname]}",
+              email:user_details[:email],
+              phone: '09617936981'
+            },
+
           }
         }
       },

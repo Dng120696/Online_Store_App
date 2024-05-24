@@ -8,21 +8,24 @@ class CustomerClient::OrdersController < ApplicationController
 # GET
   def confirmation
      @url = session[:checkout_url]
-
   end
 
-
+  #GET
   def success
     client = PaymongoAPI::V1::Client.new
     amount = session[:amount]
     src_id = session[:src_id]
-    retrieved_source = client.retrieve_payment_source(src_id)
+    payment_method  = session[:payment_method]
 
-    if retrieved_source['data']['attributes']['status'] == 'chargeable'
-      puts 'gcash'
-    client.create_payment(amount, src_id)
+    if payment_method == 'gcash'
+      retrieved_source = client.retrieve_payment_source(src_id)
+      status = retrieved_source['data']['attributes']['status']
+
+      if status == 'chargeable'
+        client.create_payment(amount, src_id)
+      end
     end
-    puts 'card'
+
     @cart_items = current_user.cart.cart_items
     @total_amount =  @cart_items.sum { |item| (item.product.price) * item.quantity }
     @cart = current_user.cart
@@ -41,11 +44,13 @@ class CustomerClient::OrdersController < ApplicationController
           session.delete(:amount)
           session.delete(:src_id)
           session.delete(:checkout_url)
+          session.delete(:payment_method)
 
           redirect_to customer_client_orders_path, notice: 'Order placed successfully.'
     end
   end
 
+  #GET
   def failed
     redirect_to customer_client_dashboard_index_path, alert: 'Payment failed! Please try again.'
   end
