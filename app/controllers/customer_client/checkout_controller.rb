@@ -36,7 +36,10 @@ class CustomerClient::CheckoutController < ApplicationController
           payment_method_details ={
               name: params[:name],
               email: params[:email],
-              phone: params[:phone]
+              phone: params[:phone],
+              address: {
+                  state:
+              }
           }
 
           payment_sources = client.create_payment_source(amount,'gcash',success_url,failed_url,billing_details: payment_method_details)
