@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :orders
     resources :categories
     resources :dashboard, only: [:index]
+    get 'search_user', to: 'orders#search_user'
 
   end
   namespace :customer_client do
@@ -29,8 +30,12 @@ Rails.application.routes.draw do
     resources :orders
 
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
+    get 'success', to: 'orders#success'
+    get 'failed', to: 'orders#failed'
     get 'gcash_payment',to: 'gcash_payment#gcash_payment'
     get 'card_payment',to: 'card_payment#card_payment'
+
+    post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

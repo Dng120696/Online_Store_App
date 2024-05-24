@@ -37,11 +37,11 @@ class Owner::AddressesController < ApplicationController
   private
 
   def find_customer_address
-    @user = current_admin.user.find(params[:customer_id])
+    @user = User.find(params[:customer_id])
     @address = @user.addresses.find(params[:id])
   end
   def find_customer
-    @user = current_admin.user.find(params[:customer_id])
+    @user = User.find(params[:customer_id])
   end
   def address_params
     params.require(:address).permit(:city,:country,:firstname,:lastname,:zip,:email,:street,:address_type)

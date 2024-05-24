@@ -3,21 +3,21 @@ class Owner::CustomersController < ApplicationController
   before_action :find_user, only: [:update,:show, :edit,:destroy]
 
   def index
-      @users =  current_admin.user
+      @users =  User.all
   end
   def edit
    @addresses = @user.addresses
-   p @addresses
+
   end
   def show; end
   def new
-    @user = current_admin.user.new
+    @user = User.new
   end
 
   def create
-    @user = current_admin.user.new(user_params)
+    @user = User.new(user_params)
     if @user.save
-      redirect_to new_owner_customer_addresses_path(@user)
+      redirect_to new_owner_customer_address_path(@user)
     else
       render :new
     end
@@ -38,7 +38,7 @@ class Owner::CustomersController < ApplicationController
   private
 
   def find_user
-    @user =  current_admin.user.find(params[:id])
+    @user =  User.find(params[:id])
   end
 
   def user_params
