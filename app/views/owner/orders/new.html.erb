@@ -1,0 +1,9 @@
+<%= form_with(url: owner_search_user_path, method: :get) do %>
+  <%= text_field_tag :search, params[:search], placeholder: "Search for user by name or email" %>
+  <%= submit_tag "Search" %>
+<% end %>
+<% if @user %>
+  <%= render partial: 'form', locals: { user: @user, order: @order } %>
+<% else %>
+  <p>No user found.</p>
+<% end %>

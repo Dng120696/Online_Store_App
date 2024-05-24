@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
   }
   devise_for :admins, controllers: {
     sessions: 'admins/sessions'
@@ -15,10 +16,27 @@ Rails.application.routes.draw do
     resources :orders
     resources :categories
     resources :dashboard, only: [:index]
+    get 'search_user', to: 'orders#search_user'
 
   end
   namespace :customer_client do
+    resources :dashboard, only: [:index]
+    resources :cart, only: [:index]
+    resources :checkout, only: [:index] do
+      post 'process' ,to: 'checkout#process_checkout', on: :collection
+      post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
+    end
+    resources :cart_items, only: [:create, :destroy]
 
+    resources :orders
+
+    get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
+    get 'success', to: 'orders#success'
+    get 'failed', to: 'orders#failed'
+    get 'gcash_payment',to: 'gcash_payment#gcash_payment'
+    get 'card_payment',to: 'card_payment#card_payment'
+
+    post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
   end
 
   get 'chatbot/create_customer', to: 'chatbot#create_customer'

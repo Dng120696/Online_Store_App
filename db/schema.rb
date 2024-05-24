@@ -10,23 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_20_124428) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
     t.string "city"
     t.string "country"
-    t.string "firstname"
-    t.string "lastname"
     t.string "email"
-    t.integer "zip"
+    t.integer "zip_code"
     t.string "street"
     t.string "address_type", default: "billing"
     t.bigint "user_id", null: false
     t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state_or_province"
+    t.index ["order_id"], name: "index_addresses_on_order_id"
     t.index ["order_id"], name: "index_addresses_on_order_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_124428) do
     t.bigint "cart_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity", default: 0
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
@@ -75,6 +76,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_124428) do
     t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity", default: 1
+    t.integer "price", default: 0
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end

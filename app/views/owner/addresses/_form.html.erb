@@ -10,14 +10,6 @@
     </div>
   <% end %>
   <div class="field">
-    <%= form.label :firstname %>
-    <%= form.text_field :firstname, value: @user.firstname %>
-  </div>
-  <div class="field">
-    <%= form.label :lastname %>
-    <%= form.text_field :lastname, value: @user.lastname %>
-  </div>
-  <div class="field">
     <%= form.label :email %>
     <%= form.email_field :email, value: @user.email%>
   </div>
@@ -26,11 +18,11 @@
     <%= form.text_field :zip %>
   </div>
   <div class="field">
-    <%= form.label :street %>
+    <%= form.label :street, 'Street/Barangay' %>
     <%= form.text_field :street %>
   </div>
   <div class="field">
-    <%= form.label :city %>
+    <%= form.label :city, 'City/Province' %>
     <%= form.text_field :city %>
   </div>
   <div class="field">

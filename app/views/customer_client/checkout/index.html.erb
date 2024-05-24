@@ -1,0 +1,41 @@
+<h1>Checkout</h1>
+<% if @cart_items.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart_items.each do |item| %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.product.price) %></td>
+          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p>Total: <%= number_to_currency(@total_amount) %></p>
+  <h2>Select Payment Method</h2>
+  <%= form_tag(process_customer_client_checkout_index_path) do %>
+    <label>
+      <%= radio_button_tag :payment_method, 'gcash' %>
+      GCash
+    </label>
+    <br>
+    <label>
+      <%= radio_button_tag :payment_method, 'card' %>
+      Card
+    </label>
+    <br>
+    <%= submit_tag 'Proceed to Payment' %>
+  <% end %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
