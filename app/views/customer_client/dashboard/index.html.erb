@@ -1,46 +1,58 @@
-<h1>Products</h1>
-<% @products.each do |product| %>
-  <div class="product">
-    <h2><%= product.name %></h2>
-    <p>Price: <%= number_to_currency(product.price) %></p>
-    <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true do |form| %>
-      <%= form.hidden_field :product_id, value: product.id %>
-      <%= form.number_field :quantity, value: 1, min: 1 %>
-      <%= form.submit "Add to Cart" %>
-    <% end %>
-  </div>
-<% end %>
-<h1>Your Cart</h1>
-<% if @cart_items.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cart_items.each do |item| %>
-        <tr>
-          <td><%= item.product.name %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.product.price) %></td>
-          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
-          <td>
-            <%= button_to 'Remove', customer_client_cart_item_path(item), method: :delete %>
-          </td>
-        </tr>
+<h1>All Products</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+  <% @products.each do |product| %>
+    <div class="product border p-4 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-extrabold mb-2"><%= product.name %></h2>
+      <p class="mb-4">Price: <%= number_to_currency(product.price) %></p>
+      <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true do |form| %>
+        <%= form.hidden_field :product_id, value: product.id %>
+        <%= form.number_field :quantity, value: 1, min: 1, class: "mb-4 w-full border rounded p-2" %>
+        <%= form.submit "Add to Cart", class: "w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700" %>
       <% end %>
-    </tbody>
-  </table>
-  <p>Total: <%= number_to_currency(@cart_items.sum { |item| item.product.price * item.quantity }) %></p>
-  <div>
-    <%= link_to 'Checkout',customer_client_checkout_index_path %>
-    <%= link_to 'View Cart', customer_client_cart_index_path %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Modal -->
+<div id="cart-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white w-full max-w-3xl rounded-lg shadow-lg">
+    <div class="p-6">
+      <h2>Your Cart</h2>
+      <% if @cart_items.any? %>
+        <table class="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th class="py-2">Product</th>
+              <th class="py-2">Quantity</th>
+              <th class="py-2">Price</th>
+              <th class="py-2">Total</th>
+              <th class="py-2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @cart_items.each do |item| %>
+              <tr class="border-t">
+                <td class="py-2 px-4"><%= item.product.name %></td>
+                <td class="py-2 px-4"><%= item.quantity %></td>
+                <td class="py-2 px-4"><%= number_to_currency(item.product.price) %></td>
+                <td class="py-2 px-4"><%= number_to_currency(item.product.price * item.quantity) %></td>
+                <td class="py-2 px-4">
+                  <%= button_to 'Remove', customer_client_cart_item_path(item), method: :delete, class: "text-red-500 hover:text-red-700" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <p class="mt-4 font-bold text-lg">Total: <%= number_to_currency(@cart_items.sum { |item| item.product.price * item.quantity }) %></p>
+        <div class="mt-4">
+          <%= link_to 'Checkout', customer_client_checkout_index_path, class: "bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700" %>
+          <%= link_to 'View Cart', customer_client_cart_index_path, class: "ml-4 text-blue-500 hover:underline" %>
+        </div>
+      <% else %>
+        <p class="mt-4">Your cart is empty.</p>
+      <% end %>
+      <button id="close-cart-modal" class="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700">Close</button>
+    </div>
   </div>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
+</div>
