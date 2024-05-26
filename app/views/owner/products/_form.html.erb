@@ -26,11 +26,8 @@
     <%= form.select :product_type ,options_for_select(["physical", "digital"])%>
   </div>
   <div class="field">
-    <%= form.label :categories %><br>
-    <% current_admin.categories.each do |category| %>
-      <%= check_box_tag "product[category_ids][]", category.id, @product.categories.include?(category) %>
-      <%= label_tag "product_category_ids_#{category.id}", category.title %><br>
-    <% end %>
+    <%= form.label :category_id,'Category' %><br>
+    <%= form.collection_select :category_ids, @categories, :id, :title, { prompt: "Select a category" }, { multiple: true } %>
   </div>
   <div class="field">
     <%= form.label :description %>

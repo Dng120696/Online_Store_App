@@ -8,7 +8,7 @@ class Product < ApplicationRecord
   has_many :orders, through: :order_items
   has_many :cart_items
   has_many :cart, through: :cart_items
-
+  has_one_attached :image
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }

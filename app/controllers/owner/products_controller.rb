@@ -1,6 +1,6 @@
 class Owner::ProductsController < ApplicationController
   before_action :authenticate_admin!
-  before_action :find_product,only: [:show,:edit,:update,:destroy]
+  before_action :find_product,only: [:show,:edit,:update,:destroy,:upload_image]
   before_action :categories,only: [:new,:edit, :update]
 
   def index
@@ -18,7 +18,7 @@ class Owner::ProductsController < ApplicationController
 
   def create
     @product = current_admin.products.new(product_params)
-
+    @product.category_ids.reject!(&:blank?)
     if @product.save
       redirect_to owner_products_path, notice: 'Product was successfully created.'
     else
@@ -41,6 +41,14 @@ class Owner::ProductsController < ApplicationController
 
   end
 
+  def upload_image
+    image = params[:image]
+
+    if @product.update(image: image)
+      redirect_to owner_products_path
+    end
+
+  end
   private
 
   def categories
@@ -52,7 +60,7 @@ class Owner::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :price, :weight, :description, :brand_id, :inventory_level, :product_type, category_ids: [])
+    params.require(:product).permit(:name,:image, :price, :weight, :description, :brand_id, :inventory_level, :product_type, category_ids: [])
   end
 
 end

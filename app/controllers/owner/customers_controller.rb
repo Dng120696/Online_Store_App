@@ -7,6 +7,7 @@ class Owner::CustomersController < ApplicationController
   end
   def edit
    @addresses = @user.addresses
+   p @addresses
 
   end
   def show; end
@@ -25,9 +26,9 @@ class Owner::CustomersController < ApplicationController
   end
   def update
     if @user.update(user_params)
-      redirect_to owner_customers_path
+      redirect_to owner_customers_path, notice: 'User was successfully updated'
     else
-      render :edit
+      redirect_to edit_owner_customer_path(@user), alert: 'User was not updated'
     end
   end
   def destroy

@@ -1,13 +1,27 @@
 <%= link_to 'Add Product', new_owner_product_path %>
 <div>
-  <ul class = 'grid grid-cols-[1fr,2fr,1fr,2fr] gap-4 font-bold text-xl'>
+  <ul class = 'grid grid-cols-[1fr,1fr,2fr,1fr,2fr] gap-4  items-center font-bold text-xl font-bold'>
+    <li>Product Image</li>
     <li>Stock Level</li>
     <li>Product Name</li>
     <li>Price</li>
     <li>Action</li>
   </ul>
-  <ul class = 'grid grid-cols-[1fr,2fr,1fr,2fr] gap-4'>
+  <ul class = 'grid grid-cols-[1fr,1fr,2fr,1fr,2fr] gap-4 items-center '>
     <%@products.reverse.each do |product| %>
+      <div id="image_container_<%= product.id %>" class=' image_container relative w-[100px] h-[100px]'>
+        <div class = 'image opacity-0 absolute w-full h-full bg-[rgba(0,0,0,0.2)] flex items-center justify-center rounded-full z-100 hover:cursor-pointer font-bold text-[10px]'>
+          Upload Picture
+        </div>
+        <% if product.image.attached? %>
+          <%= image_tag url_for(product.image),class: 'w-full h-full rounded-full object-cover' %>
+        <% else %>
+          <%= image_tag image_path('default_image.jpg'),class: 'w-full h-full rounded-full object-cover' %>
+        <% end %>
+        <%= form_with(url: upload_image_owner_product_path(product), method: :post, local: true, html: { multipart: true, id: "image_form_#{product.id}", class: 'hidden' }) do |f| %>
+          <%= f.file_field :image, onchange: "this.form.submit()" %>
+        <% end %>
+      </div>
       <li><%= product[:inventory_level] %> </li>
       <li class = ''><%= product[:name] %> </li>
       <li><%= product[:price] %> </li>
@@ -23,3 +37,15 @@
                 turbo_method: :delete,
                 turbo_confirm: "Are you sure?"
               } %>
+<script>
+  document.addEventListener("turbo:load", function() {
+    const profilePictureContainers = document.querySelectorAll('[id^=image_container_]');
+    profilePictureContainers.forEach(container => {
+      const productId = container.id.split('_')[2];
+      const profileForm = document.getElementById(`image_form_${productId}`);
+      container.addEventListener('click', function() {
+        profileForm.querySelector('input[type=file]').click();
+      });
+    });
+  });
+</script>

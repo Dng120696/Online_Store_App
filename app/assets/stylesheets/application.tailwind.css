@@ -11,7 +11,17 @@
 }
 
 */
-
+.log_in {
+  @apply pt-10
+}
+.link_items a.active,
+.log_in .active{
+  @apply bg-blue-600  dark:bg-opacity-70 text-white;
+}
+.image_container:hover .image{
+	@apply opacity-100;
+	transition: 300ms;
+}
 h1 {
     margin-bottom: 1rem;
     font-size: 2.25rem; 
