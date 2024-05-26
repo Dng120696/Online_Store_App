@@ -14,7 +14,7 @@
     <li><%= order_date.strftime("%B %d, %Y") %></li>
     <li><%= order[:id] %></li>
     <li>
-      <% if order.user&.firstname || order.user&.lastname %>
+      <% if order.user&.firstname && order.user&.lastname %>
         <%= order.user&.firstname %>
         <%= order.user&.lastname %>
       <% else %>
@@ -22,7 +22,7 @@
       <% end %>
     </li>
     <li>
-      <%= form_with model: [order.user, order], url: update_status_owner_order_path(order), method: :patch, data: { remote: true } do |form| %>
+      <%= form_with model: order, url: update_status_owner_order_path(order), method: :patch, data: { remote: true } do |form| %>
         <%= form.select :status, Order.statuses.keys, selected: order.status %>
       <% end %>
     </li>

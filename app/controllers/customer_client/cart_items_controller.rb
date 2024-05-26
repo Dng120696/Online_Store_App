@@ -17,4 +17,12 @@ class CustomerClient::CartItemsController < ApplicationController
     @cart_item.destroy
     redirect_to customer_client_dashboard_index_path, notice: 'Product removed from cart.'
   end
+
+
+  def update_quantity
+    @cart_item = CartItem.find(params[:cart_item_id])
+    @cart_item.update(quantity: params[:cart_item][:quantity].to_i)
+    redirect_to customer_client_cart_index_path, notice: 'Quantity updated.'
+  end
+
 end

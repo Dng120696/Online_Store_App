@@ -8,6 +8,7 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://kit.fontawesome.com/4a45b90c57.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <% unless controller_name == 'devise/sessions' && action_name == 'new' || controller_name == 'devise/registrations' && (action_name == 'new' || action_name == 'create') %>
