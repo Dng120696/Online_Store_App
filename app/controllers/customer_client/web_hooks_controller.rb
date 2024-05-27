@@ -42,16 +42,7 @@ class CustomerClient::WebhooksController < ApplicationController
 
 
   def handle_payment_success(payload)
-    # Extract relevant information from the payload
-    # payment_id = payload['data']['id']
-    # amount = payload['data']['attributes']['amount']
-    # currency = payload['data']['attributes']['currency']
-    # status = payload['data']['attributes']['status']
-    # # Update order status in your application's database
-    # order = Order.find_by(payment_id: payment_id)
-    # order.update(status: status, amount: amount, currency: currency)
 
-    # Redirect to success page or send confirmation email to the customer
     redirect_to customer_client_success_path
   end
 
@@ -60,7 +51,6 @@ class CustomerClient::WebhooksController < ApplicationController
     payment_id = payload['data']['id']
     error_message = payload['data']['attributes']['error_message']
 
-    # Log the event or take appropriate action based on your application's requirements
     Rails.logger.error("Payment failed for payment ID #{payment_id}: #{error_message}")
 
     # Redirect to a failure page or notify the customer

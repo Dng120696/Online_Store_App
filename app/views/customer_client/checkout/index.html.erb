@@ -1,41 +1,133 @@
-<h1>Checkout</h1>
-<% if @cart_items.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cart_items.each do |item| %>
-        <tr>
-          <td><%= item.product.name %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.product.price) %></td>
-          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <p>Total: <%= number_to_currency(@total_amount) %></p>
-  <h2>Select Payment Method</h2>
-  <%= form_tag(process_customer_client_checkout_index_path) do %>
-    <label>
-      <%= radio_button_tag :payment_method, 'gcash' %>
-      GCash
-    </label>
-    <br>
-    <label>
-      <%= radio_button_tag :payment_method, 'card' %>
-      Card
-    </label>
-    <br>
-    <%= submit_tag 'Proceed to Payment' %>
+<div class='min-h-screen w-[clamp(300px,90%,1300px)] mx-auto flex items-center justify-center relative'>
+  <% if flash[:error].present? %>
+    <div class='text-red-600 text-base my-4 absolute top-6 left-0'>
+      <h2 class = 'text-xl text-gray-700' >The following errors prevented the address from being saved:</h2>
+      <ul class='list-disc pl-8'>
+        <% flash[:error].split(',').each do |error| %>
+          <li><%= error.strip %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
+  <div class='w-full grid grid-cols-2 justify-between gap-16'>
+    <div>
+      <h1 class='text-3xl'>Shipping</h1>
+      <%= form_with url: update_address_customer_client_checkout_index_path, method: :post, local: true, id: 'address-form' do |f| %>
+        <div class='mb-4'>
+          <label for='address_select' class='block text-sm font-medium text-gray-700'>Select a previous address:</label>
+          <%= select_tag 'address_id', options_from_collection_for_select(current_user.addresses, 'id', 'full_address') + options_for_select([['Enter New Address', 'new']], 'new'), class: 'block w-full p-2 border border-gray-300 rounded-md', id: 'address-select' %>
+        </div>
+        <div id='new-address-form' class='mb-4'>
+          <div class='grid grid-cols-2 gap-4'>
+            <%= hidden_field_tag 'address[email]', current_user.email %>
+            <div>
+              <div class = 'flex items-center'>
+                <%= f.label :street, 'Street', class: 'block text-sm font-medium text-gray-700' %>
+                <span class = 'text-[12px] text-gray-400' > (required)</span>
+              </div>
+              <%= f.text_field :street, name: 'address[street]', class: 'block w-full p-2 border border-gray-300 rounded-md', placeholder: 'Enter your Street'%>
+            </div>
+            <div>
+              <div class = 'flex items-center'>
+                <%= f.label :city, 'City/Town', class: 'block text-sm font-medium text-gray-700' %>
+                <span class = 'text-[12px] text-gray-400' > (required)</span>
+              </div>
+              <%= f.text_field :city, name: 'address[city]', class: 'block w-full p-2 border border-gray-300 rounded-md', placeholder: 'Enter your City/Town' %>
+            </div>
+            <div>
+              <div class = 'flex items-center'>
+                <%= f.label :state, 'State/Province', class: 'block text-sm font-medium text-gray-700' %>
+                <span class = 'text-[12px] text-gray-400' > (required)</span>
+              </div>
+              <%= f.text_field :state, name: 'address[state_or_province]', class: 'block w-full p-2 border border-gray-300 rounded-md', placeholder: 'Enter your State/Province' %>
+            </div>
+            <div>
+              <div class = 'flex items-center'>
+                <%= f.label :zip_code, 'ZIP Code', class: 'block text-sm font-medium text-gray-700' %>
+                <span class = 'text-[12px] text-gray-400' > (required)</span>
+              </div>
+              <%= f.text_field :zip_code, name: 'address[zip_code]', class: 'block w-full p-2 border border-gray-300 rounded-md', placeholder: 'Enter your Zip Code' %>
+            </div>
+            <div>
+              <div class = 'flex items-center'>
+                <%= f.label :country, 'Country', class: 'block text-sm font-medium text-gray-700' %>
+                <span class = 'text-[12px] text-gray-400' > (required)</span>
+              </div>
+              <%= f.text_field :country, name: 'address[country]', class: 'block w-full p-2 border border-gray-300 rounded-md', placeholder: 'Enter your Country' %>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class = 'flex items-center'>
+            <%= f.label :comment, 'Order Comments', class: 'block text-sm font-medium text-gray-700' %>
+            <span class = 'text-[12px] text-gray-400' > (optional)</span>
+          </div>
+          <%= f.text_area :comment, name: 'comment[comment]', class: 'block w-full p-2 border border-gray-300 rounded-md' , placeholder: 'Your Comment' %>
+        </div>
+        <%= f.submit 'Continue', class: 'mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md' %>
+      <% end %>
+    </div>
+    <!-- Order Summary Section -->
+    <div class='w-[400px] mx-auto p-6 border-[1px] border-gray-400 rounded-md shadow overflow-hidden'>
+      <h3 class='flex items-center justify-between gap-4 py-3 border-b-[1px] border-b-gray-300'>
+        <span class='font-bold text-lg'>Order Summary</span>
+        <span class='text-sm'>
+          <%= link_to 'Edit Cart', customer_client_cart_index_path, class: 'text-blue-600' %>
+        </span>
+      </h3>
+      <div class='border-b-gray-300 border-b-[1px] py-2'>
+        <% if @cart_items.any? %>
+          <% @cart_items.each do |item| %>
+            <ul class='flex items-center justify-between py-3'>
+              <li>
+                <% if item.product.image.attached? %>
+                  <%= image_tag url_for(item.product.image), class: 'w-20 h-20 object-cover rounded-md' %>
+                <% else %>
+                  <%= image_tag 'default_image.jpg', class: 'w-20 h-20 object-cover rounded-md' %>
+                <% end %>
+              </li>
+              <li class='flex flex-col text-gray-600'>
+                <span><%= item.product.name %></span>
+                <p>
+                  <span><%= item.quantity %></span> x
+                  <span><%= number_to_currency(item.product.price) %></span>
+                </p>
+              </li>
+              <li><%= number_to_currency(item.product.price * item.quantity) %></li>
+            </ul>
+          <% end %>
+        <% else %>
+          <p>Your cart is empty.</p>
+        <% end %>
+      </div>
+      <ul class='border-b-gray-300 border-b-[1px]'>
+        <li class='flex items-center justify-between py-3'>
+          <span>Subtotal</span>
+          <span><%= number_to_currency(@total_amount) %></span>
+        </li>
+        <li class='flex items-center justify-between py-3'>
+          <span>Tax</span>
+          <span>$ 0.00</span>
+        </li>
+      </ul>
+      <p class='flex items-center justify-between py-3'>
+        <span>Total</span>
+        <span class='text-xl font-bold'><%= number_to_currency(@total_amount) %></span>
+      </p>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addressSelect = document.getElementById('address-select');
+    const newAddressForm = document.getElementById('new-address-form');
+
+    addressSelect.addEventListener('change', function() {
+      if (addressSelect.value === 'new') {
+        newAddressForm.classList.remove('hidden');
+      } else {
+        newAddressForm.classList.add('hidden');
+      }
+    });
+  });
+</script>

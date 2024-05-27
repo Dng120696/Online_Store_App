@@ -29,15 +29,17 @@ Rails.application.routes.draw do
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
+    resources :orders
+    resources :billing_payment, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
+     post :update_address,to: 'checkout#update_address', on: :collection
     end
     resources :cart_items, only: [:create, :destroy] do
       patch 'update_quantity', to: 'cart_items#update_quantity'
     end
 
-    resources :orders
 
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'success', to: 'orders#success'
