@@ -9,9 +9,13 @@ class Owner::OrdersController < ApplicationController
 
   def update_status
     @order = Order.find(params[:id])
-    if @order.update(order_params)
-      redirect_to owner_orders_path, notice: 'Order was successfully updated'
 
+    if @order.update(order_params)
+      render json: { message: 'Order status updated successfully' }, status: :ok
+    else
+      # Log errors for debugging
+      Rails.logger.error @order.errors.full_messages.join(', ')
+      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
