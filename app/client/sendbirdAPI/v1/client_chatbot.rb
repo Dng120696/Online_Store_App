@@ -4,48 +4,96 @@ require 'json'
 class SendbirdAPI::V1::ClientChatbot
   APPLICATION_ID = Rails.application.credentials.sendbird[:application_id]
   API_TOKEN_CHAT = Rails.application.credentials.sendbird[:api_token_chat]
-  API_KEY_DESK = Rails.application.credentials.sendbird[:api_key_desk]
-  BOT_CHANNEL_URL = Rails.application.credentials.sendbird[:bot_channel_url]
+  ADMIN_ID = Rails.application.credentials.sendbird[:admin_id]
+  CHATBOT_ID = Rails.application.credentials.sendbird[:chatbot_id]
   BASE_URL_CHAT = "https://api-#{APPLICATION_ID}.sendbird.com/v3"
 
-
-  def create_customer(customer_data)
+  def create_customer(user_id, nickname)
     response = request(
       method: :post,
       endpoint: "#{BASE_URL_CHAT}/users",
-      body: customer_data,
-    )
+      body: {
+      user_id: user_id,
+      nickname: nickname,
+      profile_url: "https://sendbird.com/main/img/profiles/profile_05_512px.png",
+      issue_access_token: true,
+      session_token_expires_at: ((Time.now + 7.days).to_i * 1000)
+      })
     handle_response(response)
   end
 
-  def user_in_channel?(user_id)
+  def check_user?(user_id)
     response = request(
       method: :get,
-      endpoint: "#{BASE_URL_CHAT}/users/#{user_id}/my_group_channels"
-    )
-    channels = response['channels'] || []
-    channels.any? { |channel| channel['channel_url'] == BOT_CHANNEL_URL }
+      endpoint: "#{BASE_URL_CHAT}/users/#{user_id}"
+      )
+    if response.key?('error')
+      Rails.logger.error("Error: #{response['code']}, #{response['message']}")
+      false
+    else
+      true
+    end
   end
 
-  def add_user_to_channel(user_id)
+  def create_channel(user_id, channel_name, channel_url)
     response = request(
       method: :post,
-      endpoint: "#{BASE_URL_CHAT}/group_channels/#{BOT_CHANNEL_URL}/invite",
-      body: { user_ids: [user_id] }
-    )
+      endpoint: "#{BASE_URL_CHAT}/group_channels",
+      body: {
+      user_ids: [user_id, ADMIN_ID, CHATBOT_ID],
+      is_distinct: false,
+      name: channel_name,
+      channel_url: channel_url
+      }.compact)
+
     handle_response(response)
   end
 
-  def send_message(user_id, message)
+  def check_channel?(channel_url)
+    response = request(
+      method: :get,
+      endpoint: "#{BASE_URL_CHAT}/group_channels/#{channel_url}"
+      )
+    if response.key?('error')
+      Rails.logger.error("Error: #{response['code']}, #{response['message']}")
+      false
+    else
+      true
+    end
+  end
+
+  def send_message(user_id, channel_url, message)
     response = request(
       method: :post,
-      endpoint: "#{BASE_URL_CHAT}/group_channels/#{BOT_CHANNEL_URL}/messages",
+      endpoint: "#{BASE_URL_CHAT}/group_channels/#{channel_url}/messages",
       body: {
-        message_type: "MESG",
-        user_id: user_id,
-        message: message
-      }
-    )
+      message_type: "MESG",
+      user_id: user_id,
+      message: message
+      })
+    handle_response(response)
+  end
+
+  # BOT message
+  # POST https://api-{application_id}.sendbird.com/v3/bots/{bot_userid}/send
+  # body: message, channel_URL
+
+  # def send_bot_message(message, channel_url)
+  #   response = request(
+  #     method: :post,
+  #     endpoint: "#{BASE_URL_CHAT}/bots/#{CHATBOT_ID}/send",
+  #     body: {
+  #     message: message,
+  #     channel_url: channel_url
+  #     })
+  #   handle_response(response)
+  # end
+
+  def chat_messages(channel_url)
+    response = request(
+      method: :get,
+      endpoint: "#{BASE_URL_CHAT}/group_channels/#{channel_url}/messages?message_ts=0&reverse=true"
+      )
     handle_response(response)
   end
 
