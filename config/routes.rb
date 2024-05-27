@@ -33,7 +33,9 @@ Rails.application.routes.draw do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
     end
-    resources :cart_items, only: [:create, :destroy]
+    resources :cart_items, only: [:create, :destroy] do
+      patch 'update_quantity', to: 'cart_items#update_quantity'
+    end
 
     resources :orders
 
