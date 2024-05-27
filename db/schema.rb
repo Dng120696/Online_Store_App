@@ -22,11 +22,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
     t.string "street"
     t.string "address_type", default: "billing"
     t.bigint "user_id", null: false
-    t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "state_or_province"
-    t.index ["order_id"], name: "index_addresses_on_order_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -58,7 +56,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", default: 0
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
@@ -85,6 +82,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
+    t.decimal "total"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -120,15 +119,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "admin_id", null: false
     t.string "firstname"
     t.string "lastname"
-    t.index ["admin_id"], name: "index_users_on_admin_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "addresses", "orders"
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
@@ -140,5 +136,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_104930) do
   add_foreign_key "product_categories", "categories"
   add_foreign_key "product_categories", "products"
   add_foreign_key "products", "admins"
-  add_foreign_key "users", "admins"
 end
