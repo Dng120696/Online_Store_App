@@ -14,16 +14,20 @@
     <%= form.email_field :email, value: @user.email%>
   </div>
   <div class="field">
-    <%= form.label :zip %>
-    <%= form.text_field :zip %>
+    <%= form.label :zip_code %>
+    <%= form.text_field :zip_code %>
   </div>
   <div class="field">
     <%= form.label :street, 'Street/Barangay' %>
     <%= form.text_field :street %>
   </div>
   <div class="field">
-    <%= form.label :city, 'City/Province' %>
+    <%= form.label :city %>
     <%= form.text_field :city %>
+  </div>
+  <div class="field">
+    <%= form.label :state_or_province, 'State/Province' %>
+    <%= form.text_field :state_or_province %>
   </div>
   <div class="field">
     <%= form.label :country %>

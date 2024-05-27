@@ -9,16 +9,23 @@ Rails.application.routes.draw do
   root 'customer_client/dashboard#index'
 
   namespace :owner do
-    resources :products
+    resources :products do
+      post 'upload_image', on: :member
+    end
     resources :customers do
       resources :addresses
     end
-    resources :orders
+    resources :orders,only: [:index] do
+      patch 'update_status', on: :member
+    end
     resources :categories
     resources :dashboard, only: [:index]
+
+
     get 'search_user', to: 'orders#search_user'
 
   end
+
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]

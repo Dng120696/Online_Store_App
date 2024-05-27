@@ -1,26 +1,23 @@
 class Owner::OrdersController < ApplicationController
-  before_action :authenticate_admin!
+
   def index
+      puts params.inspect
       @orders = Order.includes(order_items: :product).all
-      p @orders
-  end
-  def search_user
-    session[:search_user] = params[:search]
-    redirect_to new_owner_order_path
+
   end
 
-  def new
-    @user = User.find_by(email: session[:search_user])
-    @order = Order.new(user: @user)
+
+  def update_status
+    @order = Order.find(params[:id])
+    if @order.update(order_params)
+      redirect_to owner_orders_path, notice: 'Order was successfully updated'
+
+    end
   end
 
-  def create
-    @order = Order.new(order_params)
-  end
 
   private
-
-def order_params
-  params.require(:order).permit(:user_id,:status, :total)
-end
+  def order_params
+    params.require(:order).permit(:status)
+  end
 end

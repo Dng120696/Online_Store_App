@@ -1,6 +1,5 @@
-<%= link_to 'Create Order', new_owner_order_path%>
 <h1>Order List</h1>
-<ul class = 'grid grid-cols-6'>
+<ul class='grid grid-cols-6'>
   <li>Date</li>
   <li>Order ID</li>
   <li>Customer</li>
@@ -9,18 +8,23 @@
   <li>Action</li>
 </ul>
 <% @orders.each do |order| %>
-  <ul class = 'grid grid-cols-6' >
-    <% order_date = order[:created_at] + 8.hours%>
+  <ul class='grid grid-cols-6'>
+    <% order_date = order[:created_at] + 8.hours %>
     <li><%= order_date.strftime("%B %d, %Y") %></li>
     <li><%= order[:id] %></li>
     <li>
-      <% if order.user&.firstname %>
+      <% if order.user&.firstname || order.user&.lastname %>
         <%= order.user&.firstname %>
-      <%else%>
+        <%= order.user&.lastname %>
+      <% else %>
         Patrick Nebab
-      <%end %>
+      <% end %>
     </li>
-    <li><%= order[:status] %></li>
+    <li>
+      <%= form_with model: [order.user, order], url: update_status_owner_order_path(order), method: :patch, data: { remote: true } do |form| %>
+        <%= form.select :status, Order.statuses.keys, selected: order.status%>
+      <% end %>
+    </li>
     <li><%= order[:total] %></li>
     <li>Action</li>
   </ul>

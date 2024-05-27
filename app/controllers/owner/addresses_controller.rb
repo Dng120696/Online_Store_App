@@ -44,7 +44,7 @@ class Owner::AddressesController < ApplicationController
     @user = User.find(params[:customer_id])
   end
   def address_params
-    params.require(:address).permit(:city,:country,:firstname,:lastname,:zip,:email,:street,:address_type)
+    params.require(:address).permit(:city,:country,:state_or_province,:zip_code,:email,:street,:address_type)
   end
 
 end
