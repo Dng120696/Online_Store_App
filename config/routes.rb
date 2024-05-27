@@ -46,12 +46,16 @@ Rails.application.routes.draw do
     get 'card_payment',to: 'card_payment#card_payment'
 
     post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
+
+    #chatbot
+    resources :chatbots
+
+    get 'chatbot', to: 'chatbots#chatbot'
+    match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
+    get 'get_chat_messages', to: 'chatbots#get_chat_messages'
   end
 
-  get 'chatbot/create_customer', to: 'chatbot#create_customer'
-  post 'chatbot/create_customer', to: 'chatbot#create_customer'
-  get 'chatbot/send_message', to: 'chatbot#send_message'
-  post 'chatbot/send_message', to: 'chatbot#send_message'
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
