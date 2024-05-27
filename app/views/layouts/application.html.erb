@@ -10,9 +10,11 @@
     <%= javascript_importmap_tags %>
   </head>
   <body>
-    <% unless controller_name == 'devise/sessions' && action_name == 'new' || controller_name == 'devise/registrations' && (action_name == 'new' || action_name == 'create') %>
+    <% unless controller_name == 'devise/sessions' && action_name == 'new' || controller_name == 'devise/registrations' && (action_name == 'new' || action_name == 'create')  %>
       <% unless admin_signed_in?%>
+          <% unless devise_page?%>
         <%= render 'shared/header' %>
+          <% end %>
       <%end%>
     <% end %>
     <div class="absolute top-[100px] right-0 translate-x-0 translate-y-[-40%] w-[clamp(300px,90%,550px)] z-10">

@@ -7,8 +7,9 @@
       <% else %>
         <%= image_tag 'default_image.jpg', class: 'w-full h-60 object-cover mb-4' %>
       <% end %>
-      <h2 class="text-2xl font-extrabold mb-2"><%= product.name %></h2>
-      <p class="mb-4">Price: <%= number_to_currency(product.price) %></p>
+      <h5><%= number_to_currency(product.price) %></h5>
+      <span class="product-name"><%= product.name %></span>
+      
       <%= form_with model: CartItem.new, url: customer_client_cart_items_path , local: true do |form| %>
         <%= form.hidden_field :product_id, value: product.id %>
         <%= form.number_field :quantity, value: 1, min: 1, class: "mb-4 w-full border rounded p-2" %>
