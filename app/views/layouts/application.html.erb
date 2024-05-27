@@ -11,13 +11,12 @@
     <script src="https://kit.fontawesome.com/4a45b90c57.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <% unless controller_name == 'devise/sessions' && action_name == 'new' || controller_name == 'devise/registrations' && (action_name == 'new' || action_name == 'create')  %>
       <% unless admin_signed_in?%>
           <% unless devise_page?%>
-        <%= render 'shared/header' %>
+            <%= render 'shared/header' %>
           <% end %>
-      <%end%>
-    <% end %>
+      <% end %>
+
     <div class="absolute top-[100px] right-0 translate-x-0 translate-y-[-40%] w-[clamp(300px,90%,550px)] z-10">
       <% unless notice.blank? %>
         <div class="flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start show">
@@ -32,7 +31,19 @@
         </div>
       <% end %>
     </div>
+
+    <div class="w-[clamp(300px,90%,1300px)] mx-auto">
+      <%= yield %>
+    </div>
+
+<% unless admin_signed_in?%>
+          <% unless devise_page?%>
+             <%= render 'shared/footer' %>
+          <% end %>
+      <% end %>
+   
+
     <%= render 'layouts/modal', cart_items: @cart_items %>
-    <%= yield %>
+
   </body>
 </html>
