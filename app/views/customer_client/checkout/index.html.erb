@@ -1,6 +1,6 @@
-<div class='min-h-screen w-[clamp(300px,90%,1300px)] mx-auto flex items-center justify-center relative'>
+<div class='min-h-screen w-[clamp(300px,90%,1300px)] mx-auto flex  flex-col justify-center relative gap-10'>
   <% if flash[:error].present? %>
-    <div class='text-red-600 text-base my-4 absolute top-6 left-0'>
+    <div class='text-red-600 text-base pt-6'>
       <h2 class = 'text-xl text-gray-700' >The following errors prevented the address from being saved:</h2>
       <ul class='list-disc pl-8'>
         <% flash[:error].split(',').each do |error| %>
