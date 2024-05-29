@@ -22,15 +22,18 @@
 	@apply opacity-100;
 	transition: 300ms;
 }
-.cart_item_container::-webkit-scrollbar {
+.cart_item_container::-webkit-scrollbar,
+.product_items::-webkit-scrollbar {
   width: 12px;
 }
 
-.cart_item_container::-webkit-scrollbar-track {
+.cart_item_container::-webkit-scrollbar-track,
+.product_items::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.cart_item_container::-webkit-scrollbar-thumb {
+.cart_item_container::-webkit-scrollbar-thumb,
+.product_items::-webkit-scrollbar-thumb {
   @apply bg-gray-200;
   border-radius: 6px;
 }

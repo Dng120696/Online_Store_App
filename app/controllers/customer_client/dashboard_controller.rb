@@ -1,7 +1,7 @@
 class CustomerClient::DashboardController < ApplicationController
 
   def index
-    @products = Product.all
+    @products = Product.order("inventory_level DESC")
     @cart = current_user&.cart
     @cart_items  = @cart&.cart_items || []
     if @cart

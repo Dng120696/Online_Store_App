@@ -2,8 +2,11 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if params[:status].present?
-      @orders = current_user.orders.where(status: params[:status]).order(:id)
+    if  params[:status] == 'recent'
+      @orders = current_user.orders.where('created_at >= ?', 1.days.ago)
+
+    elsif params[:status].present?
+      @orders = current_user.orders.where(status: params[:status]).order(:id )
     else
       @orders = current_user.orders.order(:id)
     end
@@ -41,14 +44,20 @@ class CustomerClient::OrdersController < ApplicationController
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
 
     if @order.save
-          @cart.cart_items.each do |cart_item|
-        @order.order_items.create(
-          product: cart_item.product,
-          quantity: cart_item.quantity,
-          price: cart_item.product.price
-        )
-        Comment.create(order_id:@order[:id],body:order_comment)
-      end
+         @cart.cart_items.each do |cart_item|
+            @order.order_items.create(
+              product: cart_item.product,
+              quantity: cart_item.quantity,
+              price: cart_item.product.price
+            )
+        end
+        @order.order_items.each do |order_item|
+            order_item.product.update!(inventory_level:order_item.product.inventory_level - order_item.quantity )
+
+        end
+
+
+          Comment.create(order_id:@order[:id],body:order_comment)
           @cart.destroy
           session.delete(:amount)
           session.delete(:src_id)
