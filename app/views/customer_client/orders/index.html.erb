@@ -2,10 +2,10 @@
   <div class="grid grid-cols-5 pt-10 text-base font-semibold tracking-[1px] text-gray-600 text-center">
     <%= render 'status_tab'%>
   </div>
-  <h1 class="text-2xl mb-6  pt-10 border-b-[1px] border-b-gray-300 pb-4">Orders</h1>
+  <h1 class="text-2xl  pt-10 border-b-[1px] border-b-gray-300 pb-4">Orders</h1>
   <% if @orders&.present? %>
     <% @orders&.each do |order| %>
-      <div class="bg-white mb-6g border-b-[1px] border-b-gray-300 pb-4 ">
+      <div class="bg-white  border-b-[1px] border-b-gray-300 py-6 ">
         <div class = 'flex items-center justify-between'>
           <h2 class="text-lg font-normal">Order #<%= order.id %></h2>
           <p class="text-[12px] bg-[rgb(185,189,195)] opacity-90  py-1 px-2 rounded-sm  text-gray-100 uppercase font-thin tracking-[2px]"><strong>
