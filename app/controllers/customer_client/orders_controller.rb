@@ -2,13 +2,16 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = current_user.orders.includes(order_items: :product)
+    if params[:status].present?
+      @orders = current_user.orders.where(status: params[:status]).order(:id)
+    else
+      @orders = current_user.orders.order(:id)
+    end
+
   end
 
 # GET
   def confirmation
-    @cart_items = current_user&.cart&.cart_items || []
-    @total_amount = calculate_total_amount(@cart_items)
      @url = session[:checkout_url]
   end
 

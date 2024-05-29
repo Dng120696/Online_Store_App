@@ -45,10 +45,10 @@
   </div>
   <div>
     <div class='flex items-center'>
-      <%= f.label :comment, 'Order Comments', class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.label :body, 'Order Comments', class: 'block text-sm font-medium text-gray-700' %>
       <span class='text-[12px] text-gray-400'>(optional)</span>
     </div>
-    <%= f.text_area :comment, name: 'comment[comment]', class: 'block w-full p-2 border border-gray-400 rounded-md', placeholder: 'Your Comment' %>
+    <%= f.text_area :body, name: 'comment[body]', class: 'block w-full p-2 border border-gray-400 rounded-md', placeholder: 'Your Comment' %>
   </div>
   <%= f.submit 'Continue', class: 'mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md' %>
 <% end %>
