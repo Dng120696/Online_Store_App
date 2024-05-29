@@ -1,12 +1,11 @@
-<%= form_tag(process_customer_client_checkout_index_path) do %>
-  <label>
+<%= form_tag(process_customer_client_checkout_index_path, class: 'flex items-center gap-4 mb-6') do %>
+  <label class="payment-method flex items-center gap-2">
     <%= radio_button_tag :payment_method, 'gcash', payment_method == 'gcash', onchange: "this.form.submit()" %>
-    GCash
+    <%= image_tag "gcash_image.jpg", class: "w-[320px] h-[200px] object-cover cursor-pointer rounded-md" %>
   </label>
-  <br>
-  <label>
+  <label class="payment-method flex  items-center gap-2">
     <%= radio_button_tag :payment_method, 'card', payment_method == 'card', onchange: "this.form.submit()" %>
-    Card
+    <%= image_tag "card_image.png", class: "w-[320px] h-[200px] object-cover cursor-pointer rounded-md" %>
   </label>
 <% end %>
 <% if payment_method == 'gcash' %>

@@ -4,15 +4,15 @@
     <%= select_tag 'address_id', options_from_collection_for_select(current_user.addresses, 'id', 'full_address') + options_for_select([['Enter New Address', 'new']], 'new'), class: 'block w-full p-2 border border-gray-400 rounded-md', id: 'address-select' %>
   </div>
   <div id='new-address-form' class='mb-4'>
-    <div class='grid grid-cols-2 gap-4'>
-      <%= hidden_field_tag 'address[email]', current_user.email %>
-      <div>
-        <div class='flex items-center'>
-          <%= f.label :street, 'Street', class: 'block text-sm font-medium text-gray-700' %>
-          <span class='text-[12px] text-gray-400'>(required)</span>
-        </div>
-        <%= f.text_field :street, name: 'address[street]', class: 'block w-full p-2 border border-gray-400 rounded-md', placeholder: 'Enter your Street' %>
+    <%= hidden_field_tag 'address[email]', current_user.email %>
+    <div>
+      <div class='flex items-center'>
+        <%= f.label :street, 'Street', class: 'block text-sm font-medium text-gray-700' %>
+        <span class='text-[12px] text-gray-400'>(required)</span>
       </div>
+      <%= f.text_field :street, name: 'address[street]', class: 'block w-full p-2 border border-gray-400 rounded-md', placeholder: 'Enter your Street' %>
+    </div>
+    <div class='grid grid-cols-2 gap-4'>
       <div>
         <div class='flex items-center'>
           <%= f.label :city, 'City/Town', class: 'block text-sm font-medium text-gray-700' %>
