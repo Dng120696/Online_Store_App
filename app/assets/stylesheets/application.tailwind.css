@@ -41,6 +41,13 @@
 #state::placeholder,
 #user_balance::placeholder,
 #country::placeholder,
+#number::placeholder,
+#exp_month::placeholder,
+#exp_year::placeholder,
+#cvc::placeholder,
+#name::placeholder,
+#phone::placeholder,
+#email::placeholder,
 #comment::placeholder{
   @apply text-gray-400 text-base;
 }
