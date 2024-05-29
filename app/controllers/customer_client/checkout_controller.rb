@@ -40,7 +40,6 @@ class CustomerClient::CheckoutController < ApplicationController
         }
 
         payment_sources = client.create_payment_source(amount, 'gcash', success_url, failed_url, billing_details: payment_method_details)
-        p payment_sources
         @checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
         status = payment_sources["data"]["attributes"]["status"]
 
@@ -67,7 +66,6 @@ class CustomerClient::CheckoutController < ApplicationController
         client_key = intent_response['data']['attributes']['client_key']
         payment_method_id = payment_method_response['data']['id']
         attach_res = client.attach_payment_method_to_intent(payment_intent_id, client_key, payment_method_id, success_url)
-        p attach_res
 
         if attach_res["data"]["attributes"]["status"] == 'succeeded'
           redirect_to customer_client_success_path
@@ -87,7 +85,6 @@ class CustomerClient::CheckoutController < ApplicationController
   end
 
   def update_address
-    @payment_method = session[:payment_method]
     address_id = params[:address_id]
     session[:comment] = params[:comment][:body]
 
