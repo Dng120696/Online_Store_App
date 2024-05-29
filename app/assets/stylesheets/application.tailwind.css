@@ -35,6 +35,15 @@
   border-radius: 6px;
 }
 
+#street::placeholder,
+#city::placeholder,
+#zip_code::placeholder,
+#state::placeholder,
+#user_balance::placeholder,
+#country::placeholder,
+#comment::placeholder{
+  @apply text-gray-400 text-base;
+}
 h1 {
     margin-bottom: 1rem;
     font-size: 2.25rem; 

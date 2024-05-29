@@ -29,23 +29,21 @@ Rails.application.routes.draw do
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
+    resources :orders
+    resources :payments, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
+     post :update_address,to: 'checkout#update_address', on: :collection
     end
     resources :cart_items, only: [:create, :destroy] do
       patch 'update_quantity', to: 'cart_items#update_quantity'
     end
 
-    resources :orders
 
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'success', to: 'orders#success'
     get 'failed', to: 'orders#failed'
-    get 'gcash_payment',to: 'gcash_payment#gcash_payment'
-    get 'card_payment',to: 'card_payment#card_payment'
-
-    post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
 
     #chatbot
     resources :chatbots

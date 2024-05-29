@@ -15,10 +15,10 @@
     <div>
       <div class='pb-6'>
         <h1 class='text-3xl'>Shipping</h1>
-        <%= render 'shipping_form'%>
       </div>
       <div class='pt-6'>
         <h1 class='text-3xl'>Payment</h1>
+        <%= render 'payment' , payment_method: @payment_method %>
       </div>
       <div class='pt-6'>
         <h1 class='text-3xl'>Confirm</h1>
@@ -76,17 +76,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('turbo:load', function() {
-    const addressSelect = document.getElementById('address-select');
-    const newAddressForm = document.getElementById('new-address-form');
-
-    addressSelect.addEventListener('change', function() {
-      if (addressSelect.value === 'new') {
-        newAddressForm.classList.remove('hidden');
-      } else {
-        newAddressForm.classList.add('hidden');
-      }
-    });
-  });
-</script>

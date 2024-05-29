@@ -6,7 +6,7 @@ class CustomerClient::CartItemsController < ApplicationController
     @cart_item = @cart.cart_items.find_or_initialize_by(product_id: params[:cart_item][:product_id])
     @cart_item.quantity += params[:cart_item][:quantity].to_i
     if @cart_item.save
-      redirect_to customer_client_dashboard_index_path, notice: 'Product added to cart.'
+      redirect_to customer_client_cart_index_path, notice: 'Product added to cart.'
     else
       redirect_to products_path, alert: 'Unable to add product to cart.'
     end
