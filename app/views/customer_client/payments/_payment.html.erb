@@ -1,0 +1,16 @@
+<%= form_tag(process_customer_client_checkout_index_path) do %>
+  <label>
+    <%= radio_button_tag :payment_method, 'gcash', payment_method == 'gcash', onchange: "this.form.submit()" %>
+    GCash
+  </label>
+  <br>
+  <label>
+    <%= radio_button_tag :payment_method, 'card', payment_method == 'card', onchange: "this.form.submit()" %>
+    Card
+  </label>
+<% end %>
+<% if payment_method == 'gcash' %>
+  <%= render 'gcash_form' %>
+<% elsif payment_method == 'card' %>
+  <%= render 'card_form' %>
+<% end %>

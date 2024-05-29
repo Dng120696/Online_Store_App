@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
     resources :orders
-    resources :billing_payment, only: [:index]
+    resources :payments, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
@@ -44,10 +44,6 @@ Rails.application.routes.draw do
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'success', to: 'orders#success'
     get 'failed', to: 'orders#failed'
-    get 'gcash_payment',to: 'gcash_payment#gcash_payment'
-    get 'card_payment',to: 'card_payment#card_payment'
-
-    post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
 
     #chatbot
     resources :chatbots

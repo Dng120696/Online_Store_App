@@ -1,16 +1,15 @@
-<h2>Select Payment Method</h2>
 <%= form_tag(process_customer_client_checkout_index_path) do %>
   <label>
-    <%= radio_button_tag :payment_method, 'gcash', @payment_method == 'gcash', onchange: "this.form.submit()" %>
+    <%= radio_button_tag :payment_method, 'gcash', payment_method == 'gcash', onchange: "this.form.submit()" %>
     GCash
   </label>
   <br>
   <label>
-    <%= radio_button_tag :payment_method, 'card', @payment_method == 'card', onchange: "this.form.submit()" %>
+    <%= radio_button_tag :payment_method, 'card', payment_method == 'card', onchange: "this.form.submit()" %>
     Card
   </label>
 <% end %>
-<% if @payment_method == 'gcash' %>
+<% if payment_method == 'gcash' %>
   <h1>GCash Payment</h1>
   <p>Please enter your GCash payment details:</p>
   <%= form_tag(confirm_customer_client_checkout_index_path, method: :post) do %>
@@ -29,7 +28,7 @@
     <%= hidden_field_tag :payment_method, 'gcash' %>
     <%= submit_tag 'Confirm Payment' %>
   <% end %>
-<% elsif @payment_method == 'card' %>
+<% elsif payment_method == 'card' %>
   <h1>Card Payment</h1>
   <p>Please enter your card details:</p>
   <%= form_tag(confirm_customer_client_checkout_index_path, method: :post) do %>

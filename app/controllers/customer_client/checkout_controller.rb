@@ -2,14 +2,14 @@ class CustomerClient::CheckoutController < ApplicationController
   def index
     @cart_items = current_user&.cart&.cart_items || []
     @total_amount = calculate_total_amount(@cart_items)
+
   end
 
   # GET
   def process_checkout
     payment_method = params[:payment_method]
-    p payment_method
     session[:payment_method] = payment_method
-    redirect_to customer_client_billing_payment_index_path
+    redirect_to customer_client_payments_path
   end
 
   # POST
@@ -41,14 +41,15 @@ class CustomerClient::CheckoutController < ApplicationController
 
         payment_sources = client.create_payment_source(amount, 'gcash', success_url, failed_url, billing_details: payment_method_details)
         p payment_sources
-        checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
+        @checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
         status = payment_sources["data"]["attributes"]["status"]
 
         if status == "pending"
-          session[:checkout_url] = checkout_url
+          session[:checkout_url] =  @checkout_url
           session[:amount] = payment_sources["data"]["attributes"]["amount"]
           session[:src_id] = payment_sources["data"]["id"]
-          redirect_to customer_client_order_confirmation_path
+
+            redirect_to customer_client_order_confirmation_path
         end
 
       when 'card'
@@ -66,6 +67,8 @@ class CustomerClient::CheckoutController < ApplicationController
         client_key = intent_response['data']['attributes']['client_key']
         payment_method_id = payment_method_response['data']['id']
         attach_res = client.attach_payment_method_to_intent(payment_intent_id, client_key, payment_method_id, success_url)
+        p attach_res
+
         if attach_res["data"]["attributes"]["status"] == 'succeeded'
           redirect_to customer_client_success_path
         else
@@ -84,7 +87,7 @@ class CustomerClient::CheckoutController < ApplicationController
   end
 
   def update_address
-    p params
+    @payment_method = session[:payment_method]
     address_id = params[:address_id]
     session[:comment] = params[:comment][:body]
 
@@ -100,7 +103,7 @@ class CustomerClient::CheckoutController < ApplicationController
       session[:shipping_address_id] = address_id
     end
 
-    redirect_to customer_client_billing_payment_index_path
+    redirect_to customer_client_payments_path
   end
 
   private

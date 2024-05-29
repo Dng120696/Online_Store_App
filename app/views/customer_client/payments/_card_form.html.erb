@@ -1,0 +1,21 @@
+<p class="mb-4">Please enter your card details:</p>
+<%= form_tag(confirm_customer_client_checkout_index_path, method: :post, class: "space-y-4") do %>
+  <div>
+    <%= label_tag :number, 'Card Number', class: "block text-gray-700" %>
+    <%= text_field_tag :number, nil, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div>
+    <%= label_tag :exp_month, 'Expiration Month', class: "block text-gray-700" %>
+    <%= text_field_tag :exp_month, nil, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div>
+    <%= label_tag :exp_year, 'Expiration Year', class: "block text-gray-700" %>
+    <%= text_field_tag :exp_year, nil, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div>
+    <%= label_tag :cvc, 'CVC', class: "block text-gray-700" %>
+    <%= text_field_tag :cvc, nil, class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <%= hidden_field_tag :payment_method, 'card' %>
+  <%= submit_tag 'Confirm Payment', class: "w-full bg-blue-500 text-white p-2 rounded mt-4" %>
+<% end %>
