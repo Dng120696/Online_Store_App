@@ -2,7 +2,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   <% @products.each do |product| %>
     <div class="product border p-4 rounded-lg shadow-lg relative">
-      <div class="w-full h-60 relative">
+      <div class="w-full h-[300px] relative">
         <% if product.inventory_level.zero? %>
           <div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center rounded-lg">
             <span class="text-4xl text-white font-bold text-center">
@@ -13,9 +13,9 @@
           </div>
         <% end %>
         <% if product.image.attached? %>
-          <%= image_tag url_for(product.image), class: 'w-full h-full object-cover rounded-lg' %>
+          <%= image_tag url_for(product.image), class: 'w-full h-[300px] object-cover rounded-lg' %>
         <% else %>
-          <%= image_tag 'default_image.jpg', class: 'w-full h-full object-cover rounded-lg' %>
+          <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
         <% end %>
       </div>
       <h2 class="text-2xl font-extrabold mb-2 mt-4"><%= product.name %></h2>

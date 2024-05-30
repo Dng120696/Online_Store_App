@@ -34,7 +34,7 @@
           <div class="flex space-x-2">
             <%= link_to 'Show', owner_product_path(product), class: 'bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600' %>
             <%= link_to 'Edit', edit_owner_product_path(product), class: 'bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600' %>
-            <%= link_to 'Delete', owner_product_path(product), method: :delete, data: { confirm: 'Are you sure you want to delete this product?' }, class: 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' %>
+            <%= link_to 'Delete', owner_product_path(product), data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?' }, class: 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' %>
           </div>
         </li>
       <% end %>

@@ -1,23 +1,26 @@
-<%= form_with(model: category, local: true, url: url) do |form| %>
-  <% if category.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
-      <ul>
-        <% category.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+<%= form_with(model: category, local: true, url: url, class: "w-[clamp(300px,90%,600px)] mx-auto bg-white p-8 rounded-lg shadow-md") do |form| %>
+  <%= render 'shared/error', obj: category %>
+  
+  <div class="mb-6">
+    <%= form.label :title, class: "block text-gray-700 font-semibold mb-2" %>
+    <%= form.text_field :title, class: "w-full p-2 border border-gray-300 rounded" %>
   </div>
-
+  
+  <div class="mb-6">
+    <%= form.label :product_ids, 'Products', class: "block text-gray-700 font-semibold mb-2" %>
+    <div class="grid gap-2 grid-cols-2 md:grid-cols-4">
+      <% @products.each do |product| %>
+        <div class="flex items-center">
+          <%= check_box_tag "category[product_ids][]", product.id, category.product_ids.include?(product.id), id: "product_#{product.id}", class: "mr-2" %>
+          <%= label_tag "product_#{product.id}", product.name, class: "text-gray-700" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
   <%= form.hidden_field :admin_id, value: current_admin.id %>
-
+  
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Save Category', class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
   </div>
 <% end %>

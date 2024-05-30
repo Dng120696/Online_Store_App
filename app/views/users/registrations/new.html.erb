@@ -25,15 +25,8 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
-  <%= f.fields_for :addresses do |a| %>
+  <%= f.fields_for :address do |a| %>
     <%= a.hidden_field :id %>
-    <%= a.hidden_field :email, value: f.object.email %>
-    <!--
-    <div class="field">
-      <%= a.label :address_type %><br />
-      <%= a.select :address_type, Address.address_types.keys.map { |type| [type.humanize, type] } %>
-    </div>
-    -->
     <div class="field">
       <%= a.label :street, 'Street/Barangay' %><br />
       <%= a.text_field :street %>

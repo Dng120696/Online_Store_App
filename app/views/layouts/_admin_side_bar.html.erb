@@ -5,8 +5,9 @@
     </svg>
     <%= link_to 'Online Store App', owner_dashboard_index_path, class:"ml-2 font-semibold text-gray-600" %>
   </div>
+  <%= link_to 'Dashboard', owner_dashboard_index_path ,class: "py-3  font-semibold  #{request.path == owner_dashboard_index_path ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to 'Products', owner_products_path ,class: "py-3  font-semibold  #{request.path == owner_products_path ? 'bg-blue-600 text-white' : ''}" %>
-  <%= link_to 'Customerss', owner_customers_path,class: "py-3 font-semibold   #{request.path == owner_customers_path ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to 'Customers', owner_customers_path,class: "py-3 font-semibold   #{request.path == owner_customers_path ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to 'Orders', owner_orders_path,class: "py-3  font-semibold  #{request.path == owner_orders_path ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to 'Categories', owner_categories_path,class: "py-3 font-semibold   #{request.path == owner_categories_path ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to "Logout", destroy_admin_session_path, data: {

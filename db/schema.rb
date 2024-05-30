@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_27_162247) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_30_081231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,10 +45,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_27_162247) do
   create_table "addresses", force: :cascade do |t|
     t.string "city"
     t.string "country"
-    t.string "email"
     t.integer "zip_code"
     t.string "street"
-    t.string "address_type", default: "billing"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -137,13 +135,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_27_162247) do
     t.decimal "price"
     t.integer "weight", default: 1
     t.text "description"
-    t.integer "brand_id", default: 0
+    t.string "brand", default: "N/A"
     t.integer "inventory_level", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "admin_id", null: false
     t.string "product_type", default: "physical"
     t.index ["admin_id"], name: "index_products_on_admin_id"
+  end
+
+  create_table "shipping_addresses", force: :cascade do |t|
+    t.string "city"
+    t.string "country"
+    t.integer "zip_code"
+    t.string "street"
+    t.string "state_or_province"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_shipping_addresses_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -174,4 +184,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_27_162247) do
   add_foreign_key "product_categories", "categories"
   add_foreign_key "product_categories", "products"
   add_foreign_key "products", "admins"
+  add_foreign_key "shipping_addresses", "users"
 end

@@ -1,6 +1,7 @@
 class Owner::CategoriesController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :products, only: [:new,:edit,:create,:update]
 
   def index
     @categories = current_admin.categories
@@ -11,6 +12,7 @@ class Owner::CategoriesController < ApplicationController
 
   def new
     @category = current_admin.categories.build
+    @category.products.build
   end
 
   def create
@@ -43,8 +45,11 @@ class Owner::CategoriesController < ApplicationController
   def set_category
     @category = current_admin.categories.find(params[:id])
   end
+  def products
+    @products ||= Product.all
+  end
 
   def category_params
-    params.require(:category).permit(:title, :admin_id)
+    params.require(:category).permit(:title,product_ids:[])
   end
 end
