@@ -11,33 +11,78 @@
     <script src="https://kit.fontawesome.com/4a45b90c57.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <% unless controller_name == 'devise/sessions' && action_name == 'new' || controller_name == 'devise/registrations' && (action_name == 'new' || action_name == 'create') %>
-      <% unless admin_signed_in?%>
+    <% unless admin_signed_in? %>
+      <% unless devise_page? %>
         <%= render 'shared/header' %>
-      <%end%>
+      <% end %>
     <% end %>
     <div class="absolute <%= request.path ==  customer_client_dashboard_index_path ? 'top-[120px]' : 'bottom-[90px]' %> right-6  w-[clamp(300px,90%,350px)] z-[100]">
       <% unless notice.blank? %>
-        <div class="flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start show">
+        <div class="notice-container message-container flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start">
           <p class="notice"><%= notice %></p>
-          <button type="button" class="close-button" onclick="this.parentNode.style.display = 'none';">×</button>
+          <button type="button" class="close-button" onclick="fadeOut(this.parentNode);">×</button>
         </div>
       <% end %>
       <% unless alert.blank? %>
-        <div class="flex justify-between items-center bg-red-200 text-red-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start show">
+        <div class="alert-container message-container flex justify-between items-center bg-red-200 text-red-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start">
           <p class="alert"><%= alert %></p>
-          <button type="button" class="close-button" onclick="this.parentNode.style.display = 'none';">×</button>
+          <button type="button" class="close-button" onclick="fadeOut(this.parentNode);">×</button>
         </div>
       <% end %>
     </div>
-    <%if admin_signed_in?%>
-      <div class = 'grid grid-cols-[0.85fr,3fr] gap-6'>
+    <% if admin_signed_in? %>
+      <div class='grid grid-cols-[0.85fr,3fr] gap-6'>
         <%= render 'layouts/admin_side_bar' %>
-      <%end %>
-      <div class = 'w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center '>
+      <% end %>
+      <div class='w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center'>
         <%= yield %>
+        <% unless admin_signed_in? %>
+          <% unless devise_page? %>
+            <% if request.path == root_path %>
+              <%= render 'shared/footer' %>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
     <%= render 'layouts/modal', cart_items: @cart_items %>
+    <% if user_signed_in? %>
+      <script>
+        !function(w, d, s, ...args){
+          var div = d.createElement('div');
+          div.id = 'aichatbot';
+          d.body.appendChild(div);
+          w.chatbotConfig = args;
+          var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+          j.defer = true;
+          j.type = 'module';
+          j.src = 'https://aichatbot.sendbird.com/index.js';
+          f.parentNode.insertBefore(j, f);
+        }(window, document, 'script', '718E72C3-0E5A-4E35-B1C9-34CBF90924D2', 'onboarding_bot', {
+          apiHost: 'https://api-cf-us-3.sendbird.com',
+        });
+      </script>
+    <% end %>
+    <script>
+      document.addEventListener('turbo:load', function() {
+        const messageContainers = document.querySelectorAll('.message-container');
+
+        const fadeOut = (element) => {
+          if (element) {
+            element.classList.remove('fade-in');
+            element.classList.add('fade-out');
+            setTimeout(() => {
+              element.style.display = 'none';
+            }, 500);
+          }
+        };
+
+        messageContainers.forEach((container) => {
+          container.classList.add('fade-in');
+          setTimeout(() => fadeOut(container), 3000);
+        });
+      });
+    </script>
   </body>
 </html>

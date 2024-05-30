@@ -73,7 +73,9 @@
         </div>
       </div>
     <% else %>
-      <p>Your cart is empty.</p>
+      <div class='w-full h-[30vh] text-gray-400 flex items-center justify-center border'>
+        <p>No Items available</p>
+      </div>
     <% end %>
   </div>
 </div>
@@ -86,8 +88,8 @@
       let currentQuantity = parseInt(quantityField.textContent, 10);
       let newQuantity = currentQuantity + change;
 
-      if (newQuantity < 1) {
-        newQuantity = 1;
+      if (newQuantity <= 0) {
+        newQuantity = 0;
       }
 
       quantityField.textContent = newQuantity;

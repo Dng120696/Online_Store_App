@@ -29,7 +29,11 @@ class CustomerClient::CartItemsController < ApplicationController
   def update_quantity
     @cart_item = CartItem.find(params[:cart_item_id])
     cart_item_quantity = params[:cart_item][:quantity].to_i
-    if @cart_item.product.inventory_level > cart_item_quantity
+    p cart_item_quantity
+    if cart_item_quantity == 0
+        @cart_item.destroy
+        redirect_to customer_client_cart_index_path, alert: 'Product removed from cart.'
+    elsif @cart_item.product.inventory_level > cart_item_quantity
       @cart_item.update(quantity: cart_item_quantity)
       redirect_to customer_client_cart_index_path, notice: 'Quantity updated.'
     else
