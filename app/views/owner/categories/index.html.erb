@@ -1,17 +1,16 @@
-<div>
-  <h1>Categories</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Admin</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
+<div class="w-full">
+  <div class="w-full flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Categories</h1>
+    <%= link_to 'New Category', new_owner_category_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
+  </div>
+  <div>
+    <ul class="grid grid-cols-3 gap-4 items-center font-bold text-lg mb-2 pb-2 border-b-[2px] border-b-gray-600">
+      <li class="py-2 px-4">Title</li>
+      <li class="py-2 px-4">Description</li>
+      <li class="py-2 px-4">Action</li>
+    </ul>
+    <div class="space-y-4 categories h-[75vh] overflow-x-hidden">
       <%= render partial: 'category', collection: @categories %>
-    </tbody>
-  </table>
-  <br>
-  <%= link_to 'New Category', new_owner_category_path %>
+    </div>
+  </div>
 </div>

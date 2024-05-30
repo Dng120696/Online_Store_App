@@ -24,7 +24,10 @@ Rails.application.routes.draw do
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
-    resources :orders
+    resources :orders, only: [:index] do
+      get 'order_success', on: :collection
+      get 'order_failed', on: :collection
+    end
     resources :payments, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection

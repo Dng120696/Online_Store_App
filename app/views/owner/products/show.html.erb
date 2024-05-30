@@ -1,1 +1,54 @@
-show
+<div class="W-[clamp(300px,90%,1000px)] mx-auto min-h-screen flex items-center flex-col justify-center">
+  <div class="w-full flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold"><%= @product.name %></h1>
+    <%= link_to 'Edit', edit_owner_product_path(@product), class: 'bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600' %>
+  </div>
+  <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+    <!-- Product Image -->
+    <div class="flex justify-center items-center">
+      <% if @product.image.attached? %>
+        <%= image_tag url_for(@product.image), class: 'w-96 h-96 rounded-lg object-cover' %>
+      <% else %>
+        <%= image_tag 'default_image.jpg', class: 'w-96 h-96 rounded-lg object-cover' %>
+      <% end %>
+    </div>
+    <!-- Product Details -->
+    <div class="grid grid-cols-2 gap-6 justify-start">
+      <div>
+        <h2 class="text-xl font-bold text-gray-700">Product Details</h2>
+        <p class="text-gray-600"><%= @product.description %></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Stock Level</h3>
+        <p class="text-gray-600"><%= @product.inventory_level %></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Price</h3>
+        <p class="text-gray-600"><%= number_to_currency(@product.price) %></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Weight</h3>
+        <p class="text-gray-600"><%= @product.weight %> kg</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Type</h3>
+        <p class="text-gray-600"><%= @product.product_type %></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Brand</h3>
+        <p class="text-gray-600"><%= @product.brand %></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-gray-700">Categories</h3>
+        <p class="text-gray-600">
+          <% @product.categories.each do |category| %>
+            <span class="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-sm font-semibold mr-2"><%= category.title %></span>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="w-full mt-6 flex justify-start">
+    <%= link_to 'Back to Products', owner_products_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
+  </div>
+</div>

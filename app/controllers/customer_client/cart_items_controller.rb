@@ -28,8 +28,9 @@ class CustomerClient::CartItemsController < ApplicationController
 
   def update_quantity
     @cart_item = CartItem.find(params[:cart_item_id])
-    if @cart_item.product.inventory_level > @cart_item.quantity
-      @cart_item.update(quantity: params[:cart_item][:quantity].to_i)
+    cart_item_quantity = params[:cart_item][:quantity].to_i
+    if @cart_item.product.inventory_level > cart_item_quantity
+      @cart_item.update(quantity: cart_item_quantity)
       redirect_to customer_client_cart_index_path, notice: 'Quantity updated.'
     else
       redirect_to customer_client_cart_index_path, alert: 'Out of Stock.'

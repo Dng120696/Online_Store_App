@@ -20,12 +20,12 @@ class CustomerClient::CheckoutController < ApplicationController
 
     success_url = "http://127.0.0.1:3000/customer_client/success"
     failed_url = "http://127.0.0.1:3000/customer_client/failed"
-    user_address = current_user.addresses.find(session[:shipping_address_id])
-    p user_address
+    shipping_address = current_user.shipping_addresses.find(session[:shipping_address_id])
+    p shipping_address
     address_details = {
-      state: user_address&.state_or_province || 'Cagayan',
-      postal_code: user_address&.zip_code || 3519,
-      city: user_address&.city || 'Tuguegarao',
+      state: shipping_address&.state_or_province || 'Cagayan',
+      postal_code: shipping_address&.zip_code || 3519,
+      city: shipping_address&.city || 'Tuguegarao',
       country: 'PH'
     }
 
@@ -38,8 +38,10 @@ class CustomerClient::CheckoutController < ApplicationController
           phone: params[:phone],
           address: address_details
         }
+        p amount
 
         payment_sources = client.create_payment_source(amount, 'gcash', success_url, failed_url, billing_details: payment_method_details)
+        p payment_sources
         @checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
         status = payment_sources["data"]["attributes"]["status"]
 
@@ -89,7 +91,7 @@ class CustomerClient::CheckoutController < ApplicationController
     session[:comment] = params[:comment][:body]
 
     if address_id == 'new'
-      new_address = current_user.addresses.create(address_params)
+      new_address = current_user.shipping_addresses.create(address_params)
       if new_address.persisted?
         session[:shipping_address_id] = new_address.id
       else
@@ -106,7 +108,7 @@ class CustomerClient::CheckoutController < ApplicationController
   private
 
   def address_params
-    params.require(:address).permit(:street, :city, :state_or_province, :zip_code, :email, :country)
+    params.require(:shipping_address).permit(:street, :city, :state_or_province, :zip_code,:country)
   end
 
   def calculate_total_amount(cart_items)

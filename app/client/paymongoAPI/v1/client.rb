@@ -70,6 +70,8 @@ class PaymongoAPI::V1::Client
   end
 
   def create_payment_source(amount,type,success_url,failed_url,billing_details:{})
+
+  p amount * 100
     request(
       method: :post,
       endpoint: '/sources',

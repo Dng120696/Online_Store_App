@@ -4,7 +4,6 @@ class Owner::ProductsController < ApplicationController
   before_action :categories,only: [:new, :edit, :create, :update]
 
   def index
-    p current_admin.products
     @products = current_admin.products
   end
 
@@ -65,7 +64,7 @@ class Owner::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name,:image, :price, :weight, :description, :brand_id, :inventory_level, :product_type, category_ids: [])
+    params.require(:product).permit(:name,:image, :price, :weight, :description, :brand, :inventory_level, :product_type, category_ids: [])
   end
 
 end
