@@ -38,8 +38,10 @@ class CustomerClient::CheckoutController < ApplicationController
           phone: params[:phone],
           address: address_details
         }
+        p amount
 
         payment_sources = client.create_payment_source(amount, 'gcash', success_url, failed_url, billing_details: payment_method_details)
+        p payment_sources
         @checkout_url = payment_sources['data']['attributes']['redirect']['checkout_url']
         status = payment_sources["data"]["attributes"]["status"]
 

@@ -1,25 +1,24 @@
-<%= form_with(model: category, local: true, url: url, class: "w-[clamp(300px,90%,600px)] mx-auto bg-white p-8 rounded-lg shadow-md") do |form| %>
-  <%= render 'shared/error', obj: category %>
-  
+<%= form_with(model: @category, url: owner_categories_path,local: true,  class: "w-[clamp(300px,90%,600px)] mx-auto bg-white p-8 rounded-lg shadow-[0_5px_10px_rgba(0,0,0,0.25)]") do |form| %>
+  <%= render 'shared/error', obj:@category %>
   <div class="mb-6">
     <%= form.label :title, class: "block text-gray-700 font-semibold mb-2" %>
-    <%= form.text_field :title, class: "w-full p-2 border border-gray-300 rounded" %>
+    <%= form.text_field :title, class: "w-full p-2 border border-gray-300 rounded", placeholder: 'Enter Title' %>
   </div>
-  
+  <div class="mb-6">
+    <%= form.label :description, class: "block text-gray-700 font-semibold mb-2" %>
+    <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded", placeholder: "Enter description" %>
+  </div>
   <div class="mb-6">
     <%= form.label :product_ids, 'Products', class: "block text-gray-700 font-semibold mb-2" %>
-    <div class="grid gap-2 grid-cols-2 md:grid-cols-4">
+    <div class="grid gap-2 grid-cols-2">
       <% @products.each do |product| %>
-        <div class="flex items-center">
-          <%= check_box_tag "category[product_ids][]", product.id, category.product_ids.include?(product.id), id: "product_#{product.id}", class: "mr-2" %>
+        <div class="">
+          <%= check_box_tag "category[product_ids][]", product.id,@category.product_ids.include?(product.id), id: "product_#{product.id}", class: "mr-2" %>
           <%= label_tag "product_#{product.id}", product.name, class: "text-gray-700" %>
         </div>
       <% end %>
     </div>
   </div>
-  
-  <%= form.hidden_field :admin_id, value: current_admin.id %>
-  
   <div class="actions">
     <%= form.submit 'Save Category', class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
   </div>

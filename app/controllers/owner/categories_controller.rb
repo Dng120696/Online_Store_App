@@ -11,14 +11,15 @@ class Owner::CategoriesController < ApplicationController
   end
 
   def new
-    @category = current_admin.categories.build
-    @category.products.build
+    @category = current_admin.categories.new
+    @category.products.new
   end
 
   def create
-    @category = current_admin.categories.build(category_params)
+    @category = current_admin.categories.new(category_params)
+    puts "Category Params: #{category_params.inspect}"
     if @category.save
-      redirect_to owner_categories_path(@category), notice: "Category was successfully created"
+      redirect_to owner_categories_path, notice: "Category was successfully created"
     else
       render :new
     end
@@ -50,6 +51,6 @@ class Owner::CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:title,product_ids:[])
+    params.require(:category).permit(:title,:description,product_ids: [])
   end
 end

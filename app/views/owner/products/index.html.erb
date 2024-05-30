@@ -1,44 +1,47 @@
-<div class="W-[clamp(300px,90%,1000px)] mx-auto min-h-screen flex items-center flex-col justify-center
-">
+<div class="w-full">
   <div class=" w-full flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold">Products</h1>
     <%= link_to 'Add Product', new_owner_product_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
   </div>
-  <div>
-    <ul class="grid grid-cols-5 gap-4 items-center font-bold text-lg  mb-2 pb-2 border-b-[2px] border-b-gray-600 ">
+  <div class = 'w-full'>
+    <ul class="grid grid-cols-[1fr,1fr,1.25fr,1fr,1.25fr] items-center font-bold text-lg  mb-2 pb-2 border-b-[2px] border-b-gray-600 ">
       <li>Product Image</li>
       <li>Stock Level</li>
       <li>Product Name</li>
       <li>Price</li>
       <li>Action</li>
     </ul>
-    <ul class="space-y-4 product_items h-[75vh] overflow-x-hidden">
-      <% @products.reverse.each do |product| %>
-        <li class="grid grid-cols-5 gap-4 items-center py-3 pr-3 border-b-gray-300 border-b-[1px]">
-          <div id="image_container_<%= product.id %>" class="relative w-24 h-24">
-            <div class="image opacity-0 absolute inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center rounded-full cursor-pointer font-bold text-xs text-white transition-opacity duration-200 hover:opacity-100">
-              Upload Picture
+    <%if @products.present? %>
+      <ul class="space-y-4 product_items h-[75vh] overflow-x-hidden">
+        <% @products.reverse.each do |product| %>
+          <li class="grid grid-cols-[1fr,1fr,1.25fr,1fr,1.25fr] items-center py-3 pr-3 border-b-gray-300 border-b-[1px]">
+            <div id="image_container_<%= product.id %>" class="relative w-24 h-24">
+              <div class="image opacity-0 absolute inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center rounded-full cursor-pointer font-bold text-xs text-white transition-opacity duration-200 hover:opacity-100">
+                Upload Picture
+              </div>
+              <% if product.image.attached? %>
+                <%= image_tag url_for(product.image), class: 'w-full h-full rounded-full object-cover' %>
+              <% else %>
+                <%= image_tag 'default_image.jpg', class: 'w-full h-full rounded-full object-cover' %>
+              <% end %>
+              <%= form_with(url: upload_image_owner_product_path(product), method: :post, local: true, html: { multipart: true, id: "image_form_#{product.id}", class: 'hidden' }) do |f| %>
+                <%= f.file_field :image, onchange: "this.form.submit()" %>
+              <% end %>
             </div>
-            <% if product.image.attached? %>
-              <%= image_tag url_for(product.image), class: 'w-full h-full rounded-full object-cover' %>
-            <% else %>
-              <%= image_tag 'default_image.jpg', class: 'w-full h-full rounded-full object-cover' %>
-            <% end %>
-            <%= form_with(url: upload_image_owner_product_path(product), method: :post, local: true, html: { multipart: true, id: "image_form_#{product.id}", class: 'hidden' }) do |f| %>
-              <%= f.file_field :image, onchange: "this.form.submit()" %>
-            <% end %>
-          </div>
-          <div class=" text-gray-700 font-semibold"><%= product[:inventory_level] %></div>
-          <div class="text-gray-700 font-semibold"><%= product[:name] %></div>
-          <div class="text-gray-700 font-semibold"><%= number_to_currency(product[:price]) %></div>
-          <div class="flex space-x-2">
-            <%= link_to 'Show', owner_product_path(product), class: 'bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600' %>
-            <%= link_to 'Edit', edit_owner_product_path(product), class: 'bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600' %>
-            <%= link_to 'Delete', owner_product_path(product), data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?' }, class: 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+            <div class=" text-gray-700 font-semibold"><%= product[:inventory_level] %></div>
+            <div class="text-gray-700 font-semibold"><%= product[:name] %></div>
+            <div class="text-gray-700 font-semibold"><%= number_to_currency(product[:price]) %></div>
+            <div class="flex space-x-2">
+              <%= link_to 'Show', owner_product_path(product), class: 'bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600' %>
+              <%= link_to 'Edit', edit_owner_product_path(product), class: 'bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600' %>
+              <%= link_to 'Delete', owner_product_path(product), data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?' }, class: 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <%else%>
+      <%= render 'shared/no_available', description: 'No product available'%>
+    <%end%>
   </div>
 </div>
 <script>

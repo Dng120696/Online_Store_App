@@ -16,17 +16,17 @@
         <%= render 'shared/header' %>
       <%end%>
     <% end %>
-    <div class="absolute top-[150px] right-10 translate-x-0 translate-y-[-40%] w-[clamp(300px,90%,550px)] z-10">
+    <div class="absolute bottom-[18px] right-20 translate-x-0 translate-y-[-40%] w-[clamp(300px,90%,350px)] z-10">
       <% unless notice.blank? %>
-        <div class="flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start show">
+        <div class="notice-container message-container flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start">
           <p class="notice"><%= notice %></p>
-          <button type="button" class="close-button" onclick="this.parentNode.style.display = 'none';">×</button>
+          <button type="button" class="close-button" onclick="fadeOut(this.parentNode);">×</button>
         </div>
       <% end %>
       <% unless alert.blank? %>
-        <div class="flex justify-between items-center bg-red-200 text-red-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start show">
+        <div class="alert-container message-container flex justify-between items-center bg-red-200 text-red-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start">
           <p class="alert"><%= alert %></p>
-          <button type="button" class="close-button" onclick="this.parentNode.style.display = 'none';">×</button>
+          <button type="button" class="close-button" onclick="fadeOut(this.parentNode);">×</button>
         </div>
       <% end %>
     </div>
@@ -34,23 +34,48 @@
       <div class = 'grid grid-cols-[0.85fr,3fr] gap-6'>
         <%= render 'layouts/admin_side_bar' %>
       <%end %>
-      <%= yield %>
+      <div class = 'w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center'>
+        <%= yield %>
+      </div>
     </div>
     <%= render 'layouts/modal', cart_items: @cart_items %>
+    <% if user_signed_in?%>
+      <script>
+        !function(w, d, s, ...args){
+          var div = d.createElement('div');
+          div.id = 'aichatbot';
+          d.body.appendChild(div);
+          w.chatbotConfig = args;
+          var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+          j.defer = true;
+          j.type = 'module';
+          j.src = 'https://aichatbot.sendbird.com/index.js';
+          f.parentNode.insertBefore(j, f);
+        }(window, document, 'script', '718E72C3-0E5A-4E35-B1C9-34CBF90924D2', 'onboarding_bot', {
+          apiHost: 'https://api-cf-us-3.sendbird.com',
+        });
+      </script>
+    <%end%>
     <script>
-      !function(w, d, s, ...args){
-        var div = d.createElement('div');
-        div.id = 'aichatbot';
-        d.body.appendChild(div);
-        w.chatbotConfig = args;
-        var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s);
-        j.defer = true;
-        j.type = 'module';
-        j.src = 'https://aichatbot.sendbird.com/index.js';
-        f.parentNode.insertBefore(j, f);
-      }(window, document, 'script', '718E72C3-0E5A-4E35-B1C9-34CBF90924D2', 'onboarding_bot', {
-        apiHost: 'https://api-cf-us-3.sendbird.com',
+      document.addEventListener('DOMContentLoaded', function() {
+        const messageContainers = document.querySelectorAll('.message-container');
+
+
+        const fadeOut = (element) => {
+          if (element) {
+            element.classList.remove('fade-in');
+            element.classList.add('fade-out');
+            setTimeout(() => {
+              element.style.display = 'none';
+            }, 500);
+          }
+        };
+
+        messageContainers.forEach((container) => {
+          container.classList.add('fade-in');
+          setTimeout(() => fadeOut(container), 3000);
+        });
       });
     </script>
   </body>

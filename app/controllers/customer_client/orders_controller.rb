@@ -12,6 +12,9 @@ class CustomerClient::OrdersController < ApplicationController
     end
 
   end
+  def order_success; end
+
+  def order_failed;  end
 
 # GET
   def confirmation
@@ -65,7 +68,7 @@ class CustomerClient::OrdersController < ApplicationController
           session.delete(:payment_method)
           session.delete(:comment)
           session.delete(:shipping_address_id)
-          redirect_to customer_client_orders_path, notice: 'Order placed successfully.'
+          redirect_to order_success_customer_client_orders_path, notice: 'Order placed successfully.'
       end
     end
   end

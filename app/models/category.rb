@@ -3,6 +3,6 @@ class Category < ApplicationRecord
   has_many :product_categories, dependent: :destroy
   has_many :products, through: :product_categories
 
-  validates_presence_of :title
+  validates :title, presence: true, uniqueness: true
 
 end

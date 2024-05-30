@@ -1,33 +1,32 @@
-<div class="w-[clamp(300px,90%,1000px)] mx-auto min-h-screen flex items-center flex-col justify-center
-">
-  <div class = 'w-full'>
-    <div class=" w-full flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold">Customers</h1>
-      <%= link_to 'Create New Customer', new_owner_customer_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
-    </div>
-    <div >
-      <ul class="grid grid-cols-4 gap-4 items-center font-bold text-lg  mb-2 pb-2 border-b-[2px] border-b-gray-600 ">
-        <li class="py-2 px-4 ">Email</li>
-        <li class="py-2 px-4 ">First Name</li>
-        <li class="py-2 px-4 ">Last Name</li>
-        <li class="py-2 px-4 ">Action</li>
-      </ul>
-      <div class="space-y-4 customers h-[75vh] overflow-x-hidden">
+<div class="w-full">
+  <div class=" w-full flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Customers</h1>
+    <%= link_to 'Create New Customer', new_owner_customer_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
+  </div>
+  <div >
+    <ul class="grid grid-cols-4 gap-4 items-center font-bold text-lg  mb-2 pb-2 border-b-[2px] border-b-gray-600 ">
+      <li class="py-2 px-4 ">Email</li>
+      <li class="py-2 px-4 ">First Name</li>
+      <li class="py-2 px-4 ">Last Name</li>
+      <li class="py-2 px-4 ">Action</li>
+    </ul>
+    <div class="space-y-4 customers h-[75vh] overflow-x-hidden">
+      <% if @users.present? %>
         <% @users.each do |user| %>
           <ul class = 'grid grid-cols-4 gap-4 items-center py-3 pr-3 border-b-gray-300 border-b-[1px]'>
             <li class="py-2 px-4 "><%= user.email %></li>
             <li class="py-2 px-4 "><%= user.firstname %></li>
             <li class="py-2 px-4 "><%= user.lastname %></li>
-            <li class="py-2 px-4 ">
+            <li class="py-2">
               <%= link_to 'Show', owner_customer_path(user), class: 'bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600' %>
               <%= link_to 'Edit', edit_owner_customer_path(user), class: 'bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600' %>
               <%= link_to 'Delete', owner_customer_path(user), data: {turbo_method: :delete,turbo_confirm: 'Are you sure you want to delete this product?' }, class: 'bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600' %>
             </li>
           </ul>
         <% end %>
-      </div>
-    </tbody>
-  </table>
-</div>
-</div>
+      <%else%>
+        <%= render 'shared/no_available', description: 'No Customer'%>
+      <%end%>
+    </div>
+  </div>
 </div>
