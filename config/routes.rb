@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   devise_for :admins, controllers: {
     sessions: 'admins/sessions'
   }
-  root 'customer_client/dashboard#index'
+  # root 'customer_client/dashboard#index'
+  root 'application#landing_page'
 
   namespace :owner do
     resources :products do
