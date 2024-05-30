@@ -3,8 +3,8 @@
     "version": "2.2.13",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -179,
-    "scrollLeft": -106,
+    "scrollTop": -423,
+    "scrollLeft": -986,
     "zoomLevel": 0.8,
     "show": {
       "tableComment": true,
@@ -1269,12 +1269,12 @@
       },
       {
         "id": "3709f8f4-1e8a-44d1-8f7d-c76db249e689",
-        "name": "CheckOut",
+        "name": "Comment",
         "comment": "",
         "columns": [
           {
             "id": "988226d5-b59e-4cfd-a30f-c466116745b9",
-            "name": "checkout_id",
+            "name": "comment_id",
             "comment": "",
             "dataType": "integer",
             "default": "",
@@ -1289,7 +1289,30 @@
               "pk": true,
               "fk": false,
               "pfk": false,
-              "widthName": 71.3798828125,
+              "widthName": 72.80810546875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            }
+          },
+          {
+            "id": "856bce7c-857c-42bc-8bb8-0f7a0ad0eefc",
+            "name": "comment",
+            "comment": "",
+            "dataType": "string",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -1321,71 +1344,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 1305.9528,
-          "top": 433.8,
-          "zIndex": 3,
-          "widthName": 60,
-          "widthComment": 60
-        },
-        "visible": true
-      },
-      {
-        "id": "c83ea3d5-aa03-4677-b2f7-27a741c904b3",
-        "name": "Payment",
-        "comment": "",
-        "columns": [
-          {
-            "id": "e3580dd3-c77b-4d4f-8b93-74f3611f39f0",
-            "name": "payment_id",
-            "comment": "",
-            "dataType": "integer",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": true,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": true,
-              "fk": false,
-              "pfk": false,
-              "widthName": 69.208984375,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            }
-          },
-          {
-            "id": "7c13b7d9-4509-443f-915d-9fedab771789",
-            "name": "order_id",
-            "comment": "",
-            "dataType": "integer",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": true,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            }
-          }
-        ],
-        "ui": {
-          "active": false,
-          "left": 1305.639,
-          "top": 564.2445,
-          "zIndex": 2,
+          "left": 1368.4528,
+          "top": 465.05,
+          "zIndex": 31,
           "widthName": 60,
           "widthComment": 60
         },
@@ -1547,7 +1508,7 @@
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
           "x": 1175.1846054687499,
-          "y": 517.3974666666667,
+          "y": 529.9808,
           "direction": "right"
         },
         "end": {
@@ -1693,32 +1654,6 @@
         "visible": true
       },
       {
-        "id": "18cf8ae7-4b62-4442-abd6-cb1527d31f7d",
-        "identification": false,
-        "relationshipType": "OneOnly",
-        "startRelationshipType": "Dash",
-        "start": {
-          "tableId": "6a19ed37-dbae-4e04-8553-4b907ae171e9",
-          "columnIds": [
-            "8226bf50-8043-4974-94fd-3265a605d87b"
-          ],
-          "x": 1175.1846054687499,
-          "y": 618.0641333333334,
-          "direction": "right"
-        },
-        "end": {
-          "tableId": "c83ea3d5-aa03-4677-b2f7-27a741c904b3",
-          "columnIds": [
-            "7c13b7d9-4509-443f-915d-9fedab771789"
-          ],
-          "x": 1305.639,
-          "y": 619.2445,
-          "direction": "left"
-        },
-        "constraintName": "fk_order_to_payment",
-        "visible": true
-      },
-      {
         "id": "16db5179-5b3e-4079-8098-565346593430",
         "identification": false,
         "relationshipType": "OneOnly",
@@ -1729,7 +1664,7 @@
             "8226bf50-8043-4974-94fd-3265a605d87b"
           ],
           "x": 1175.1846054687499,
-          "y": 567.7308,
+          "y": 605.4808,
           "direction": "right"
         },
         "end": {
@@ -1737,8 +1672,8 @@
           "columnIds": [
             "02c6a372-3b9f-4a88-a216-8131e7b80819"
           ],
-          "x": 1305.9528,
-          "y": 488.8,
+          "x": 1368.4528,
+          "y": 530.3,
           "direction": "left"
         },
         "constraintName": "fk_order_to_checkout",

@@ -1,32 +1,50 @@
-<p class = 'notice absolute right-0 top-0 w-[300px] bg-green-200 text-green-900 px-4 py-3 rounded-md opacity-0 transition-[opacity 600ms]' ></p>
-<h1>Order List</h1>
-<ul class='grid grid-cols-6'>
-  <li>Date</li>
-  <li>Order ID</li>
-  <li>Customer</li>
-  <li>Status</li>
-  <li>Total</li>
-  <li>Action</li>
-</ul>
-<% @orders.each do |order| %>
+<div>
+  <p class = 'notice absolute right-0 top-0 w-[300px] bg-green-200 text-green-900 px-4 py-3 rounded-md opacity-0 transition-[opacity 600ms]' ></p>
+  <h1>Order List</h1>
   <ul class='grid grid-cols-6'>
-    <% order_date = order[:created_at] + 8.hours %>
-    <li><%= order_date.strftime("%B %d, %Y") %></li>
-    <li><%= order[:id] %></li>
-    <li>
-      <% if order.user&.firstname && order.user&.lastname %>
-        <%= order.user&.firstname %>
-        <%= order.user&.lastname %>
-      <% else %>
-        Patrick Nebab
-      <% end %>
-    </li>
-    <li>
-      <%= form_with model: order, url: update_status_owner_order_path(order), method: :patch, data: { remote: true } do |form| %>
-        <%= form.select :status, Order.statuses.keys, selected: order.status %>
-      <% end %>
+    <li>Date</li>
+    <li>Order ID</li>
+    <li>Customer</li>
+    <li>Status</li>
+    <li>Total</li>
+    <li>Action</li>
+  </ul>
+  <% @orders.each do |order| %>
+    <ul id = "order_container_<%=order.id%>" class='grid grid-cols-6'>
+      <% order_date = order[:created_at] + 8.hours %>
+      <li><%= order_date.strftime("%B %d, %Y") %></li>
+      <li><%= order[:id] %></li>
+      <li>
+        <% if order.user&.firstname && order.user&.lastname %>
+          <%= order.user&.firstname %>
+          <%= order.user&.lastname %>
+        <% else %>
+          Patrick Nebab
+        <% end %>
+      </li>
+      <li>
+        <%= form_with model: order, url: owner_order_path(order), method: :patch, data: { remote: true }, id: "order_form_#{order.id}" do |form| %>
+          <%= form.select :status, Order.statuses.keys, selected: order.status %>
+        <% end %>
+      </li>
     </li>
     <li><%= order[:total] %></li>
     <li>Action</li>
   </ul>
 <% end %>
+</div>
+<script>
+  document.addEventListener('turbo:load', function() {
+    const orderContainers = document.querySelectorAll('[id^=order_container_]');
+
+    orderContainers.forEach(container => {
+      const orderId = container.id.split('_')[2];
+      const profileForm = document.getElementById(`order_form_${orderId}`);
+      const selectElement = profileForm.querySelector('select[name="order[status]"]');
+
+      selectElement.addEventListener('change', function() {
+        this.form.submit();
+        });
+      });
+  });
+</script>

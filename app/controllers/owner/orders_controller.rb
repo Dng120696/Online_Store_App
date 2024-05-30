@@ -2,20 +2,18 @@ class Owner::OrdersController < ApplicationController
 
   def index
       puts params.inspect
-      @orders = Order.includes(order_items: :product).all
+      @orders = Order.includes(order_items: :product).order(:id)
 
   end
 
 
-  def update_status
+  def update
     @order = Order.find(params[:id])
-
     if @order.update(order_params)
-      render json: { message: 'Order status updated successfully' }, status: :ok
-    else
-      # Log errors for debugging
-      Rails.logger.error @order.errors.full_messages.join(', ')
-      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+        flash[:notice] = "Order status updated successfully!"
+
+        logger.info "Order ##{@order.id} status updated via AJAX request."
+        redirect_to owner_orders_path
     end
   end
 
