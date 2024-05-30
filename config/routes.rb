@@ -15,15 +15,9 @@ Rails.application.routes.draw do
     resources :customers do
       resources :addresses
     end
-    resources :orders,only: [:index] do
-      patch 'update_status', on: :member
-    end
+    resources :orders,only: [:index,:update]
     resources :categories
     resources :dashboard, only: [:index]
-
-
-    get 'search_user', to: 'orders#search_user'
-
   end
 
   namespace :customer_client do

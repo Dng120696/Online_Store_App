@@ -1,18 +1,17 @@
-<h1>Categories</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Admin</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'category', collection: @categories %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Category', new_owner_category_path %>
+<div>
+  <h1>Categories</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Admin</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'category', collection: @categories %>
+    </tbody>
+  </table>
+  <br>
+  <%= link_to 'New Category', new_owner_category_path %>
+</div>

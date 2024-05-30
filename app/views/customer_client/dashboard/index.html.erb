@@ -1,18 +1,29 @@
-<h1>All Products</h1>
+<h1 class="text-3xl font-bold mb-6">All Products</h1>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   <% @products.each do |product| %>
-    <div class="product border p-4 rounded-lg shadow-lg">
-      <% if product.image.attached? %>
-        <%= image_tag url_for(product.image), class: 'w-full h-60 object-cover mb-4' %>
-      <% else %>
-        <%= image_tag 'default_image.jpg', class: 'w-full h-60 object-cover mb-4' %>
-      <% end %>
-      <h2 class="text-2xl font-extrabold mb-2"><%= product.name %></h2>
+    <div class="product border p-4 rounded-lg shadow-lg relative">
+      <div class="w-full h-60 relative">
+        <% if product.inventory_level.zero? %>
+          <div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center rounded-lg">
+            <span class="text-4xl text-white font-bold text-center">
+              OUT<br>
+              OF<br>
+              STOCK
+            </span>
+          </div>
+        <% end %>
+        <% if product.image.attached? %>
+          <%= image_tag url_for(product.image), class: 'w-full h-full object-cover rounded-lg' %>
+        <% else %>
+          <%= image_tag 'default_image.jpg', class: 'w-full h-full object-cover rounded-lg' %>
+        <% end %>
+      </div>
+      <h2 class="text-2xl font-extrabold mb-2 mt-4"><%= product.name %></h2>
       <p class="mb-4">Price: <%= number_to_currency(product.price) %></p>
-      <%= form_with model: CartItem.new, url: customer_client_cart_items_path , local: true do |form| %>
+      <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true do |form| %>
         <%= form.hidden_field :product_id, value: product.id %>
         <%= form.number_field :quantity, value: 1, min: 1, class: "mb-4 w-full border rounded p-2" %>
-        <%= form.submit "Add to Cart", class: "w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700" %>
+        <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 px-4 rounded #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
       <% end %>
     </div>
   <% end %>
