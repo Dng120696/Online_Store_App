@@ -20,11 +20,12 @@ Rails.application.routes.draw do
     end
     resources :categories
     resources :dashboard, only: [:index]
-
-
     get 'search_user', to: 'orders#search_user'
-
+    resources :registrations, only: [:index] do
+    post 'approve', on: :member 
+    end
   end
+
 
   namespace :customer_client do
     resources :dashboard, only: [:index]
