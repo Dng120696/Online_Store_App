@@ -2,11 +2,22 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
+     current_user.orders.where.not(status: :cancelled).each do |order|
+      if order.status == 'pending'
+        p order.status
+        if order.created_at <= 12.hours.ago &&  order.created_at >= 24.hours.ago
+          order.update(status: :shipped)
+        elsif order.created_at <= 24.hours.ago
+          order.update(status: :completed)
+        end
+      end
+
+    end
     if  params[:status] == 'recent'
       @orders = current_user.orders.where('created_at >= ?', 12.hours.ago).where.not(status: :cancelled)
 
     elsif params[:status].present?
-      @orders = current_user.orders.where(status: params[:status]).order(:id )
+      @orders = current_user.orders.where(status: params[:status]).order(:id)
     else
       @orders = current_user.orders.order(:id)
     end
