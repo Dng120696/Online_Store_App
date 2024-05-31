@@ -6,8 +6,7 @@ class CustomerClient::RefundOrderController < ApplicationController
     amount = params[:amount]
     reason = params[:reason]
     notes = params[:notes]
-    refund_payment = client.refund_payment(amount,notes,reason,@order.payment_id)
-
+    client.refund_payment(amount,notes,reason,@order.payment_id)
 
     if @order.update(status: :cancelled)
        redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled  successfully'
