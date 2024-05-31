@@ -11,6 +11,19 @@
 }
 
 */
+.message-container {
+  opacity: 0;
+  transition: opacity 600ms ease-in-out;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
 .log_in {
   @apply pt-10
 }
@@ -22,6 +35,51 @@
 	@apply opacity-100;
 	transition: 300ms;
 }
+.cart_item_container::-webkit-scrollbar,
+.customers::-webkit-scrollbar,
+.product_items::-webkit-scrollbar {
+  width: 12px;
+}
+
+.cart_item_container::-webkit-scrollbar-track,
+.customers::-webkit-scrollbar-track,
+.product_items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart_item_container::-webkit-scrollbar-thumb,
+.customers::-webkit-scrollbar-thumb,
+.product_items::-webkit-scrollbar-thumb {
+  @apply bg-gray-200;
+  border-radius: 6px;
+}
+
+
+.bg-blue
+{
+  background-color: #3056D3;
+}
+
+#street::placeholder,
+#city::placeholder,
+#zip_code::placeholder,
+#state::placeholder,
+#user_balance::placeholder,
+#country::placeholder,
+#number::placeholder,
+#exp_month::placeholder,
+#exp_year::placeholder,
+#cvc::placeholder,
+#name::placeholder,
+#phone::placeholder,
+#email::placeholder,
+#product_name::placeholder,
+#product_price::placeholder,
+#product_description::placeholder,
+#comment::placeholder{
+  @apply text-gray-400 text-base;
+}
+
 h1 {
     margin-bottom: 1rem;
     font-size: 2.25rem; 
@@ -39,22 +97,55 @@ h2 {
   color: #1a202c;
 }
 
-.price-tag {
-  margin-bottom: 10px; 
-  display: block; 
+h5 {
+  margin-bottom: 0.6rem; 
+  display: block;
   font-size: 1.125rem; 
+  font-weight: 600; 
+  color: #333333; 
+}
+
+.product-name {
+  margin-bottom: 3px;
+  display: block;
+  font-size: 1.125rem;
   font-weight: 600; 
   color: #1f2937; 
 }
 
-@media (min-width: 768px) {
-    h1.custom-heading {
-        font-size: 3rem; 
-    }
+.product-name:hover {
+  color: #3b82f6; 
+}
+
+
+
+@media (min-width: 1280px) {
+  .product-name {
+    font-size: 1.25rem; 
+  }
 }
 
 @media (min-width: 1024px) {
-    h1{
-        font-size: 3.75rem; 
-    }
+  h1{
+      font-size: 3.75rem; 
+  }
+
+  .product-name {
+    font-size: 1.125rem;
+  }
 }
+
+@media (min-width: 768px) {
+  h1{
+      font-size: 3rem; 
+  }
+}
+
+
+@media (max-width: 639px) {
+  .product-name {
+    font-size: 1.25rem;
+  }
+}
+
+

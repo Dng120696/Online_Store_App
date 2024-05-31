@@ -2,16 +2,18 @@ class Owner::OrdersController < ApplicationController
 
   def index
       puts params.inspect
-      @orders = Order.includes(order_items: :product).all
+      @orders = Order.includes(order_items: :product).order(:id)
 
   end
 
 
-  def update_status
+  def update
     @order = Order.find(params[:id])
     if @order.update(order_params)
-      redirect_to owner_orders_path, notice: 'Order was successfully updated'
+        flash[:notice] = "Order status updated successfully!"
 
+        logger.info "Order ##{@order.id} status updated via AJAX request."
+        redirect_to owner_orders_path
     end
   end
 

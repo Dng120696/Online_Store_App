@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   devise_for :admins, controllers: {
     sessions: 'admins/sessions'
   }
-  root 'customer_client/dashboard#index'
+  # root 'customer_client/dashboard#index'
+  root 'application#landing_page'
 
   namespace :owner do
     resources :products do
@@ -15,11 +16,10 @@ Rails.application.routes.draw do
     resources :customers do
       resources :addresses
     end
-    resources :orders,only: [:index] do
-      patch 'update_status', on: :member
-    end
+    resources :orders,only: [:index,:update]
     resources :categories
     resources :dashboard, only: [:index]
+
     get 'search_user', to: 'orders#search_user'
     resources :registrations, only: [:index] do
     post 'approve', on: :member 
@@ -30,27 +30,34 @@ Rails.application.routes.draw do
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
+    resources :orders, only: [:index] do
+      get 'order_success', on: :collection
+      get 'order_failed', on: :collection
+    end
+    resources :payments, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
+     post :update_address,to: 'checkout#update_address', on: :collection
     end
-    resources :cart_items, only: [:create, :destroy]
+    resources :cart_items, only: [:create, :destroy] do
+      patch 'update_quantity', to: 'cart_items#update_quantity'
+    end
 
-    resources :orders
 
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'success', to: 'orders#success'
     get 'failed', to: 'orders#failed'
-    get 'gcash_payment',to: 'gcash_payment#gcash_payment'
-    get 'card_payment',to: 'card_payment#card_payment'
 
-    post '/webhooks/paymongo_webhook', to: 'webhooks#paymongo_webhook'
+    #chatbot
+    resources :chatbots
+
+    get 'chatbot', to: 'chatbots#chatbot'
+    match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
+    get 'get_chat_messages', to: 'chatbots#get_chat_messages'
   end
 
-  get 'chatbot/create_customer', to: 'chatbot#create_customer'
-  post 'chatbot/create_customer', to: 'chatbot#create_customer'
-  get 'chatbot/send_message', to: 'chatbot#send_message'
-  post 'chatbot/send_message', to: 'chatbot#send_message'
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

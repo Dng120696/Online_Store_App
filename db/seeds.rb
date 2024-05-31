@@ -11,12 +11,11 @@
 Admin.create(firstname: 'Patrick',lastname: 'Nebab', email: 'admin@admin.com',password:'password123')
 admin = Admin.first
 User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123',
- addresses_attributes: [ {
-  email:'user@user.com',
+ address_attributes:  {
   street: '123 Tugue Street',
   city: 'Tuguegarao',
   state_or_province: 'Cagayan',
   country: 'Philippines',
   zip_code: '3519'
-}])
-admin.categories.create(title:"Shop All")
+})
+admin.categories.create(title:"Shop All", description: 'All products available')

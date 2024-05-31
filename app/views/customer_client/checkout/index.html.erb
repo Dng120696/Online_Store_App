@@ -1,41 +1,94 @@
-<h1>Checkout</h1>
-<% if @cart_items.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cart_items.each do |item| %>
-        <tr>
-          <td><%= item.product.name %></td>
-          <td><%= item.quantity %></td>
-          <td><%= number_to_currency(item.product.price) %></td>
-          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
-        </tr>
+<div class='min-h-screen w-[clamp(300px,90%,1300px)] mx-auto flex flex-col justify-center relative gap-10'>
+  <div class = 'w-full pt-32'>
+    <div id="flash-messages">
+      <% if flash[:error].present? %>
+        <div class='text-red-600 text-base pt-6'>
+          <h2 class='text-xl text-gray-700'>The following errors prevented the address from being saved:</h2>
+          <ul class='list-disc pl-8'>
+            <% flash[:error].split(',').each do |error| %>
+              <li><%= error.strip %></li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-  <p>Total: <%= number_to_currency(@total_amount) %></p>
-  <h2>Select Payment Method</h2>
-  <%= form_tag(process_customer_client_checkout_index_path) do %>
-    <label>
-      <%= radio_button_tag :payment_method, 'gcash' %>
-      GCash
-    </label>
-    <br>
-    <label>
-      <%= radio_button_tag :payment_method, 'card' %>
-      Card
-    </label>
-    <br>
-    <%= submit_tag 'Proceed to Payment' %>
-  <% end %>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
+    </div>
+    <div class='w-full grid grid-cols-2 justify-between gap-16 py-6'>
+      <div>
+        <div class='pb-6'>
+          <h1 class='text-3xl'>Shipping</h1>
+          <%= render 'shipping_form'%>
+        </div>
+        <div class='pt-6'>
+          <h1 class='text-3xl'>Payment</h1>
+        </div>
+        <div class='pt-6'>
+          <h1 class='text-3xl'>Confirm</h1>
+        </div>
+      </div>
+      <!-- Order Summary Section -->
+      <div class='w-[400px] mx-auto overflow-hidden'>
+        <div class='p-6 border-[1px] border-gray-400 rounded-md shadow'>
+          <h3 class='flex items-center justify-between gap-4 py-3 border-b-[1px] border-b-gray-300'>
+            <span class='font-bold text-lg'>Order Summary</span>
+            <span class='text-sm'>
+              <%= link_to 'Edit Cart', customer_client_cart_index_path, class: 'text-blue-600' %>
+            </span>
+          </h3>
+          <div class='border-b-gray-300 border-b-[1px] py-2'>
+            <% if @cart_items.any? %>
+              <% @cart_items.each do |item| %>
+                <ul class='flex items-center justify-between py-3'>
+                  <li>
+                    <% if item.product.image.attached? %>
+                      <%= image_tag url_for(item.product.image), class: 'w-20 h-20 object-cover rounded-md' %>
+                    <% else %>
+                      <%= image_tag 'default_image.jpg', class: 'w-20 h-20 object-cover rounded-md' %>
+                    <% end %>
+                  </li>
+                  <li class='flex flex-col text-gray-600'>
+                    <span><%= item.product.name %></span>
+                    <p>
+                      <span><%= item.quantity %></span> x
+                      <span><%= number_to_currency(item.product.price) %></span>
+                    </p>
+                  </li>
+                  <li><%= number_to_currency(item.product.price * item.quantity) %></li>
+                </ul>
+              <% end %>
+            <% else %>
+              <p>Your cart is empty.</p>
+            <% end %>
+          </div>
+          <ul class='border-b-gray-300 border-b-[1px]'>
+            <li class='flex items-center justify-between py-3'>
+              <span>Subtotal</span>
+              <span><%= number_to_currency(@total_amount) %></span>
+            </li>
+            <li class='flex items-center justify-between py-3'>
+              <span>Tax</span>
+              <span>$ 0.00</span>
+            </li>
+          </ul>
+          <p class='flex items-center justify-between py-3'>
+            <span>Total</span>
+            <span class='text-xl font-bold'><%= number_to_currency(@total_amount) %></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('turbo:load', function() {
+    const addressSelect = document.getElementById('address-select');
+    const newAddressForm = document.getElementById('new-address-form');
+
+    addressSelect.addEventListener('change', function() {
+      if (addressSelect.value === 'new') {
+        newAddressForm.classList.remove('hidden');
+      } else {
+        newAddressForm.classList.add('hidden');
+      }
+    });
+  });
+</script>

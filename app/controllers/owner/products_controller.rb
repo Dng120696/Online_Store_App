@@ -1,10 +1,9 @@
 class Owner::ProductsController < ApplicationController
   before_action :authenticate_admin!
   before_action :find_product,only: [:show,:edit,:update,:destroy,:upload_image]
-  before_action :categories,only: [:new,:edit, :update]
+  before_action :categories,only: [:new, :edit, :create, :update]
 
   def index
-    p current_admin.products
     @products = current_admin.products
   end
 
@@ -20,6 +19,11 @@ class Owner::ProductsController < ApplicationController
     @product = current_admin.products.new(product_params)
     @product.category_ids.reject!(&:blank?)
     if @product.save
+      params[:product][:category_ids].each do |category_id|
+        unless category_id.blank?
+          @product.product_categories.create(category_id: category_id)
+        end
+      end
       redirect_to owner_products_path, notice: 'Product was successfully created.'
     else
       render :new
@@ -60,7 +64,7 @@ class Owner::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name,:image, :price, :weight, :description, :brand_id, :inventory_level, :product_type, category_ids: [])
+    params.require(:product).permit(:name,:image, :price, :weight, :description, :brand, :inventory_level, :product_type, category_ids: [])
   end
 
 end

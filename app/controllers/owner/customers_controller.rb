@@ -6,17 +6,18 @@ class Owner::CustomersController < ApplicationController
       @users =  User.all
   end
   def edit
-   @addresses = @user.addresses
-   p @addresses
+   @address = @user.address
 
   end
   def show; end
   def new
     @user = User.new
+    @user.build_address
   end
 
   def create
     @user = User.new(user_params)
+    @user.password = "password123"
     if @user.save
       UserMailer.approved_email(@user).deliver_later
       redirect_to new_owner_customer_address_path(@user)
@@ -44,7 +45,7 @@ class Owner::CustomersController < ApplicationController
   end
 
   def user_params
-      params.require(:user).permit(:firstname, :lastname, :email, :password)
+      params.require(:user).permit(:firstname, :lastname, :email, :password,address_attributes:[:id, :street, :city, :country, :zip_code,:state_or_province, :_destroy])
   end
 
 end

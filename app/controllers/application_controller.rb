@@ -6,7 +6,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:firstname, :lastname])
   end
 
-
+  def landing_page
+  end
+  
   def set_cart
     if user_signed_in?
       @cart = current_user.cart

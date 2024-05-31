@@ -1,31 +1,55 @@
-<h1>Order List</h1>
-<ul class='grid grid-cols-6'>
-  <li>Date</li>
-  <li>Order ID</li>
-  <li>Customer</li>
-  <li>Status</li>
-  <li>Total</li>
-  <li>Action</li>
-</ul>
-<% @orders.each do |order| %>
-  <ul class='grid grid-cols-6'>
-    <% order_date = order[:created_at] + 8.hours %>
-    <li><%= order_date.strftime("%B %d, %Y") %></li>
-    <li><%= order[:id] %></li>
-    <li>
-      <% if order.user&.firstname || order.user&.lastname %>
-        <%= order.user&.firstname %>
-        <%= order.user&.lastname %>
-      <% else %>
-        Patrick Nebab
-      <% end %>
-    </li>
-    <li>
-      <%= form_with model: [order.user, order], url: update_status_owner_order_path(order), method: :patch, data: { remote: true } do |form| %>
-        <%= form.select :status, Order.statuses.keys, selected: order.status%>
-      <% end %>
-    </li>
-    <li><%= order[:total] %></li>
-    <li>Action</li>
-  </ul>
-<% end %>
+<div class="w-full">
+  <div class="w-full flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Order List</h1>
+  </div>
+  <div>
+    <ul class="grid grid-cols-5 gap-4 items-center font-bold text-lg mb-2 pb-2 border-b-2 border-b-gray-600">
+      <li class="py-2 px-4">Date</li>
+      <li class="py-2 px-4">Order ID</li>
+      <li class="py-2 px-4">Customer</li>
+      <li class="py-2 px-4">Status</li>
+      <li class="py-2 px-4">Total</li>
+    </ul>
+    <div class="space-y-4 orders h-[75vh] overflow-x-hidden">
+      <% if @orders.present?%>
+        <% @orders.each do |order| %>
+          <ul id="order_container_<%= order.id %>" class="grid grid-cols-5 gap-4 items-center py-3 pr-3 border-b-[1px] border-b-gray-300">
+            <% order_date = order[:created_at] + 8.hours %>
+            <li class="py-2 px-4"><%= order_date.strftime("%B %d, %Y") %></li>
+            <li class="py-2 px-4"><%= order[:id] %></li>
+            <li class="py-2 px-4">
+              <% if order.user&.firstname && order.user&.lastname %>
+                <%= order.user.firstname %> <%= order.user.lastname %>
+              <% else %>
+                Patrick Nebab
+              <% end %>
+            </li>
+            <li class="py-2 px-4">
+              <%= form_with model: order, url: owner_order_path(order), method: :patch, data: { remote: true }, id: "order_form_#{order.id}" do |form| %>
+                <%= form.select :status, Order.statuses.keys, selected: order.status, class: "w-full p-2 border border-gray-300 rounded" %>
+              <% end %>
+            </li>
+            <li class="py-2 px-4"><%= number_to_currency(order[:total]) %></li>
+          </ul>
+        <% end %>
+      <%else%>
+        <%= render 'shared/no_available', description: 'No product available'%>
+      <%end %>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('turbo:load', function() {
+    const orderContainers = document.querySelectorAll('[id^=order_container_]');
+
+    orderContainers.forEach(container => {
+      const orderId = container.id.split('_')[2];
+      const profileForm = document.getElementById(`order_form_${orderId}`);
+      const selectElement = profileForm.querySelector('select[name="order[status]"]');
+
+      selectElement.addEventListener('change', function() {
+        this.form.submit();
+      });
+    });
+  });
+</script>

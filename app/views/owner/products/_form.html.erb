@@ -1,47 +1,54 @@
-<%= form_with model: @product, url: @product.new_record? ? owner_products_path : owner_product_path(@product), local: true,data:{turbo: false} do |form| %>
-  <% if @product.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
-      <ul>
-        <% @product.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>s
-      </ul>
-    </div>
-  <% end %>
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+<div class = 'w-[clamp(300px,90%,800px)] mx-auto min-h-screen flex items-center justify-center' >
+  <div class = ' bg-white p-8 rounded-lg shadow-[0_5px_10px_rgba(0,0,0,0.25)]'>
+    <h1 class = 'text-3xl text-center'>
+      <%= @product.new_record? ? 'Add New Product' : 'Update Product' %>
+    </h1>
+    <%= form_with model: @product, url: @product.new_record? ? owner_products_path : owner_product_path(@product), local: true, data: { turbo: false } do |form| %>
+      <%= render 'shared/error', obj: @product%>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="mb-4">
+          <%= form.label :name, class: "block text-gray-700 font-semibold" %>
+          <%= form.text_field :name, class: "w-full p-2 border border-gray-300 rounded mt-2",placeholder: 'Enter Product Name' %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :price, class: "block text-gray-700 font-semibold" %>
+          <%= form.number_field :price, class: "w-full p-2 border border-gray-300 rounded mt-2",placeholder: 'Enter Product Price' %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :weight, class: "block text-gray-700 font-semibold" %>
+          <%= form.text_field :weight, class: "w-full p-2 border border-gray-300 rounded mt-2" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :product_type, 'Type', class: "block text-gray-700 font-semibold " %>
+          <%= form.select :product_type, options_for_select(["physical", "digital"]),{},class: "w-full p-2 border border-gray-300 rounded mt-2" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :brand, class: "block text-gray-700 font-semibold" %>
+          <%= form.text_field :brand, class: "w-full p-2 border border-gray-300 rounded mt-2" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :inventory_level, class: "block text-gray-700 font-semibold" %>
+          <%= form.number_field :inventory_level, class: "w-full p-2 border border-gray-300 rounded mt-2" %>
+        </div>
+      </div>
+      <div class="mb-6">
+        <%= form.label :category_ids, 'Categories', class: "block text-gray-700 font-semibold mb-2" %>
+        <div class="grid gap-2 grid-cols-4">
+          <% @categories.each do |category| %>
+            <div class="flex items-center">
+              <%= check_box_tag "product[category_ids][]", category.id, @product.category_ids.include?(category.id), id: "category_#{category.id}", class: "mr-2" %>
+              <%= label_tag "category_#{category.id}", category.title, class: "text-gray-700" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="mb-4">
+        <%= form.label :description, class: "block text-gray-700 font-semibold" %>
+        <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded mt-2",placeholder: 'Enter Description' %>
+      </div>
+      <div class="actions">
+        <%= form.submit  @product.new_record? ? 'Create Product' : 'Update Product', class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      </div>
+    <% end %>
   </div>
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.text_field :price %>
-  </div>
-  <div class="field">
-    <%= form.label :weight %>
-    <%= form.text_field :weight %>
-  </div>
-  <div class="field">
-    <%= form.label :type %>
-    <%= form.select :product_type ,options_for_select(["physical", "digital"])%>
-  </div>
-  <div class="field">
-    <%= form.label :category_id,'Category' %><br>
-    <%= form.collection_select :category_ids, @categories, :id, :title, { prompt: "Select a category" }, { multiple: true } %>
-  </div>
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <div class="field">
-    <%= form.label :brand_id %>
-    <%= form.number_field :brand_id %>
-  </div>
-  <div class="field">
-    <%= form.label :inventory_level %>
-    <%= form.number_field :inventory_level %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

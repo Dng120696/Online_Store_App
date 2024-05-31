@@ -69,9 +69,9 @@ class PaymongoAPI::V1::Client
     )
   end
 
-
-
   def create_payment_source(amount,type,success_url,failed_url,billing_details:{})
+
+  p amount * 100
     request(
       method: :post,
       endpoint: '/sources',
@@ -80,7 +80,7 @@ class PaymongoAPI::V1::Client
           attributes: {
             type: type,
             amount: amount.to_i * 100,
-            currency: 'PHP',
+            currency: "PHP",
             redirect:{
                 success:success_url,
                 failed: failed_url
@@ -91,8 +91,8 @@ class PaymongoAPI::V1::Client
         },
         key: PUBLIC_KEY
     )
-
   end
+
   def retrieve_payment_source(id)
     request(
       method: :get,
@@ -127,7 +127,7 @@ class PaymongoAPI::V1::Client
 
   private
 
-  def request(method:, endpoint:, body: {},key:'')
+  def request(method:, endpoint:, body: {},key:)
     response = connection.public_send(method, endpoint) do |request|
       request.headers['Content-Type'] = 'application/json'
       request.headers['Authorization'] = "Basic #{Base64.strict_encode64(key + ':')}"

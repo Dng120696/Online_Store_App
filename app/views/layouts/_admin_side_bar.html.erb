@@ -1,0 +1,17 @@
+<div class = 'flex flex-col min-h-screen border-r-[1px]  border-r-gray-300 text-lg' >
+  <div class="flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+    </svg>
+    <%= link_to 'Online Store App', owner_dashboard_index_path, class:"ml-2 font-semibold text-gray-600" %>
+  </div>
+  <%= link_to 'Dashboard', owner_dashboard_index_path ,class: "py-3  font-semibold  #{request.path == owner_dashboard_index_path  ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to 'Products', owner_products_path ,class: "py-3  font-semibold  #{request.path == owner_products_path || request.path == new_owner_product_path  ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to 'Customers', owner_customers_path,class: "py-3 font-semibold   #{request.path == owner_customers_path || request.path == new_owner_customer_path  ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to 'Orders', owner_orders_path,class: "py-3  font-semibold  #{request.path == owner_orders_path ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to 'Categories', owner_categories_path,class: "py-3 font-semibold   #{request.path == owner_categories_path || request.path == new_owner_category_path  ? 'bg-blue-600 text-white' : ''}" %>
+  <%= link_to "Logout", destroy_admin_session_path, data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              } %>
+</div>

@@ -4,4 +4,5 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./cart-modal.js"
+import "./update_order_status.js"
 

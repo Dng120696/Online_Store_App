@@ -2,8 +2,19 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = current_user.orders.includes(order_items: :product)
+    if  params[:status] == 'recent'
+      @orders = current_user.orders.where('created_at >= ?', 1.days.ago)
+
+    elsif params[:status].present?
+      @orders = current_user.orders.where(status: params[:status]).order(:id )
+    else
+      @orders = current_user.orders.order(:id)
+    end
+
   end
+  def order_success; end
+
+  def order_failed;  end
 
 # GET
   def confirmation
@@ -12,7 +23,10 @@ class CustomerClient::OrdersController < ApplicationController
 
   #GET
   def success
+    ActiveRecord::Base.transaction do
     client = PaymongoAPI::V1::Client.new
+    order_comment = session[:comment]
+    p order_comment
     amount = session[:amount]
     src_id = session[:src_id]
     payment_method  = session[:payment_method]
@@ -33,25 +47,39 @@ class CustomerClient::OrdersController < ApplicationController
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
 
     if @order.save
-          @cart.cart_items.each do |cart_item|
-        @order.order_items.create(
-          product: cart_item.product,
-          quantity: cart_item.quantity,
-          price: cart_item.product.price
-        )
-      end
+         @cart.cart_items.each do |cart_item|
+            @order.order_items.create(
+              product: cart_item.product,
+              quantity: cart_item.quantity,
+              price: cart_item.product.price
+            )
+        end
+        @order.order_items.each do |order_item|
+            order_item.product.update!(inventory_level:order_item.product.inventory_level - order_item.quantity )
+
+        end
+
+
+          Comment.create(order_id:@order[:id],body:order_comment)
           @cart.destroy
           session.delete(:amount)
           session.delete(:src_id)
           session.delete(:checkout_url)
           session.delete(:payment_method)
-
-          redirect_to customer_client_orders_path, notice: 'Order placed successfully.'
+          session.delete(:comment)
+          session.delete(:shipping_address_id)
+          redirect_to order_success_customer_client_orders_path, notice: 'Order placed successfully.'
+      end
     end
   end
 
   #GET
   def failed
     redirect_to customer_client_dashboard_index_path, alert: 'Payment failed! Please try again.'
+  end
+
+  private
+  def calculate_total_amount(cart_items)
+    cart_items.sum { |item| (item.product.price || 0) * (item.quantity || 0) }
   end
 end

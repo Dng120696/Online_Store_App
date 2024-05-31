@@ -1,0 +1,19 @@
+<p class="mb-4">Please enter your GCash payment details:</p>
+<%= form_tag(confirm_customer_client_checkout_index_path, method: :post, class: "space-y-4") do %>
+  <div>
+    <%= label_tag :name, 'Name', class: "block text-gray-700" %>
+    <%= text_field_tag :name, nil, placeholder: "Enter your name", class: "w-full p-2 border border-gray-300 rounded" %>
+  </div>
+  <div class='grid grid-cols-2 gap-4'>
+    <div>
+      <%= label_tag :phone, 'Phone Number', class: "block text-gray-700" %>
+      <%= text_field_tag :phone, nil, placeholder: "Enter your phone number", class: "w-full p-2 border border-gray-300 rounded" %>
+    </div>
+    <div>
+      <%= label_tag :email, 'Email', class: "block text-gray-700" %>
+      <%= email_field_tag :email, nil, placeholder: "Enter your email", class: "w-full p-2 border border-gray-300 rounded" %>
+    </div>
+  </div>
+  <%= hidden_field_tag :payment_method, 'gcash' %>
+  <%= submit_tag 'Confirm Payment', class: "w-full bg-blue-500 text-white p-2 rounded mt-4" %>
+<% end %>
