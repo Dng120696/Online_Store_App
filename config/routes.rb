@@ -24,11 +24,14 @@ Rails.application.routes.draw do
   namespace :customer_client do
     resources :dashboard, only: [:index]
     resources :cart, only: [:index]
+    resources :payments, only: [:index]
+    resources :refund_order, only: [] do
+      post 'refund', on: :member
+    end
     resources :orders, only: [:index] do
       get 'order_success', on: :collection
       get 'order_failed', on: :collection
     end
-    resources :payments, only: [:index]
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection
       post 'confirm' ,to: 'checkout#confirm_payment', on: :collection
@@ -37,7 +40,6 @@ Rails.application.routes.draw do
     resources :cart_items, only: [:create, :destroy] do
       patch 'update_quantity', to: 'cart_items#update_quantity'
     end
-
 
     get 'order_confirmation', to: 'orders#confirmation', as: 'order_confirmation'
     get 'success', to: 'orders#success'

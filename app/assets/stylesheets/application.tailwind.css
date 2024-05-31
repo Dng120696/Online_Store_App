@@ -11,6 +11,13 @@
 }
 
 */
+.overlay::before {
+  content: "";
+  @apply fixed top-0 left-0 w-full h-full z-[100];
+  background: rgba(0, 0, 0, 0.15);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+}
 .message-container {
   opacity: 0;
   transition: opacity 600ms ease-in-out;
