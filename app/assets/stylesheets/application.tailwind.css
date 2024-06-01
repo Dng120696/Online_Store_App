@@ -11,6 +11,13 @@
 }
 
 */
+.overlay::before {
+  content: "";
+  @apply fixed top-0 left-0 w-full h-full z-[100];
+  background: rgba(0, 0, 0, 0.15);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+}
 .message-container {
   opacity: 0;
   transition: opacity 600ms ease-in-out;
@@ -37,18 +44,21 @@
 }
 .cart_item_container::-webkit-scrollbar,
 .customers::-webkit-scrollbar,
+.orders::-webkit-scrollbar,
 .product_items::-webkit-scrollbar {
   width: 12px;
 }
 
 .cart_item_container::-webkit-scrollbar-track,
 .customers::-webkit-scrollbar-track,
+.orders::-webkit-scrollbar-track,
 .product_items::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .cart_item_container::-webkit-scrollbar-thumb,
 .customers::-webkit-scrollbar-thumb,
+.orders::-webkit-scrollbar-thumb,
 .product_items::-webkit-scrollbar-thumb {
   @apply bg-gray-200;
   border-radius: 6px;
