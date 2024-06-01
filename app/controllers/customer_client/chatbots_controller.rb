@@ -22,7 +22,7 @@ class CustomerClient::ChatbotsController < ApplicationController
 
   def send_message
     @chatbot_client.send_message(@custom_user_id, @channel_url, params[:message])
-    redirect_to customer_client_chatbots_path
+    redirect_to root_path
   end
 
   private
