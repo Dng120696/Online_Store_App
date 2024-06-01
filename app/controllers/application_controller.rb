@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_cart, if: :user_signed_in?
+  before_action :set_chatbot_messages, if: :user_signed_in?
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:firstname, :lastname])
@@ -8,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def landing_page
   end
-  
+
   def set_cart
     if user_signed_in?
       @cart = current_user.cart
@@ -26,6 +27,15 @@ class ApplicationController < ActionController::Base
       owner_dashboard_index_path
     elsif resource.is_a?(User)
     customer_client_dashboard_index_path
+    end
+  end
+
+  def set_chatbot_messages
+    @chatbot_client ||= SendbirdAPI::V1::ClientChatbot.new
+    @channel_url = "conversation_channel_url_#{current_user.id}_#{current_user.email.split("@").first}"
+
+    if @chatbot_client.check_channel?(@channel_url)
+      @get_messages = @chatbot_client.chat_messages(@channel_url)
     end
   end
 end
