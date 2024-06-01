@@ -1,17 +1,18 @@
 <!-- Button to open chatbot modal -->
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-6 right-20 z-50" id="chatbot-toggle" type="button" onclick="toggleChatbot()">Chat</button>
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-7 right-20 z-50" id="chatbot-toggle" type="button" onclick="toggleChatbot()">Chat</button>
 <!-- Chatbot modal -->
-<div class="fixed inset-0 flex items-center justify-center z-50 hidden" id="chatbot-modal" style="z-index: 9999;">
-  <div class="bg-white w-96 p-4 rounded shadow-lg h-64 overflow-y-scroll relative">
-    <button class="absolute top-4 right-4 text-gray-500 focus:outline-none" id="chatbot-close" type="button" onclick="toggleChatbot()">
+<div class="fixed bottom-[90px] right-6 z-50 hidden" id="chatbot-modal" style="z-index: 9999;">
+  <div class=" bg-white w-96 p-6 rounded-lg shadow-[0_10px_25px_rgba(0,0,0,0.15)]  relative">
+    <h1 class = 'text-3xl mb-0 border-b-[1px] border-b-gray-400 pb-2 mb-2' >Chat</h1>
+    <button class="absolute top-6 right-6 text-gray-500 focus:outline-none text-2xl" id="chatbot-close" type="button" onclick="toggleChatbot()">
       <i class="fa-solid fa-xmark"></i>
     </button>
     <% if @get_messages.nil? || @get_messages.empty? %>
       <p>No messages yet.</p>
     <% else %>
-      <ul id="chat-messages">
+      <ul id="chat-messages" class = 'h-[40vh] overflow-y-scroll'>
         <% @get_messages["messages"].each do |message| %>
-          <li class="<%= (message["user"]["nickname"] == "Chat Bot" || message["user"]["nickname"] == "Chad Ayop") ? 'text-left' : 'text-right' %>">
+          <li class=" pr-2 <%= (message["user"]["nickname"] == "Chat Bot" || message["user"]["nickname"] == "Chad Ayop") ? 'text-left' : 'text-right' %>">
             <% if message["user"]["nickname"] == "Chad Ayop" %>
               <p class="font-bold">Admin</p>
             <% else %>
@@ -20,16 +21,15 @@
             <div class="bg-blue-500 text-white inline-block rounded-l-md rounded-r-md py-1 px-2"><%= message["message"] %></div>
           </li>
         <% end %>
-      </ul><br/>
+      </ul>
+      <br/>
     <% end %>
-
     <%= form_with url: customer_client_send_message_path, method: :post do |form| %>
       <%= form.text_field :message, class: "border border-gray-300 p-2 rounded-lg w-full", placeholder: "Enter your message" %>
       <%= form.submit "Send Message", class: "mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
     <% end %>
   </div>
 </div>
-
 <script>
   function toggleChatbot() {
     var chatbotModal = document.getElementById("chatbot-modal");

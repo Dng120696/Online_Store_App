@@ -90,7 +90,7 @@ class CustomerClient::OrdersController < ApplicationController
 
   #GET
   def failed
-    redirect_to customer_client_dashboard_index_path, alert: 'Payment failed! Please try again.'
+    redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search]), alert: 'Payment failed! Please try again.'
   end
 
   private
