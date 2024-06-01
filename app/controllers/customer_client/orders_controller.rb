@@ -2,11 +2,22 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
+     current_user.orders.where.not(status: :cancelled).each do |order|
+      if order.status == 'pending'
+        p order.status
+        if order.created_at <= 12.hours.ago &&  order.created_at >= 24.hours.ago
+          order.update(status: :shipped)
+        elsif order.created_at <= 24.hours.ago
+          order.update(status: :completed)
+        end
+      end
+
+    end
     if  params[:status] == 'recent'
-      @orders = current_user.orders.where('created_at >= ?', 1.days.ago)
+      @orders = current_user.orders.where('created_at >= ?', 12.hours.ago).where.not(status: :cancelled)
 
     elsif params[:status].present?
-      @orders = current_user.orders.where(status: params[:status]).order(:id )
+      @orders = current_user.orders.where(status: params[:status]).order(:id)
     else
       @orders = current_user.orders.order(:id)
     end
@@ -25,25 +36,26 @@ class CustomerClient::OrdersController < ApplicationController
   def success
     ActiveRecord::Base.transaction do
     client = PaymongoAPI::V1::Client.new
+    payment_method  = session[:payment_method]
     order_comment = session[:comment]
-    p order_comment
+    card_payment_id = session[:card_payment_id]
     amount = session[:amount]
     src_id = session[:src_id]
-    payment_method  = session[:payment_method]
 
     if payment_method == 'gcash'
       retrieved_source = client.retrieve_payment_source(src_id)
       status = retrieved_source['data']['attributes']['status']
-
+      p retrieved_source
       if status == 'chargeable'
-        client.create_payment(amount, src_id)
+        gcash_payment = client.create_payment(amount, src_id)
       end
     end
+
 
     @cart_items = current_user.cart.cart_items
     @total_amount =  @cart_items.sum { |item| (item.product.price) * item.quantity }
     @cart = current_user.cart
-    @order = Order.new(user_id: current_user.id)
+    @order = Order.new(user_id: current_user.id, payment_id: payment_method == "card" ? card_payment_id : gcash_payment["data"]["id"] )
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
 
     if @order.save
@@ -68,6 +80,7 @@ class CustomerClient::OrdersController < ApplicationController
           session.delete(:payment_method)
           session.delete(:comment)
           session.delete(:shipping_address_id)
+          session.delete(:card_payment_id)
           redirect_to order_success_customer_client_orders_path, notice: 'Order placed successfully.'
       end
     end
