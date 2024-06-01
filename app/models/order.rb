@@ -9,6 +9,7 @@ class Order < ApplicationRecord
     pending: 0,
     cancelled: 1,
     shipped: 2,
-    completed: 3
+    received:3,
+    completed:4
   }
 end

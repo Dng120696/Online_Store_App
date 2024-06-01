@@ -7,8 +7,10 @@ class CustomerClient::OrdersController < ApplicationController
         p order.status
         if order.created_at <= 12.hours.ago &&  order.created_at >= 24.hours.ago
           order.update(status: :shipped)
-        elsif order.created_at <= 24.hours.ago
-          order.update(status: :completed)
+        elsif order.created_at <= 24.hours.ago && order.created_at >= 2.days.ago
+          order.update(status: :received)
+        elsif order.created_at <= 2.days.ago
+          order.update(status: :complleted)
         end
       end
 
