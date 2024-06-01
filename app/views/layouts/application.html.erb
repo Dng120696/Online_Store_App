@@ -30,6 +30,9 @@
         </div>
       <% end %>
     </div>
+    <% if user_signed_in? %>
+      <%= render 'customer_client/chatbots/chatbot', get_messages: @get_messages %>
+    <% end %>
     <% if admin_signed_in? %>
       <div class='grid grid-cols-[0.85fr,3fr] gap-6'>
         <%= render 'layouts/admin_side_bar' %>

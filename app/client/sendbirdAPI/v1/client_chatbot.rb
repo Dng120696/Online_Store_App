@@ -92,7 +92,7 @@ class SendbirdAPI::V1::ClientChatbot
   def chat_messages(channel_url)
     response = request(
       method: :get,
-      endpoint: "#{BASE_URL_CHAT}/group_channels/#{channel_url}/messages?message_ts=0&reverse=true"
+      endpoint: "#{BASE_URL_CHAT}/group_channels/#{channel_url}/messages?message_ts=0&next_limit=200"
       )
     handle_response(response)
   end
