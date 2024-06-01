@@ -1,4 +1,4 @@
-<div class = 'w-[clamp(300px,90%,1300px)] mx-auto flex justify-center items-center min-h-screen' >
+<div class = 'w-[clamp(300px,90%,1300px)] mx-auto flex justify-center items-center min-h-screen pt-32 pb-10 ' >
   <div class = 'w-full'>
     <h1 class='text-2xl text-center'>Your Cart (<%= @cart_items&.count %> <%= @cart_items&.count > 1 ? 'items' : 'item'%>)</h1>
     <div class = 'mb-8'>
@@ -52,7 +52,7 @@
           <ul>
             <li class='flex items-center justify-between py-3 border-b-gray-300 border-b-[1px]'>
               <span>Subtotal</span>
-              <span> <%= number_to_currency(@cart.cart_items.sum { |item| item.product.price * item.quantity }) %></span>
+              <span> <%= number_to_currency(@cart.cart_items.includes(:product).sum { |item| item.product.price * item.quantity }) %></span>
             </li>
             <li class='flex items-center justify-between py-3 border-b-gray-300 border-b-[1px]'>
               <span>Tax</span>
@@ -64,7 +64,7 @@
               Total:
             </span>
             <span class = 'text-right text-xl'>
-              <%= number_to_currency(@cart.cart_items.sum { |item| item.product.price * item.quantity }) %>
+              <%= number_to_currency(@cart.cart_items.includes(:product).sum { |item| item.product.price * item.quantity }) %>
             </span>
           </p>
           <p class = 'text-right'>

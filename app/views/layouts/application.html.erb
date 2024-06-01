@@ -38,7 +38,7 @@
         <%= yield %>
         <% unless admin_signed_in? %>
           <% unless devise_page? %>
-            <% if request.path == root_path %>
+            <% if request.path == root_path || request.path == customer_client_dashboard_index_path %>
               <%= render 'shared/footer' %>
             <% end %>
           <% end %>
