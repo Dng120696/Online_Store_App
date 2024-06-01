@@ -74,21 +74,6 @@ class SendbirdAPI::V1::ClientChatbot
     handle_response(response)
   end
 
-  # BOT message
-  # POST https://api-{application_id}.sendbird.com/v3/bots/{bot_userid}/send
-  # body: message, channel_URL
-
-  # def send_bot_message(message, channel_url)
-  #   response = request(
-  #     method: :post,
-  #     endpoint: "#{BASE_URL_CHAT}/bots/#{CHATBOT_ID}/send",
-  #     body: {
-  #     message: message,
-  #     channel_url: channel_url
-  #     })
-  #   handle_response(response)
-  # end
-
   def chat_messages(channel_url)
     response = request(
       method: :get,
