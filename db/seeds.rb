@@ -18,4 +18,11 @@ User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:
   country: 'Philippines',
   zip_code: '3519'
 })
-admin.categories.create(title:"Shop All", description: 'All products available')
+admin.categories.create(title:"Best Seller")
+admin.categories.create(title:"New Releases")
+admin.categories.create(title:"Books")
+admin.categories.create(title:"Computers")
+admin.categories.create(title:"Fashion")
+admin.categories.create(title:"Health")
+admin.categories.create(title:"Pharmacy")
+admin.categories.create(title:"Toys & Games")
