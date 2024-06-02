@@ -47,6 +47,7 @@ class CustomerClient::OrdersController < ApplicationController
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
 
     if @order.save
+      UserMailer.notify_order_placed(@user, product, quantity, price).deliver_later
          @cart.cart_items.each do |cart_item|
             @order.order_items.create(
               product: cart_item.product,

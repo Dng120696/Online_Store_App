@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    confirmations: 'users/confirmations'
   }
   devise_for :admins, controllers: {
     sessions: 'admins/sessions'
@@ -21,9 +22,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
 
     get 'search_user', to: 'orders#search_user'
-    resources :registrations, only: [:index] do
-    post 'approve', on: :member 
-    end
+
   end
 
 
