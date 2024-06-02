@@ -17,15 +17,12 @@ class User < ApplicationRecord
 
 
    def send_user_registration
-    if pending?
         UserMailer.new_user_registration(self).deliver_later
     end
-  end
+
   def send_admin_notification
-    if pending?
-        AdminMailer.new_user_notification(self,Admin.last).deliver_later
+        AdminMailer.new_user_notification(self, Admin.last).deliver_later
     end
-  end
 
    private
 
