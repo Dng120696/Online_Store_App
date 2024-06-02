@@ -10,4 +10,8 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: 'Order Being Processed')
   end
 
+  def notify_order_cancelled(user)
+    @user = user
+    mail(to: @user.email, subject: 'Your Order Was Cancelled & Refunded')
+  end
 end

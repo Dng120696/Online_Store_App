@@ -59,9 +59,10 @@ class CustomerClient::OrdersController < ApplicationController
     @cart = current_user.cart
     @order = Order.new(user_id: current_user.id, payment_id: payment_method == "card" ? card_payment_id : gcash_payment["data"]["id"] )
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
+    @user = current_user
 
     if @order.save
-      UserMailer.notify_order_placed(@user, product, quantity, price).deliver_later
+      UserMailer.notify_order_placed(@user).deliver_later
          @cart.cart_items.each do |cart_item|
             @order.order_items.create(
               product: cart_item.product,
