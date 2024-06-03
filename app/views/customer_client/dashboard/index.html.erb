@@ -1,4 +1,4 @@
-<div class='w-full pt-32 pb-6'>
+<div class='w-full pt-32 pb-12'>
   <h1 class="text-3xl font-bold mb-6"><%= params[:category] %></h1>
   <% if @products.present?%>
     <div class="all_products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -50,7 +50,7 @@
           <% end %>
         </div>
         <!-- Product Modal -->
-        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-auto bg-white shadow-lg z-[120] p-8 rounded-lg hidden" id="product_modal_<%= product.id %>">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-auto bg-gray-50 shadow-lg z-[120] p-8 rounded-lg hidden" id="product_modal_<%= product.id %>">
           <button class="close-modal absolute top-5 right-6 text-lg font-bold text-gray-700" data-product-id="<%= product.id %>"><i class="fa-solid fa-xmark"></i></button>
           <h1 class="text-3xl font-medium tracking-wide text-center text-gray-900 mb-6">Product Details</h1>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
