@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   has_many :orders, through: :order_items
   has_many :cart_items, dependent: :destroy
   has_many :cart, through: :cart_items
+  has_many :reviews, :dependent => :destroy
   has_one_attached :image
 
   validates_presence_of :weight,:categories,:brand, :description
@@ -14,4 +15,10 @@ class Product < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than: 0 }
   validates :weight, presence: true, numericality: { greater_than: 0 }
   validates :inventory_level, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+
+  def update_order_items_count
+    total_quantity_sold = order_items.sum(:quantity)
+    update_column(:order_items_count, total_quantity_sold)
+  end
 end

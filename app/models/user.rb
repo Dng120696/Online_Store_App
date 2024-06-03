@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_one :cart, :dependent => :destroy
   has_one :address, :dependent => :destroy
   has_many :shipping_addresses, :dependent => :destroy
-
+  has_many :reviews, :dependent => :destroy
   accepts_nested_attributes_for :address, allow_destroy: true
 
    # Validate that there is at least one address

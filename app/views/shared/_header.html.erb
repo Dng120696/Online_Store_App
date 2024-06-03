@@ -28,7 +28,7 @@
               <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
               <path fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd" />
             </svg>
-            <span class="text-sm font-medium"><%= link_to 'Orders', customer_client_orders_path %></span>
+            <span class="text-sm font-medium"><%= link_to 'Orders', customer_client_orders_path(status: 'recent') %></span>
           </div>
         <%end%>
         <div id="cart-icon" class="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">

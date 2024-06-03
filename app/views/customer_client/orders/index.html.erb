@@ -13,33 +13,68 @@
             </strong> </p>
         </div>
         <% order.order_items.each do |order_item| %>
-          <ul class="flex items-center gap-4 py-2 ">
-            <li class=" ">
-              <% if order_item.product.image.attached? %>
-                <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
-              <% else %>
-                <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+          <ul class="flex items-center gap-4 py-2 justify-between">
+            <div class = 'flex  gap-4'>
+              <li class=" ">
+                <% if order_item.product.image.attached? %>
+                  <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
+                <% else %>
+                  <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+                </li>
+              <% end %>
+              <li class="text-lg text-gray-500 mr-2">
+                <li>
+                  <span class = 'block '>
+                    <%= order_item.product.name %>
+                  </span>
+                  <span>
+                    <%= order_item.quantity %>
+                  </span> x 
+                  <span class = 'mr-2'>
+                    <%= number_to_currency(order_item.product.price) %>
+                  </span>
+                  <strong>
+                    <%= number_to_currency(order_item.product.price * order_item.quantity) %>
+                  </strong>
+                </li>
+              </li>
+            </div>
+            <% if order_item.product.reviews.where(user_id: current_user.id).exists? %>
+              <!-- Show rate modal button -->
+              <li id="rate_modal_<%= order_item.id %>" class="font-medium tracking-[1px] cursor-pointer">
+                <i class="fa-solid fa-star" style="color: #FFD43B;"></i> Rate
               </li>
             <% end %>
-            <li class="text-lg text-gray-500 mr-2">
-              <li>
-                <span class = 'block '>
-                  <%= order_item.product.name %>
-                </span>
-                <span>
-                  <%= order_item.quantity %>
-                </span> x 
-                <span class = 'mr-2'>
-                  <%= number_to_currency(order_item.product.price) %>
-                </span>
-                <strong>
-                  <%= number_to_currency(order_item.product.price * order_item.quantity) %>
-                </strong>
-              </li>
-            </li>
-            <li>
-              Write a Revi
-            </li>
+            <%# RATE MODAL %>
+            <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-auto bg-white shadow z-[120] p-8 rounded-lg hidden " id = "rate_product_container_<%=order_item.id%>">
+              <h1 class = 'text-3xl font-medium tracking-[1px] text-center text-gray-700'>Write a Review</h1>
+              <button id="close_rating_modal_<%= order_item.id %>" class="absolute top-6 right-6 text-lg font-bold"><i class="fa-solid fa-xmark"></i></button>
+              <div class = "grid grid-cols-2 items-center justify-center gap-6">
+                <div class = "w-full h-full">
+                  <% if order_item.product.image.attached? %>
+                    <%= image_tag url_for(order_item.product.image), class: 'w-full h-[90%] object-cover rounded-md' %>
+                  <% else %>
+                    <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+                  <% end %>
+                  <h1 class = 'text-2xl font-bold tracking-[1px] mb-2 text-gray-600'>
+                    <%= order_item.product.name %>
+                  </h1>
+                </div>
+                <%= form_with model: Review.new, url: customer_client_reviews_path,method: :post do |f| %>
+                  <%= f.hidden_field :user_id, value: current_user.id %>
+                  <%= f.hidden_field :product_id, value: order_item.product.id %>
+                  <div class="mb-4">
+                    <%= f.label :rating, class: "block text-gray-700 font-bold mb-2" %>
+                    <%= f.select :rating, options_for_select([['Select Rating',nil],['1 star (worst)', 1], ['2 stars', 2], ['3 stars (average)', 3], ['4 stars', 4], ['5 stars (best)', 5]], selected: nil, include_blank: true), {}, class: "w-full p-2 border rounded appearance-none focus:outline-none" %>
+                  </div>
+                  <div class="mb-4">
+                    <%= f.label :comment, class: "block text-gray-700 font-bold mb-2" %>
+                    <%= f.text_area :comment, class: "w-full p-2 border rounded appearance-none focus:outline-none",rows: 5, placeholder: "Enter your comment..." %>
+                  </div>
+                  <%= f.submit "Submit Review", class: "w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer" %>
+                <% end %>
+              </div>
+            </div>
           </ul>
         <% end %>
         <p class="  pt-3 ">
@@ -139,7 +174,7 @@
 
     const refund_modals = document.querySelectorAll('[id^=refund_modal_]');
     const overlay = document.querySelector('.overlay');
-    console.log(refund_modals)
+
     refund_modals.forEach(refund_modal => {
       const orderId = refund_modal.id.split('_')[2];
        const refund_order_container = document.getElementById(`refund_order_container_${orderId}`);
@@ -157,7 +192,22 @@
 
         })
     });
+    const rate_modals = document.querySelectorAll('[id^=rate_modal_]')
 
+    rate_modals.forEach(rate_product => {
+      const product_id = rate_product.id.split('_')[2];
+      const rate_product_container = document.getElementById(`rate_product_container_${product_id}`);
+      const close_rating_modal = document.getElementById(`close_rating_modal_${product_id}`);
 
+      rate_product.addEventListener('click', function(){
+        rate_product_container.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+      });
+
+      close_rating_modal.addEventListener('click', function(){
+        rate_product_container.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
+    });
   })
 </script>

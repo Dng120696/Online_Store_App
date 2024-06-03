@@ -1,4 +1,4 @@
-<div class = 'w-full pt-32 pb-6'>
+<div class='w-full pt-32 pb-6'>
   <h1 class="text-3xl font-bold mb-6"><%= params[:category] %></h1>
   <% if @products.present?%>
     <div class="all_products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -13,85 +13,170 @@
                 </span>
               </div>
             <% end %>
-            <% if product.image.attached? %>
-              <%= image_tag url_for(product.image), class: 'w-full h-[300px] object-cover rounded-lg' %>
-            <% else %>
-              <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
-            <% end %>
+            <div class="view-details cursor-pointer" data-product-id="<%= product.id %>">
+              <% if product.image.attached? %>
+                <%= image_tag url_for(product.image), class: 'w-full h-[300px] object-cover rounded-lg' %>
+              <% else %>
+                <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
+              <% end %>
+            </div>
           </div>
           <h2 class="text-xl font-bold mb-2 mt-4"><%= product.name %></h2>
-          <ul class = "flex items-center gap-4 text-sm mb-2">
-            <li class = 'list-none text-gray-600'>
+          <ul class="flex items-center gap-4 text-sm mb-2">
+            <li class='list-none text-gray-600'>
               <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-              4.9
+              <%= product.reviews.size > 0 ? product.average_rating : 0 %>
             </li>
-            <li class = "list-disc ml-3 text-gray-400  font-semibold">
-              <%=product.order_items_count %> Sold
+            <li class="list-disc ml-3 text-gray-400 font-semibold">
+              <%= product.order_items_count %> Sold
             </li>
           </ul>
-          <p class="mb-4 text-xl tracking-[1px] font-semibold text-gray-800"> <%= number_to_currency(product.price) %></p>
-          <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true, class: "form_cart_item", class:"" do |form| %>
+          <p class="mb-4 text-xl tracking-[1px] font-semibold text-gray-800"><%= number_to_currency(product.price) %></p>
+          <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true, class: "form_cart_item" do |form| %>
             <%= hidden_field_tag :category, params[:category] %>
             <%= form.hidden_field :product_id, value: product.id %>
             <%= form.hidden_field :quantity, value: 1, class: 'product_item' %>
-            <div class = "flex items-center gap-4 ">
-              <div class="flex items-center gap-2 text-center bg-gray-100 rounded-md font-semibold  py-[5px] ">
-                <button type="button" class="btn_decrement_product   px-4  text-xl text-gray-500  ">-</button>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2 text-center bg-gray-100 rounded-md font-semibold py-[5px]">
+                <button type="button" class="btn_decrement_product px-4 text-xl text-gray-500">-</button>
                 <span class='product_quantity text-gray-600'>1</span>
-                <button type="button" class="btn_increment_product   px-4  text-xl text-gray-500  ">+</button>
+                <button type="button" class="btn_increment_product px-4 text-xl text-gray-500">+</button>
               </div>
-              <div class = 'relative w-full'>
-                <i class="fa-solid fa-cart-shopping absolute
-                top-1/2 left-6 text-white text-sm translate-x-[-50%] translate-y-[-50%]"></i>
-                <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 text-sm px-4 rounded hover:cursor-pointer mr pl-8 #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
+              <div class='relative w-full'>
+                <i class="fa-solid fa-cart-shopping absolute top-1/2 left-6 text-white text-sm translate-x-[-50%] translate-y-[-50%]"></i>
+                <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 text-sm px-4 rounded hover:cursor-pointer pl-8 #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
               </div>
             </div>
           <% end %>
         </div>
+        <!-- Product Modal -->
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-auto bg-white shadow-lg z-[120] p-8 rounded-lg hidden" id="product_modal_<%= product.id %>">
+          <button class="close-modal absolute top-5 right-6 text-lg font-bold text-gray-700" data-product-id="<%= product.id %>"><i class="fa-solid fa-xmark"></i></button>
+          <h1 class="text-3xl font-medium tracking-wide text-center text-gray-900 mb-6">Product Details</h1>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <% if product.image.attached? %>
+                <%= image_tag url_for(product.image), class: 'w-full h-[350px] object-cover rounded-md shadow-md' %>
+              <% else %>
+                <%= image_tag 'default_image.jpg', class: 'w-full h-[350px] object-cover rounded-md shadow-md' %>
+              <% end %>
+              <h2 class="text-2xl font-bold mt-4 mb-2 text-gray-900"><%= product.name %></h2>
+              <ul class="flex items-center gap-4 text-sm mb-2">
+                <li class='list-none text-gray-600'>
+                  <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                  <%= product.reviews.size > 0 ? product.average_rating : 0 %>
+                </li>
+                <li class="list-disc ml-3 text-gray-400 font-semibold">
+                  <%= product.order_items_count %> Sold
+                </li>
+              </ul>
+              <p class="text-3xl font-semibold mb-2 text-gray-900"><%= number_to_currency(product.price) %></p>
+            </div>
+            <div class="reviews">
+              <p class="text-lg mb-2 text-gray-700"><%= product.description %></p>
+              <h3 class="text-xl font-bold mb-2 text-gray-900">Reviews</h3>
+              <% if product.reviews.any? %>
+                <% product.reviews.includes(:user).each do |review| %>
+                  <div class="review bg-gray-100 p-3 rounded-lg mb-4">
+                    <p class="text-sm font-semibold mb-1 text-gray-900"><%= review.user.firstname %> <%= review.user.lastname %></p>
+                    <p class="mb-1 text-gray-700">
+                      <% (1..5).each do |i| %>
+                        <% if i <= review.rating %>
+                          <i class="fas fa-star text-yellow-500"></i>
+                        <% else %>
+                          <i class="far fa-star text-gray-400"></i>
+                        <% end %>
+                      <% end %>
+                    </p>
+                    <p class="mb-2 text-gray-700"><%= review.comment %></p>
+                    <p class="text-sm text-gray-500">
+                      <% date_created = review.created_at + 8.hours %>
+                      <%= date_created.strftime("%B %d, %Y %H:%M:%S %p") %>
+                    </p>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="h-[80%] flex items-center justify-center text-gray-400">No reviews yet.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
       <% end %>
-    <%else%>
-      <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center border'>
-        <p>No products available</p>
-      </div>
-    <%end%>
-  </div>
+    </div>
+  <% else %>
+    <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center border'>
+      <p>No products available</p>
+    </div>
+  <% end %>
 </div>
+<div class='overlay hidden'></div>
 <script>
   document.addEventListener('turbo:load', function() {
-   const all_products = document.querySelector('.all_products');
+    const all_products = document.querySelector('.all_products');
 
-   if (!all_products) return;
+    if (!all_products) return;
 
-   // Remove any existing event listeners
-   const new_all_products = all_products.cloneNode(true);
-   all_products.parentNode.replaceChild(new_all_products, all_products);
+    // Remove any existing event listeners
+    const new_all_products = all_products.cloneNode(true);
+    all_products.parentNode.replaceChild(new_all_products, all_products);
 
-   new_all_products.addEventListener('click', function(e) {
-     const target = e.target;
-     if (!target) return;
+    new_all_products.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!target) return;
 
-     // Find the closest product container
-     const productContainer = target.closest('.product');
-     if (!productContainer) return;
+      // Find the closest product container
+      const productContainer = target.closest('.product');
+      if (!productContainer) return;
 
-     // Find the elements needed within the product container
-     const productQuantityElement = productContainer.querySelector('.product_quantity');
-     const productQuantityInput = productContainer.querySelector('.product_item');
+      // Find the elements needed within the product container
+      const productQuantityElement = productContainer.querySelector('.product_quantity');
+      const productQuantityInput = productContainer.querySelector('.product_item');
 
-     let currentQuantity = parseInt(productQuantityElement.textContent);
+      let currentQuantity = parseInt(productQuantityElement.textContent);
 
-     // Handle increment
-     if (target.classList.contains('btn_increment_product')) {
-       currentQuantity += 1;
-     }
+      // Handle increment
+      if (target.classList.contains('btn_increment_product')) {
+        currentQuantity += 1;
+      }
 
-     // Handle decrement
-     if (target.classList.contains('btn_decrement_product')) {
-       currentQuantity = Math.max(1, currentQuantity - 1);
-     }
+      // Handle decrement
+      if (target.classList.contains('btn_decrement_product')) {
+        currentQuantity = Math.max(1, currentQuantity - 1);
+      }
 
-     productQuantityElement.textContent = currentQuantity;
-     productQuantityInput.value = currentQuantity;
-   });
+      productQuantityElement.textContent = currentQuantity;
+      productQuantityInput.value = currentQuantity;
+    });
+
+    // Modal functionality
+    const viewDetailsButtons = document.querySelectorAll('.view-details');
+    const overlay = document.querySelector('.overlay');
+
+    viewDetailsButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const productId = button.getAttribute('data-product-id');
+        const modal = document.getElementById(`product_modal_${productId}`);
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+      });
+    });
+
+    const closeModalButtons = document.querySelectorAll('.close-modal');
+
+    closeModalButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const productId = button.getAttribute('data-product-id');
+        const modal = document.getElementById(`product_modal_${productId}`);
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
+    });
+
+    overlay.addEventListener('click', function() {
+      document.querySelectorAll('.fixed[id^="product_modal_"]').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      overlay.classList.add('hidden');
+    });
   });
 </script>

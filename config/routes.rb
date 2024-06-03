@@ -26,11 +26,12 @@ Rails.application.routes.draw do
 
 
   namespace :customer_client do
+    resources :reviews
+    resources :cart, only: [:index]
+    resources :payments, only: [:index]
     resources :dashboard, only: [:index] do
       get 'search_product', on: :collection
     end
-    resources :cart, only: [:index]
-    resources :payments, only: [:index]
     resources :refund_order, only: [] do
       post 'refund', on: :member
     end
