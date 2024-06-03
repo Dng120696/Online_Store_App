@@ -1,41 +1,59 @@
-<div class = 'log_in flex items-center justify-center  w-full'>
-  <div class = 'p-10 pt-14 shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-sm relative w-[clamp(300px,90%,400px)] overflow-hidden'>
-    <div class='grid grid-cols-2 w-full text-center absolute top-0 left-0'>
-      <%= link_to 'User', new_user_session_path, class: "py-2 px-4  #{request.path == new_user_session_path ? 'active' : 'bg-blue text-white'}" %>
-      <%= link_to 'Admin', new_admin_session_path, class: "py-2 px-4  #{request.path == new_admin_session_path ? 'active' : 'bg-gray-400 text-white'}" %>
-    </div>
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="w-full my-2">
-        <%= f.label :email, class: 'font-semibold   text-sm '%><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" ,placeholder:'Enter your Email', class: 'w-full placeholder-shown:border-gray-400 text-base  placeholder-shown:border-gray-700   ' %>
+<div class="min-h-screen flex fle-col items-center justify-center py-6 px-4">
+  <div class="grid md:grid-cols-2 items-center gap-4 max-w-7xl w-full">
+    <div class = 'border border-gray-300 rounded-md p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] pt-14 relative w-[clamp(300px,90%,400px)] overflow-hidden'>
+      <div class='grid grid-cols-2 w-full text-center absolute top-0 left-0'>
+        <%= link_to 'User', new_user_session_path, class: "py-2 px-4 text-sm font-bold  #{request.path == new_user_session_path ? 'active' : 'bg-gray-400 text-white'}" %>
+        <%= link_to 'Admin', new_admin_session_path, class: "py-2 px-4 text-sm  #{request.path == new_admin_session_path ? 'active' : 'bg-gray-400 text-white'}" %>
       </div>
-      <div class="w-full mb-2">
-        <%= f.label :password,class: 'font-semibold   text-sm ' %><br />
-        <div class = 'relative'>
-          <%= f.password_field :password, autocomplete: "current-password" ,placeholder:'Enter your Password', class: 'w-full placeholder-shown:border-gray-400 text-base  placeholder-shown:border-gray-700   '%>
-          <div class = 'show_password_menu absolute top-[50%] right-4 translate-x-[-50%] translate-y-[-50%] cursor-pointer'>
-            <span class = 'open_password hidden'>
-              <i class=" fa-solid fa-eye text-sm "></i>
-            </span>
-            <span class = 'close_password'>
-              <i class="fa-solid fa-eye-slash  text-sm  "></i>
-            </span>
+
+      <h3 class="text-2xl font-extrabold text-center mt-5 mb-5">Sign in to your account</h3>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="w-full my-2">
+          <%= f.label :email, class:"text-sm block mb-2" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" ,placeholder:'Enter your Email', class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+        </div><br/>
+        <div class="w-full mb-2">
+          <%= f.label :password, class:"text-sm block mb-2" %>
+          <div class= 'relative'>
+            <%= f.password_field :password, autocomplete: "current-password" ,placeholder:'Enter your Password', class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]"%>
+            <div class = 'show_password_menu absolute top-[50%] right-4 translate-x-[-50%] translate-y-[-50%] cursor-pointer'>
+              <span class = 'open_password hidden'>
+                <i class=" fa-solid fa-eye text-sm"></i>
+              </span>
+              <span class = 'close_password'>
+                <i class="fa-solid fa-eye-slash text-sm"></i>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <% if devise_mapping.rememberable? %>
-        <div class="w-full mb-2">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me, class: 'font-semibold   text-sm ' %>
-        </div>
+
+        <div class="flex items-center mb-4">
+          <% if devise_mapping.rememberable? %>
+            <div class="w-full mb-2">
+              <%= f.check_box :remember_me , class: "h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+              <%= f.label :remember_me, class: 'font-semibold text-sm' %>
+            </div>
+          <% end %>
+        </div> 
+            
+        <%= f.submit "Log in", class:"mb-4 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-800 focus:outline-none" %>
+        <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-blue-600 hover:underline text-sm" %>
+        <% end %>
+
+        <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %><br/>
+          <%= link_to "Didn't receive confirmation instructions?", new_user_confirmation_path(resource_name), class: "text-blue-600 hover:underline text-sm" %><br />
+        <% end %>
       <% end %>
-      <div class="">
-        <%= f.submit "Log in",class: 'py-2 px-6 w-full bg-blue-600 w-full text-white font-semibold' %>
+    </div>
+
+      <div class="lg:h-[400px] md:h-[300px] max-md:mt-10">
+        <img src="https://readymadeui.com/login-image.webp" class="w-full h-full object-cover" alt="Dining Experience" />
       </div>
-    <% end %>
-    <%= render "users/shared/links" %>
   </div>
 </div>
+      
 <script>
   document.addEventListener('turbo:load', function() {
     const inputPassword = document.getElementById('user_password');
