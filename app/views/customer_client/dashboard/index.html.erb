@@ -1,16 +1,15 @@
 <div class = 'w-full pt-32 pb-6'>
-  <h1 class="text-3xl font-bold mb-6">All Products</h1>
+  <h1 class="text-3xl font-bold mb-6"><%= params[:category] %></h1>
   <% if @products.present?%>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="all_products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% @products.each do |product| %>
-        <div class="product border p-4 rounded-lg shadow-lg relative">
+        <div class="product border p-3 rounded-lg relative">
           <div class="w-full h-[300px] relative">
             <% if product.inventory_level.zero? %>
               <div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center rounded-lg">
                 <span class="text-4xl text-white font-bold text-center">
-                  OUT<br>
-                  OF<br>
-                  STOCK
+                  SOLD<br>
+                  OUT
                 </span>
               </div>
             <% end %>
@@ -20,12 +19,33 @@
               <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
             <% end %>
           </div>
-          <h2 class="text-2xl font-extrabold mb-2 mt-4"><%= product.name %></h2>
-          <p class="mb-4">Price: <%= number_to_currency(product.price) %></p>
-          <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true do |form| %>
+          <h2 class="text-xl font-bold mb-2 mt-4"><%= product.name %></h2>
+          <ul class = "flex items-center gap-4 text-sm mb-2">
+            <li class = 'list-none text-gray-600'>
+              <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+              4.9
+            </li>
+            <li class = "list-disc ml-3 text-gray-400  font-semibold">
+              <%=product.order_items_count %> Sold
+            </li>
+          </ul>
+          <p class="mb-4 text-xl tracking-[1px] font-semibold text-gray-800"> <%= number_to_currency(product.price) %></p>
+          <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true, class: "form_cart_item", class:"" do |form| %>
+            <%= hidden_field_tag :category, params[:category] %>
             <%= form.hidden_field :product_id, value: product.id %>
-            <%= form.number_field :quantity, value: 1, min: 1, class: "mb-4 w-full border rounded p-2" %>
-            <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 px-4 rounded #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
+            <%= form.hidden_field :quantity, value: 1, class: 'product_item' %>
+            <div class = "flex items-center gap-4 ">
+              <div class="flex items-center gap-2 text-center bg-gray-100 rounded-md font-semibold  py-[5px] ">
+                <button type="button" class="btn_decrement_product   px-4  text-xl text-gray-500  ">-</button>
+                <span class='product_quantity text-gray-600'>1</span>
+                <button type="button" class="btn_increment_product   px-4  text-xl text-gray-500  ">+</button>
+              </div>
+              <div class = 'relative w-full'>
+                <i class="fa-solid fa-cart-shopping absolute
+                top-1/2 left-6 text-white text-sm translate-x-[-50%] translate-y-[-50%]"></i>
+                <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 text-sm px-4 rounded hover:cursor-pointer mr pl-8 #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
+              </div>
+            </div>
           <% end %>
         </div>
       <% end %>
@@ -36,3 +56,42 @@
     <%end%>
   </div>
 </div>
+<script>
+  document.addEventListener('turbo:load', function() {
+   const all_products = document.querySelector('.all_products');
+
+   if (!all_products) return;
+
+   // Remove any existing event listeners
+   const new_all_products = all_products.cloneNode(true);
+   all_products.parentNode.replaceChild(new_all_products, all_products);
+
+   new_all_products.addEventListener('click', function(e) {
+     const target = e.target;
+     if (!target) return;
+
+     // Find the closest product container
+     const productContainer = target.closest('.product');
+     if (!productContainer) return;
+
+     // Find the elements needed within the product container
+     const productQuantityElement = productContainer.querySelector('.product_quantity');
+     const productQuantityInput = productContainer.querySelector('.product_item');
+
+     let currentQuantity = parseInt(productQuantityElement.textContent);
+
+     // Handle increment
+     if (target.classList.contains('btn_increment_product')) {
+       currentQuantity += 1;
+     }
+
+     // Handle decrement
+     if (target.classList.contains('btn_decrement_product')) {
+       currentQuantity = Math.max(1, currentQuantity - 1);
+     }
+
+     productQuantityElement.textContent = currentQuantity;
+     productQuantityInput.value = currentQuantity;
+   });
+  });
+</script>

@@ -2,26 +2,25 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-     current_user.orders.where.not(status: :cancelled).each do |order|
-      if order.status == 'pending'
-        p order.status
-        if order.created_at <= 12.hours.ago &&  order.created_at >= 24.hours.ago
-          order.update(status: :shipped)
-        elsif order.created_at <= 24.hours.ago && order.created_at >= 2.days.ago
-          order.update(status: :received)
-        elsif order.created_at <= 2.days.ago
-          order.update(status: :complleted)
-        end
-      end
+    @orders_queries = current_user.orders.includes(:comment,order_items: {product: { image_attachment: :blob }})
+    pending_orders = @orders_queries.where(status: :pending).where.not(status: :cancelled)
 
-    end
+
+    shipped_orders = pending_orders.where(created_at: 24.hours.ago..12.hours.ago)
+    received_orders = pending_orders.where(created_at: 2.days.ago..24.hours.ago)
+    completed_orders = pending_orders.where('created_at <= ?', 2.days.ago)
+
+    shipped_orders.update_all(status: :shipped)
+    received_orders.update_all(status: :received)
+    completed_orders.update_all(status: :completed)
+
     if  params[:status] == 'recent'
-      @orders = current_user.orders.where('created_at >= ?', 12.hours.ago).where.not(status: :cancelled)
+      @orders = @orders_queries.where('created_at >= ?', 12.hours.ago).where.not(status: :cancelled)
 
     elsif params[:status].present?
-      @orders = current_user.orders.where(status: params[:status]).order(:id)
+      @orders = @orders_queries.where(status: params[:status]).order(:id)
     else
-      @orders = current_user.orders.order(:id)
+      @orders = @orders_queries.order(:id)
     end
 
   end

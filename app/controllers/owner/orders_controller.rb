@@ -2,7 +2,7 @@ class Owner::OrdersController < ApplicationController
 
   def index
       puts params.inspect
-      @orders = Order.includes(order_items: :product).order(:id)
+      @orders = Order.order(:id).includes(:user)
 
   end
 

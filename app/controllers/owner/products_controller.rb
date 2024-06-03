@@ -4,7 +4,7 @@ class Owner::ProductsController < ApplicationController
   before_action :categories,only: [:new, :edit, :create, :update]
 
   def index
-    @products = current_admin.products
+    @products = current_admin.products.includes( image_attachment: :blob )
   end
 
   def new
