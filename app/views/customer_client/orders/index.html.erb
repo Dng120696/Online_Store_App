@@ -12,7 +12,7 @@
               <%= order.status %>
             </strong> </p>
         </div>
-        <% order.order_items.includes(product: { image_attachment: :blob }).each do |order_item| %>
+        <% order.order_items.each do |order_item| %>
           <ul class="flex items-center gap-4 py-2 ">
             <li class=" ">
               <% if order_item.product.image.attached? %>
@@ -36,6 +36,9 @@
                   <%= number_to_currency(order_item.product.price * order_item.quantity) %>
                 </strong>
               </li>
+            </li>
+            <li>
+              Write a Revi
             </li>
           </ul>
         <% end %>
@@ -72,7 +75,15 @@
             <%end %>
           </div>
         </div>
+        <!-- Button to open modal -->
+        <% if order.comment.body.present? %>
+          <button class="btn btn-primary view-comment-btn" data-comment="<%= order.comment %>">View Comment</button>
+          <div class="comment-box hidden bg-gray-100 p-4 mt-4 rounded-md">
+            <p class="text-gray-600"><%= order.comment.body %></p>
+          </div>
+        <% end %>
       </div>
+      <!--Refund Modal -->
       <div  id = "refund_order_container_<%= order.id %>" class=" fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-auto bg-gray-50 shadow-lg z-[120] p-6 rounded-lg hidden">
         <h1 class = 'text-2xl  text-center'>
           Refund Order
@@ -103,7 +114,11 @@
     <% end %>
   <%else%>
     <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center'>
-      <p>No orders available</p>
+      <%unless params[:cancelled]%>
+        <p>No orders available</p>
+      <%else%>
+        <p>No orders Cancelled</p>
+      <%end%>
     </div>
   <%end%>
 </div>
@@ -111,6 +126,16 @@
 </div>
 <script>
   document.addEventListener('turbo:load', function(){
+
+    const viewCommentBtns = document.querySelectorAll('.view-comment-btn');
+
+    viewCommentBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const commentBox = this.nextElementSibling;
+        commentBox.classList.toggle('hidden');
+      });
+    });
+
 
     const refund_modals = document.querySelectorAll('[id^=refund_modal_]');
     const overlay = document.querySelector('.overlay');

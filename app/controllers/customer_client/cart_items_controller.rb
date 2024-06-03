@@ -22,7 +22,7 @@ class CustomerClient::CartItemsController < ApplicationController
   def destroy
     @cart_item = CartItem.find(params[:id])
     @cart_item.destroy
-    redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search]), notice: 'Product removed from cart.'
+    redirect_to customer_client_dashboard_index_path(category:'Best Seller',search:''), notice: 'Product removed from cart.'
   end
 
 

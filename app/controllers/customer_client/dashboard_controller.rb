@@ -5,15 +5,15 @@ class CustomerClient::DashboardController < ApplicationController
     search_product = params[:search]
 
     if search_product.present?
-      @products = @category.products.where("LOWER(name) LIKE ?", "%#{search_product.downcase}%").includes(image_attachment: :blob).order("inventory_level DESC")
+      @products = @category.products.where("LOWER(name) LIKE ?", "%#{search_product.downcase}%").includes( image_attachment: :blob).order(order_items_count: :desc, inventory_level: :desc)
     else
 
-      @products = @category.products.includes(image_attachment: :blob).order("inventory_level DESC")
+      @products = @category.products.includes( image_attachment: :blob).order(order_items_count: :desc, inventory_level: :desc)
 
     end
     @cart = current_user&.cart
     if @cart
-      @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
+      @cart_items = @cart.cart_items.includes(product: {  image_attachment: :blob }) # Include product to avoid N+1 queries
     else
       @cart_items = []
     end

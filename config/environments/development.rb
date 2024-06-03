@@ -11,6 +11,17 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  #BULLET CONFIGURATION
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
+  end
+
+
   # EMAIL RECEIVE SIGN UP
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
