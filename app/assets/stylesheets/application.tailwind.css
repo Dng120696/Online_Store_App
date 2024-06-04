@@ -132,6 +132,13 @@ h5 {
   color: #3b82f6;
 }
 
+body.fp-background {
+  background-image: url('websitebg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 
 
 @media (min-width: 1280px) {
