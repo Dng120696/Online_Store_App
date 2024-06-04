@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index] do
       get 'order_success', on: :collection
       get 'order_failed', on: :collection
+      patch 'cancel_order', on: :member
     end
     resources :checkout, only: [:index] do
       post 'process' ,to: 'checkout#process_checkout', on: :collection

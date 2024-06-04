@@ -19,8 +19,6 @@ class CustomerClient::OrdersController < ApplicationController
 
     elsif params[:status].present?
       @orders = @orders_queries.where(status: params[:status]).order(:id)
-    else
-      @orders = @orders_queries.order(:id)
     end
 
   end
@@ -28,6 +26,12 @@ class CustomerClient::OrdersController < ApplicationController
 
   def order_failed;  end
 
+  def cancel_order
+    @order = Order.find(params[:id])
+    if @order.update(status: :cancelled)
+      redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled'
+    end
+  end
 # GET
   def confirmation
      @url = session[:checkout_url]
@@ -91,7 +95,7 @@ class CustomerClient::OrdersController < ApplicationController
 
   #GET
   def failed
-    redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search]), alert: 'Payment failed! Please try again.'
+    redirect_to customer_client_dashboard_index_path(category: 'Best Seller',search:''), alert: 'Payment failed! Please try again.'
   end
 
   private

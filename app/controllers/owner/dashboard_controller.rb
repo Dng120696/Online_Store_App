@@ -4,6 +4,7 @@ class Owner::DashboardController < ApplicationController
 
   end
 
+
   def approve
     user = User.find(params[:id])
 

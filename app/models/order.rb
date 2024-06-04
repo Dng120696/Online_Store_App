@@ -8,8 +8,9 @@ class Order < ApplicationRecord
   enum status: {
     pending: 0,
     cancelled: 1,
-    shipped: 2,
-    received:3,
-    completed:4
+    refunded:2,
+    shipped: 3,
+    received:4,
+    completed:5
   }
 end

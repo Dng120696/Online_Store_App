@@ -50,22 +50,24 @@
     </div>
     <%= render 'layouts/modal', cart_items: @cart_items %>
     <div class='overlay hidden'></div>
-    <script>
-      !function(w, d, s, ...args){
-                var div = d.createElement('div');
-                div.id = 'aichatbot';
-                d.body.appendChild(div);
-                w.chatbotConfig = args;
-                var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s);
-                j.defer = true;
-                j.type = 'module';
-                j.src = 'https://aichatbot.sendbird.com/index.js';
-                f.parentNode.insertBefore(j, f);
-              }(window, document, 'script', '718E72C3-0E5A-4E35-B1C9-34CBF90924D2', 'onboarding_bot', {
-                apiHost: 'https://api-cf-us-3.sendbird.com',
-              });
-    </script>
+    <% if user_signed_in?%>
+      <script>
+        !function(w, d, s, ...args){
+                  var div = d.createElement('div');
+                  div.id = 'aichatbot';
+                  d.body.appendChild(div);
+                  w.chatbotConfig = args;
+                  var f = d.getElementsByTagName(s)[0],
+                  j = d.createElement(s);
+                  j.defer = true;
+                  j.type = 'module';
+                  j.src = 'https://aichatbot.sendbird.com/index.js';
+                  f.parentNode.insertBefore(j, f);
+                }(window, document, 'script', '718E72C3-0E5A-4E35-B1C9-34CBF90924D2', 'onboarding_bot', {
+                  apiHost: 'https://api-cf-us-3.sendbird.com',
+                });
+      </script>
+    <%end%>
     <script>
       document.addEventListener('turbo:load', function() {
 
