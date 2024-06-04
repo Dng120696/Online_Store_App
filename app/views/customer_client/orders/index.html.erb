@@ -1,4 +1,4 @@
-<div class="w-[clamp(300px,90%,850px)] mx-auto pt-36  ">
+<div class="w-[clamp(300px,90%,1000px)] mx-auto pt-36  ">
   <div class="grid grid-cols-7 text-base font-semibold tracking-[1px] text-gray-600 text-center">
     <%= render 'status_tab'%>
   </div>
@@ -13,114 +13,108 @@
             </strong> </p>
         </div>
         <% order.order_items.each do |order_item| %>
-          <ul class="flex items-center gap-4 py-2 ">
-            <li class=" ">
-              <% if order_item.product.image.attached? %>
-                <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
-              <% else %>
-                <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+          <ul class="flex items-center gap-4 py-2 justify-between">
+            <div class = 'flex  gap-4'>
+              <li class=" ">
+                <% if order_item.product.image.attached? %>
+                  <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
+                <% else %>
+                  <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+                </li>
+              <% end %>
+              <li class="text-lg text-gray-500 mr-2">
+                <li>
+                  <span class = 'block '>
+                    <%= order_item.product.name %>
+                  </span>
+                  <span>
+                    <%= order_item.quantity %>
+                  </span> x 
+                  <span class = 'mr-2'>
+                    <%= number_to_currency(order_item.product.price) %>
+                  </span>
+                  <strong>
+                    <%= number_to_currency(order_item.product.price * order_item.quantity) %>
+                  </strong>
+                </li>
+              </li>
+            </div>
+            <% if order_item.product.reviews.where(user_id: current_user.id).exists? %>
+              <!-- Show rate modal button -->
+              <li id="rate_modal_<%= order_item.id %>" class="font-medium tracking-[1px] cursor-pointer">
+                <i class="fa-solid fa-star" style="color: #FFD43B;"></i> Rate
               </li>
             <% end %>
-            <li class="text-lg text-gray-500 mr-2">
-              <li>
-                <span class = 'block '>
-                  <%= order_item.product.name %>
-                </span>
-                <span>
-                  <%= order_item.quantity %>
-                </span> x 
-                <span class = 'mr-2'>
-                  <%= number_to_currency(order_item.product.price) %>
-                </span>
-                <strong>
-                  <%= number_to_currency(order_item.product.price * order_item.quantity) %>
-                </strong>
-              </li>
-            </li>
-            <li>
-              Write a Revi
-            </li>
-          </ul>
-        <% end %>
-        <p class="  pt-3 ">
-          <span class = 'pl-28 text-lg'>Total</span>
-          <span class ='pl-8 text-xl font-bold'>
-            <%= number_to_currency(order.total) %>
-          </span>
-        </p>
-        <div class = 'text-sm pl-24 py-6 flex items-center justify-between gap-10'>
-          <div class = 'flex items-center gap-10'>
-            <p class = 'text-gray-600'>
-              <span class = 'uppercase  block mb-2 font-semibold '>
-                Order Placed
-              </span>
-              <span>
-                <% date_created = order.created_at + 8.hours%>
-                <%= date_created.strftime("%B %d, %Y %H:%M:%S %p")  %>
-              </span>
-            </p>
-            <p class = 'text-gray-600'>
-              <span class = 'uppercase  block mb-2 font-semibold text-gray-600s'>
-                Last Update
-              </span>
-              <span>
-                <% date_updated = order.updated_at + 8.hours%>
-                <%= date_updated.strftime("%B %d, %Y %H:%M:%S %p")  %>
-              </span>
-            </p>
+            <%# RATE MODAL %>
+            <%= render 'rate_modal', order_item:order_item %>
           </div>
-          <div>
-            <% if order.created_at >= 12.hours.ago && order.status != 'cancelled' %>
-              <button id = "refund_modal_<%=order.id%>" class = 'text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Cancel Order & Refund</button>
-            <%end %>
+        </ul>
+      <% end %>
+      <p class="  pt-3 ">
+        <span class = 'pl-28 text-lg'>Total</span>
+        <span class ='pl-8 text-xl font-bold'>
+          <%= number_to_currency(order.total) %>
+        </span>
+      </p>
+      <div class = 'text-sm pl-24 py-6 flex items-center justify-between gap-10'>
+        <div class = 'flex items-center gap-10'>
+          <p class = 'text-gray-600'>
+            <span class = 'uppercase  block mb-2 font-semibold '>
+              Order Placed
+            </span>
+            <span>
+              <% date_created = order.created_at + 8.hours%>
+              <%= date_created.strftime("%B %d, %Y %H:%M:%S %p")  %>
+            </span>
+          </p>
+          <p class = 'text-gray-600'>
+            <span class = 'uppercase  block mb-2 font-semibold text-gray-600s'>
+              Last Update
+            </span>
+            <span>
+              <% date_updated = order.updated_at + 8.hours%>
+              <%= date_updated.strftime("%B %d, %Y %H:%M:%S %p")  %>
+            </span>
+          </p>
+        </div>
+        <div>
+          <% if order.status == 'received' %>
+            <button id = "refund_modal_<%=order.id%>" class = 'text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Refund Order</button>
+          <% elsif order.status == 'pending' %>
+            <button id = "cancel_modal_<%=order.id%>" class = 'cancel_modal text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Cancel Order</button>
+          <%end %>
+          <div id = "confirm_cancel_container_<%=order.id%>" class = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-auto bg-white shadow-lg z-[120] p-8 rounded-lg  text-center hidden">
+            <h1 class = 'text-2xl'>Are you sure you want to Cancel this Order?</h1>
+            <div>
+              <button>
+                <%= link_to 'Confirm', cancel_order_customer_client_order_path(order), data: {turbo_method: :patch}%>
+              </button>
+              <button id = "close_order_modal_<%=order.id%>"  class = "">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
-        <!-- Button to open modal -->
-        <% if order.comment.body.present? %>
-          <button class="btn btn-primary view-comment-btn" data-comment="<%= order.comment %>">View Comment</button>
-          <div class="comment-box hidden bg-gray-100 p-4 mt-4 rounded-md">
-            <p class="text-gray-600"><%= order.comment.body %></p>
-          </div>
-        <% end %>
       </div>
-      <!--Refund Modal -->
-      <div  id = "refund_order_container_<%= order.id %>" class=" fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-auto bg-gray-50 shadow-lg z-[120] p-6 rounded-lg hidden">
-        <h1 class = 'text-2xl  text-center'>
-          Refund Order
-        </h1>
-        <button id="close_refund_modal_<%= order.id %>" class="absolute top-6 right-6 text-lg font-bold"><i class="fa-solid fa-xmark"></i></button>
-        <%= form_tag refund_customer_client_refund_order_path(order), method: :post do %>
-          <div class="mb-4">
-            <%= label_tag :amount, "Refund Amount", class: "block text-gray-700 font-bold mb-2" %>
-            <%= number_field_tag :amount,  order.total, readonly:true, class: "w-full p-2 border rounded", placeholder: 'Amount'%>
-          </div>
-          <div class="mb-4">
-            <%= label_tag :reason, "Reason for Refund", class: "block text-gray-700 font-bold mb-2" %>
-            <%= select_tag :reason, options_for_select([
-        ['Select Reason', ''],
-        'duplicate',
-        'fraudulent',
-        'others',
-        'requested_by_customer'
-      ]), class: "w-full p-2 border rounded" %>
-          </div>
-          <div class="mb-4">
-            <%= label_tag :notes, "Additional Notes", class: "block text-gray-700 font-bold mb-2" %>
-            <%= text_area_tag :notes, nil, rows: 4, class: "w-full p-2 border rounded", placeholder: 'Enter your message'%>
-          </div>
-          <%= submit_tag 'Confirm', class: "w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600" %>
-        <% end %>
-      </div>
-    <% end %>
-  <%else%>
-    <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center'>
-      <%unless params[:cancelled]%>
-        <p>No orders available</p>
-      <%else%>
-        <p>No orders Cancelled</p>
-      <%end%>
+      <% if order.comment.body.present? %>
+        <button class="btn btn-primary view-comment-btn" data-comment="<%= order.comment %>">View Comment</button>
+        <div class="comment-box hidden bg-gray-100 p-4 mt-4 rounded-md">
+          <p class="text-gray-600"><%= order.comment.body %></p>
+        </div>
+      <% end %>
     </div>
-  <%end%>
+    <!--Refund Modal -->
+    <%= render 'refund_modal', order: order%>
+  <% end %>
+<%else%>
+  <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center'>
+    <%unless params[:cancelled]%>
+      <p>No orders available</p>
+    <%else%>
+      <p>No orders Cancelled</p>
+    <%end%>
+  </div>
+<%end%>
 </div>
 <div class = ' overlay hidden'>
 </div>
@@ -128,6 +122,7 @@
   document.addEventListener('turbo:load', function(){
 
     const viewCommentBtns = document.querySelectorAll('.view-comment-btn');
+    const overlay = document.querySelector('.overlay');
 
     viewCommentBtns.forEach(btn => {
       btn.addEventListener('click', function() {
@@ -138,8 +133,7 @@
 
 
     const refund_modals = document.querySelectorAll('[id^=refund_modal_]');
-    const overlay = document.querySelector('.overlay');
-    console.log(refund_modals)
+
     refund_modals.forEach(refund_modal => {
       const orderId = refund_modal.id.split('_')[2];
        const refund_order_container = document.getElementById(`refund_order_container_${orderId}`);
@@ -156,6 +150,42 @@
             overlay.classList.add('hidden')
 
         })
+    });
+    const rate_modals = document.querySelectorAll('[id^=rate_modal_]')
+
+    rate_modals.forEach(rate_product => {
+      const product_id = rate_product.id.split('_')[2];
+      const rate_product_container = document.getElementById(`rate_product_container_${product_id}`);
+      const close_rating_modal = document.getElementById(`close_rating_modal_${product_id}`);
+
+      rate_product.addEventListener('click', function(){
+        rate_product_container.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+      });
+
+      close_rating_modal.addEventListener('click', function(){
+        rate_product_container.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
+    });
+
+     // Modal functionality
+   const cancel_modals = document.querySelectorAll('[id^=cancel_modal_]')
+
+    cancel_modals.forEach(cancel_modal => {
+      const orderId = cancel_modal.id.split('_')[2];
+      const confirm_cancel_container = document.getElementById(`confirm_cancel_container_${orderId}`);
+      const close_order_modal = document.getElementById(`close_order_modal_${orderId}`);
+
+      cancel_modal.addEventListener('click', function(){
+        confirm_cancel_container.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+      });
+
+      close_order_modal.addEventListener('click', function(){
+        confirm_cancel_container.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
     });
 
 

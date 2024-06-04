@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_03_025353) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_04_120331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,6 +121,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_025353) do
     t.integer "status", default: 0
     t.decimal "total"
     t.string "payment_id"
+    t.integer "status", default: 0
+    t.decimal "total"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -145,7 +147,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_025353) do
     t.bigint "admin_id", null: false
     t.string "product_type", default: "physical"
     t.integer "order_items_count", default: 0, null: false
+    t.float "average_rating"
+    t.integer "reviews_count"
     t.index ["admin_id"], name: "index_products_on_admin_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "comment"
+    t.integer "rating"
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_reviews_on_product_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "shipping_addresses", force: :cascade do |t|
@@ -193,5 +208,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_025353) do
   add_foreign_key "product_categories", "categories"
   add_foreign_key "product_categories", "products"
   add_foreign_key "products", "admins"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "users"
   add_foreign_key "shipping_addresses", "users"
 end

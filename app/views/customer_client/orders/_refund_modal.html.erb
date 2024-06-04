@@ -1,0 +1,27 @@
+<div  id = "refund_order_container_<%= order.id %>" class=" fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-auto bg-gray-50 shadow-lg z-[120] p-6 rounded-lg hidden">
+  <h1 class = 'text-2xl  text-center'>
+    Refund Order
+  </h1>
+  <button id="close_refund_modal_<%= order.id %>" class="absolute top-6 right-6 text-lg font-bold"><i class="fa-solid fa-xmark"></i></button>
+  <%= form_tag refund_customer_client_refund_order_path(order), method: :post do %>
+    <div class="mb-4">
+      <%= label_tag :amount, "Refund Amount", class: "block text-gray-700 font-bold mb-2" %>
+      <%= number_field_tag :amount,  order.total, readonly:true, class: "w-full p-2 border rounded", placeholder: 'Amount'%>
+    </div>
+    <div class="mb-4">
+      <%= label_tag :reason, "Reason for Refund", class: "block text-gray-700 font-bold mb-2" %>
+      <%= select_tag :reason, options_for_select([
+        ['Select Reason', ''],
+        'duplicate',
+        'fraudulent',
+        'others',
+        'requested_by_customer'
+      ]), class: "w-full p-2 border rounded" %>
+    </div>
+    <div class="mb-4">
+      <%= label_tag :notes, "Additional Notes", class: "block text-gray-700 font-bold mb-2" %>
+      <%= text_area_tag :notes, nil, rows: 4, class: "w-full p-2 border rounded", placeholder: 'Enter your message'%>
+    </div>
+    <%= submit_tag 'Confirm', class: "w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600" %>
+  <% end %>
+</div>

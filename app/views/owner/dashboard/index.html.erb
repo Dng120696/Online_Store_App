@@ -1,5 +1,21 @@
-<div>
-
-Content
-
+<div class = "w-full">
+  <%# HEADER %>
+  <div class = 'flex items-center justify-between border-b-[1px] border-b-gray-300 py-3' >
+    <div>
+      <h1 class = 'text-2xl font-semibold mb-0'>
+        Good <%= greeting %>, <%= current_admin.firstname%>
+      </h1>
+      <p class = 'text-gray-500'>Here's what's happening with your store today</p>
+    </div>
+    <div class = 'flex items-center gap-4 '>
+      <i class="fa-solid fa-calendar-days text-lg p-2 bg-gray-100 rounded-md"></i>
+      <p class = 'text-sm text-gray-700'><%= (Time.now + 8.hours).strftime("%B %d, %Y")%></p>
+    </div>
+  </div>
+  <%# BOXES %>
+  <div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </div>
