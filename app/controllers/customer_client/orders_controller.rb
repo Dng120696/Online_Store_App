@@ -3,7 +3,7 @@ class CustomerClient::OrdersController < ApplicationController
 
   def index
     @orders_queries = current_user.orders.includes(:comment,order_items: {product: { image_attachment: :blob }})
-    pending_orders = @orders_queries.where(status: :pending).where.not(status: :cancelled)
+    pending_orders = @orders_queries.where(status: :pending).where.not(status: [ :refunded, :canceled])
 
 
     shipped_orders = pending_orders.where(created_at: 24.hours.ago..12.hours.ago)

@@ -121,8 +121,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_120331) do
     t.integer "status", default: 0
     t.decimal "total"
     t.string "payment_id"
-    t.integer "status", default: 0
-    t.decimal "total"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 

@@ -1,6 +1,6 @@
 <div class = "w-full">
   <%# HEADER %>
-  <div class = 'flex items-center justify-between border-b-[1px] border-b-gray-300 py-3' >
+  <div class = 'flex items-center justify-between border-b-[1px] border-b-gray-300 py-3 mb-4' >
     <div>
       <h1 class = 'text-2xl font-semibold mb-0'>
         Good <%= greeting %>, <%= current_admin.firstname%>
@@ -13,9 +13,7 @@
     </div>
   </div>
   <%# BOXES %>
-  <div>
-    <div></div>
-    <div></div>
-    <div></div>
+  <div class = 'w-full shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:hadow-[0_0_10px_rgba(0,0,0,0.1)] p-4 bg-white dark:bg-gray-100'>
+    <%= line_chart @orders_data,height: '420px', xtitle: 'Date', ytitle: 'Sales Value',title: "Sales Performance (Last 1 Month)" , loading: "Loading..."%>
   </div>
 </div>

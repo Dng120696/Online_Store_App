@@ -39,6 +39,7 @@
       <% end %>
       <div class='w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center'>
         <%= yield %>
+        <div class='overlay hidden'></div>
         <% unless admin_signed_in? %>
           <% unless devise_page? %>
             <% if request.path == root_path || request.path == customer_client_dashboard_index_path %>
@@ -49,7 +50,6 @@
       </div>
     </div>
     <%= render 'layouts/modal', cart_items: @cart_items %>
-    <div class='overlay hidden'></div>
     <% if user_signed_in?%>
       <script>
         !function(w, d, s, ...args){

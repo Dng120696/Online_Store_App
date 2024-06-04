@@ -1,7 +1,7 @@
 <%= link_to "Recent", customer_client_orders_path(status: 'recent'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'recent'} hover:bg-gray-100" %>
 <%= link_to "Pending", customer_client_orders_path(status: 'pending'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'pending'} hover:bg-gray-100" %>
-<%= link_to "Cancelled", customer_client_orders_path(status: 'cancelled'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'cancelled'} hover:bg-gray-100" %>
-<%= link_to "Refunded", customer_client_orders_path(status: 'refunded'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'refunded'} hover:bg-gray-100" %>
 <%= link_to "Shipped", customer_client_orders_path(status: 'shipped'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'shipped'} hover:bg-gray-100" %>
 <%= link_to "Received", customer_client_orders_path(status: 'received'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'received'} hover:bg-gray-100" %>
+<%= link_to "Cancelled", customer_client_orders_path(status: 'cancelled'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'cancelled'} hover:bg-gray-100" %>
+<%= link_to "Refunded", customer_client_orders_path(status: 'refunded'), class: " px-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'refunded'} hover:bg-gray-100" %>
 <%= link_to "Completed", customer_client_orders_path(status: 'completed'), class: " pSx-4 py-2  #{' border-b-2 border-gray-300' if params[:status] == 'completed'} hover:bg-gray-100" %>

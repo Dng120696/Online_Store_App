@@ -44,6 +44,10 @@
               <li id="rate_modal_<%= order_item.id %>" class="font-medium tracking-[1px] cursor-pointer">
                 <i class="fa-solid fa-star" style="color: #FFD43B;"></i> Rate
               </li>
+            <%else %>
+              <li class="font-medium tracking-[1px]">
+                <i class="fa-regular fa-star"></i> Rated
+              </li>
             <% end %>
             <%# RATE MODAL %>
             <%= render 'rate_modal', order_item:order_item %>
@@ -83,13 +87,14 @@
           <% elsif order.status == 'pending' %>
             <button id = "cancel_modal_<%=order.id%>" class = 'cancel_modal text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Cancel Order</button>
           <%end %>
-          <div id = "confirm_cancel_container_<%=order.id%>" class = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-auto bg-white shadow-lg z-[120] p-8 rounded-lg  text-center hidden">
-            <h1 class = 'text-2xl'>Are you sure you want to Cancel this Order?</h1>
-            <div>
-              <button>
+          <%# Cancel Modal %>
+          <div id = "confirm_cancel_container_<%=order.id%>" class = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[350px] h-auto bg-white shadow-lg z-[120] px-8 py-6 rounded-lg  text-center hidden">
+            <h1 class = 'text-xl font-normal'>Are you sure you want to <strong>Cancel </strong> this Order?</h1>
+            <div class = 'grid grid-cols-2 gap-6 items-center'>
+              <button class = 'bg-red-600 py-2 rounded-md text-gray-50 font-semibold'>
                 <%= link_to 'Confirm', cancel_order_customer_client_order_path(order), data: {turbo_method: :patch}%>
               </button>
-              <button id = "close_order_modal_<%=order.id%>"  class = "">
+              <button id = "close_order_modal_<%=order.id%>"  class = 'bg-green-600 py-2 rounded-md text-gray-50 font-semibold'>
                 Cancel
               </button>
             </div>
