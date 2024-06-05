@@ -1,8 +1,8 @@
-# E-commerce Platform with Rails Application README
+# Online Store Application with Rails Application README
 
 ## Overview
 
-Welcome to our E-commerce Platform, a robust web application built with Ruby on Rails. This document outlines the key features and customer stories that define our platform's functionality. Our application aims to provide a seamless shopping experience through comprehensive features including user authentication, product management, cart and checkout systems, payment integration with PayMongo, order management, and a chat capabilities via SendBird API.
+Welcome to our Online Store Application, a robust web application built with Ruby on Rails. This document outlines the key features and customer stories that define our platform's functionality. Our application aims to provide a seamless shopping experience through comprehensive features including user authentication, product management, cart and checkout systems, payment integration with PayMongo, order management, and a chat capabilities via SendBird API.
 
 ## Table of Contents
 1. [User Stories](#user-stories)
