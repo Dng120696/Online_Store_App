@@ -1,0 +1,9 @@
+<% if channel_url.present? %>
+  <div>
+    <%= form_with(url: owner_send_message_path, method: :post, class: "mt-4") do |form| %>
+      <%= form.text_field :message, placeholder: "Enter your message", class: "mb-2 py-1 px-2 border border-gray-300 rounded" %>
+      <%= form.hidden_field :channel_url, value: params[:channel_url] %>
+      <%= form.submit "Send Message", class: "bg-blue-500 text-white py-1 px-2 rounded" %>
+    <% end %>
+  </div>
+<% end %>

@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     resources :categories
     resources :dashboard, only: [:index]
     get 'search_user', to: 'orders#search_user'
+
+    resources :chatbots
+    match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
   end
 
 
@@ -59,9 +62,7 @@ Rails.application.routes.draw do
     get 'success', to: 'orders#success'
     get 'failed', to: 'orders#failed'
 
-    #chatbot
     resources :chatbots
-
     get 'chatbot', to: 'chatbots#chatbot'
     match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
     get 'get_chat_messages', to: 'chatbots#get_chat_messages'
