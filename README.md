@@ -121,6 +121,7 @@ rails db:migrate
 rails db:seed
 ```
 
+
 - Run the server
 
 ```bash
