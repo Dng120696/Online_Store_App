@@ -1,0 +1,53 @@
+       <!-- Product Modal -->
+<div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-auto bg-white shadow-lg z-[120] p-8 rounded-lg hidden" id="product_modal_<%= product.id %>">
+  <button class="close-modal absolute top-5 right-6 text-lg font-bold text-gray-700" data-product-id="<%= product.id %>"><i class="fa-solid fa-xmark"></i></button>
+  <h1 class="text-3xl font-medium tracking-wide text-center text-gray-900 mb-6">Product Details</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div>
+      <% if product.image.attached? %>
+        <%= image_tag url_for(product.image), class: 'w-full h-[350px] object-cover rounded-md shadow-[0_0_10px_rgba(0,0,0,0.15)]' %>
+      <% else %>
+        <%= image_tag 'default_image.jpg', class: 'w-full h-[350px] object-cover rounded-md shadow-[0_0_10px_rgba(0,0,0,0.15)]' %>
+      <% end %>
+      <h2 class="text-2xl font-bold mt-4 text-gray-900"><%= product.name %></h2>
+      <ul class="flex items-center gap-4 text-sm">
+        <li class='list-none text-gray-700 font-bold'>
+          <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+          <%= product.reviews.size > 0 ? format('%.1f', product.average_rating) : 0 %>
+        </li>
+        <li class="list-disc ml-3 text-gray-400 font-semibold">
+          <%= product.order_items_count %> Sold
+        </li>
+      </ul>
+      <p class="text-2xl font-semibold mb-2 text-gray-900"><%= number_to_currency(product.price) %></p>
+    </div>
+    <div class="reviews">
+      <p class="text-lg mb-2 text-gray-700"><%= product.description %></p>
+      <h3 class="text-xl font-bold mb-2 text-gray-900">Reviews</h3>
+      <div class = "product_review h-[40vh] pr-2 overflow-y-auto flex flex-col gap-4">
+        <% if product.reviews.any? %>
+          <% product.reviews.includes(:user).each do |review| %>
+            <div class="review bg-gray-100 p-3 rounded-lg ">
+              <p class="text-sm font-semibold mb-1 text-gray-900"><%= review.user.firstname %> <%= review.user.lastname %></p>
+              <p class="mb-1 text-gray-700">
+                <% (1..5).each do |i| %>
+                  <% if i <= review.rating %>
+                    <i class="fas fa-star text-yellow-500"></i>
+                  <% else %>
+                    <i class="far fa-star text-gray-400"></i>
+                  <% end %>
+                <% end %>
+              </p>
+              <p class="mb-2 text-gray-700"><%= review.comment %></p>
+              <p class="text-sm text-gray-500">
+                <% date_created = review.created_at + 8.hours %>
+                <%= date_created.strftime("%B %d, %Y %H:%M:%S %p") %>
+              </p>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="h-[80%] flex items-center justify-center text-gray-400">No reviews yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>

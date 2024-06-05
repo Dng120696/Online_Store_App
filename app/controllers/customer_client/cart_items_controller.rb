@@ -11,10 +11,10 @@ class CustomerClient::CartItemsController < ApplicationController
         if @cart_item.save
             redirect_to customer_client_cart_index_path, notice: 'Product added to cart.'
         else
-          redirect_to customer_client_dashboard_index_path, alert: 'Unable to add product to cart.'
+          redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search]), alert: 'Unable to add product to cart.'
         end
       else
-        redirect_to customer_client_dashboard_index_path, alert: 'Out of Stock.'
+        redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search]), alert: 'Out of Stock.'
       end
     end
   end
@@ -22,7 +22,7 @@ class CustomerClient::CartItemsController < ApplicationController
   def destroy
     @cart_item = CartItem.find(params[:id])
     @cart_item.destroy
-    redirect_to customer_client_dashboard_index_path, notice: 'Product removed from cart.'
+    redirect_to customer_client_dashboard_index_path(category:'Best Seller',search:''), notice: 'Product removed from cart.'
   end
 
 

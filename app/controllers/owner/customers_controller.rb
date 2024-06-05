@@ -19,7 +19,6 @@ class Owner::CustomersController < ApplicationController
     @user = User.new(user_params)
     @user.password = "password123"
     if @user.save
-      UserMailer.approved_email(@user).deliver_later
       redirect_to new_owner_customer_address_path(@user)
     else
       render :new

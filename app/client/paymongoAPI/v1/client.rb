@@ -69,9 +69,17 @@ class PaymongoAPI::V1::Client
     )
   end
 
+  def payment_lists
+    request(
+      method: :get,
+      endpoint: "/payments",
+      body: {},
+      key:  SECRET_KEY
+    )
+
+  end
   def create_payment_source(amount,type,success_url,failed_url,billing_details:{})
 
-  p amount * 100
     request(
       method: :post,
       endpoint: '/sources',
@@ -123,6 +131,26 @@ class PaymongoAPI::V1::Client
       key: SECRET_KEY
     )
   end
+
+  def refund_payment(amount,notes,reason,payment_id)
+    request(
+      method: :post,
+      endpoint: 'https://api.paymongo.com/refunds',
+      body: {
+        data: {
+        attributes: {
+          amount: amount.to_i * 100,
+          notes: notes,
+          payment_id: payment_id,
+          reason: reason
+          }
+        }
+      },
+      key: SECRET_KEY
+    )
+
+  end
+
 
 
   private

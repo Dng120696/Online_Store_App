@@ -1,75 +1,22 @@
-<div class="w-[clamp(300px,90%,750px)] mx-auto pt-36  ">
-  <div class="grid grid-cols-6 text-base font-semibold tracking-[1px] text-gray-600 text-center">
-    <%= render 'status_tab'%>
+<div class="w-[clamp(300px,90%,1000px)] mx-auto pt-36  ">
+  <div id="orders_container" data-url="<%=  load_orders_customer_client_orders_path(status:params[:status]) %>" class = "">
+    <%= render 'shared/loading' %>
   </div>
-  <h1 class="text-2xl  pt-10 border-b-[1px] border-b-gray-300 pb-4">Orders</h1>
-  <% if @orders&.present? %>
-    <% @orders&.each do |order| %>
-      <div class="bg-white  border-b-[1px] border-b-gray-300 py-6 ">
-        <div class = 'flex items-center justify-between'>
-          <h2 class="text-lg font-normal">Order #<%= order.id %></h2>
-          <p class="text-[12px] bg-[rgb(185,189,195)] opacity-90  py-1 px-2 rounded-sm  text-gray-100 uppercase font-thin tracking-[2px]"><strong>
-              <%= order.status %>
-            </strong> </p>
-        </div>
-        <% order.order_items.each do |order_item| %>
-          <ul class="flex items-center gap-4 py-2 ">
-            <li class=" ">
-              <% if order_item.product.image.attached? %>
-                <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
-              <% else %>
-                <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
-              </li>
-            <% end %>
-            <li class="text-lg text-gray-500 mr-2">
-              <li>
-                <span class = 'block '>
-                  <%= order_item.product.name %>
-                </span>
-                <span>
-                  <%= order_item.quantity %>
-                </span> x 
-                <span class = 'mr-2'>
-                  <%= number_to_currency(order_item.product.price) %>
-                </span>
-                <strong>
-                  <%= number_to_currency(order_item.product.price * order_item.quantity) %>
-                </strong>
-              </li>
-            </li>
-          </ul>
-        <% end %>
-        <p class="  pt-3 ">
-          <span class = 'pl-28 text-lg'>Total</span>
-          <span class ='pl-8 text-xl font-bold'>
-            <%= number_to_currency(order.total) %>
-          </span>
-        </p>
-        <div class = 'text-sm pl-24 py-6 flex items-center gap-10'>
-          <p class = 'text-gray-600'>
-            <span class = 'uppercase  block mb-2 font-semibold '>
-              Order Placed
-            </span>
-            <span>
-              <% date_created = order.created_at + 8.hours%>
-              <%= date_created.strftime("%d %B %Y") %>
-            </span>
-          </p>
-          <p class = 'text-gray-600'>
-            <span class = 'uppercase  block mb-2 font-semibold text-gray-600s'>
-              Last Update
-            </span>
-            <span>
-              <% date_updated = order.updated_at + 8.hours%>
-              <%= date_updated.strftime("%d %B %Y") %>
-            </span>
-          </p>
-        </div>
-      </div>
-    <% end %>
-  <%else%>
-    <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center'>
-      <p>No orders available</p>
-    </div>
-  <%end%>
 </div>
+<div class = ' overlay hidden'>
+  <script>
+    document.addEventListener('turbo:load', function() {
+      const ordersContainer = document.getElementById('orders_container');
+     const url = ordersContainer.dataset.url;
+      function load() {
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            ordersContainer.innerHTML = html;
+            initializeOrder();
+          })
+      }
+
+      load();
+    });
+  </script>
