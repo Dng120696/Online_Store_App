@@ -24,28 +24,30 @@
     <div class="reviews">
       <p class="text-lg mb-2 text-gray-700"><%= product.description %></p>
       <h3 class="text-xl font-bold mb-2 text-gray-900">Reviews</h3>
-      <% if product.reviews.any? %>
-        <% product.reviews.includes(:user).each do |review| %>
-          <div class="review bg-gray-100 p-3 rounded-lg mb-4">
-            <p class="text-sm font-semibold mb-1 text-gray-900"><%= review.user.firstname %> <%= review.user.lastname %></p>
-            <p class="mb-1 text-gray-700">
-              <% (1..5).each do |i| %>
-                <% if i <= review.rating %>
-                  <i class="fas fa-star text-yellow-500"></i>
-                <% else %>
-                  <i class="far fa-star text-gray-400"></i>
+      <div class = "product_review h-[40vh] pr-2 overflow-y-auto flex flex-col gap-4">
+        <% if product.reviews.any? %>
+          <% product.reviews.includes(:user).each do |review| %>
+            <div class="review bg-gray-100 p-3 rounded-lg ">
+              <p class="text-sm font-semibold mb-1 text-gray-900"><%= review.user.firstname %> <%= review.user.lastname %></p>
+              <p class="mb-1 text-gray-700">
+                <% (1..5).each do |i| %>
+                  <% if i <= review.rating %>
+                    <i class="fas fa-star text-yellow-500"></i>
+                  <% else %>
+                    <i class="far fa-star text-gray-400"></i>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </p>
-            <p class="mb-2 text-gray-700"><%= review.comment %></p>
-            <p class="text-sm text-gray-500">
-              <% date_created = review.created_at + 8.hours %>
-              <%= date_created.strftime("%B %d, %Y %H:%M:%S %p") %>
-            </p>
-          </div>
+              </p>
+              <p class="mb-2 text-gray-700"><%= review.comment %></p>
+              <p class="text-sm text-gray-500">
+                <% date_created = review.created_at + 8.hours %>
+                <%= date_created.strftime("%B %d, %Y %H:%M:%S %p") %>
+              </p>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="h-[80%] flex items-center justify-center text-gray-400">No reviews yet.</p>
         <% end %>
-      <% else %>
-        <p class="h-[80%] flex items-center justify-center text-gray-400">No reviews yet.</p>
-      <% end %>
+      </div>
     </div>
   </div>

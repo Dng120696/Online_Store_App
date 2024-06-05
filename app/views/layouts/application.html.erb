@@ -16,7 +16,7 @@
         <%= render 'shared/header' %>
       <% end %>
     <% end %>
-    <div class="absolute <%= request.path ==  customer_client_dashboard_index_path ? 'top-[120px]' : 'bottom-[90px]' %> right-7  w-[300px] z-[100]">
+    <div class="absolute top-[123px] right-7  w-[300px] z-[100]">
       <% unless notice.blank? %>
         <div class="notice-container message-container flex justify-between items-center bg-green-200 text-green-900 px-4 py-3 rounded-md flex-grow-1 w-full self-start">
           <p class="notice"><%= notice %></p>
@@ -80,7 +80,7 @@
             element.classList.add('fade-out');
             setTimeout(() => {
               element.style.display = 'none';
-            }, 500);
+            }, 600);
           }
         };
 
@@ -90,5 +90,9 @@
         });
       });
     </script>
+    <script src="<%= asset_path('products.js') %>"></script>
+    <script src="<%= asset_path('cart_page.js') %>"></script>
+    <script src="<%= asset_path('checkout_page.js') %>"></script>
+    <script src="<%= asset_path('order_page.js') %>"></script>
   </body>
 </html>

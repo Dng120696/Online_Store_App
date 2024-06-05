@@ -1,0 +1,61 @@
+<div>
+  <h1 class="text-3xl text-center  font-bold mb-6"><%= params[:category] %></h1>
+  <% if @products.present?%>
+    <div class="all_products flex items-center justify-center flex-wrap gap-6">
+      <% @products.each do |product| %>
+        <div class="product border p-3 rounded-lg relative">
+          <div class="w-full h-[300px] relative">
+            <% if product.inventory_level.zero? %>
+              <div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center rounded-lg">
+                <span class="text-4xl text-white font-bold text-center">
+                  SOLD<br>
+                  OUT
+                </span>
+              </div>
+            <% end %>
+            <div class="view-details cursor-pointer" data-product-id="<%= product.id %>">
+              <% if product.image.attached? %>
+                <%= image_tag url_for(product.image), class: 'w-full h-[300px] object-cover rounded-lg' %>
+              <% else %>
+                <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
+              <% end %>
+            </div>
+          </div>
+          <h2 class="text-xl font-bold mt-4"><%= product.name %></h2>
+          <ul class="flex items-center gap-4 text-sm">
+            <li class='list-none text-gray-700 font-bold'>
+              <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+              <%= product.reviews.size > 0 ? format('%.1f', product.average_rating) : 0 %>
+            </li>
+            <li class="list-disc ml-3 text-gray-400 font-semibold">
+              <%= product.order_items_count %> Sold
+            </li>
+          </ul>
+          <p class="mb-4 text-xl tracking-[1px] font-semibold text-gray-800"><%= number_to_currency(product.price) %></p>
+          <%= form_with model: CartItem.new, url: customer_client_cart_items_path, local: true, class: "form_cart_item" do |form| %>
+            <%= hidden_field_tag :category, params[:category] %>
+            <%= form.hidden_field :product_id, value: product.id %>
+            <%= form.hidden_field :quantity, value: 1, class: 'product_item' %>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2 text-center bg-gray-100 rounded-md font-semibold py-[5px]">
+                <button type="button" class="btn_decrement_product px-4 text-xl text-gray-500">-</button>
+                <span class='product_quantity text-gray-600'>1</span>
+                <button type="button" class="btn_increment_product px-4 text-xl text-gray-500">+</button>
+              </div>
+              <div class='relative w-full'>
+                <i class="fa-solid fa-cart-shopping absolute top-1/2 left-6 text-white text-sm translate-x-[-50%] translate-y-[-50%]"></i>
+                <%= form.submit "Add to Cart", disabled: product.inventory_level.zero?, class: "w-full text-white font-bold py-2 text-sm px-4 rounded hover:cursor-pointer pl-8 #{product.inventory_level.zero? ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'}" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <%= render 'product_modal', product: product%>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center border'>
+    <p>No products available</p>
+  </div>
+<% end %>
+</div>
