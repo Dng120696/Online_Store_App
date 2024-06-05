@@ -1,0 +1,14 @@
+<% if messages.blank? || messages.try(:[], "error") == true %>
+    <p>No messages found.</p>
+<% else %>
+  <% messages["messages"].each do |message| %>
+    <div class="<%= (message["user"]["nickname"] == "Chat Bot" || message["user"]["nickname"] == "Chad Ayop") ? 'text-left' : 'text-right' %>">
+      <% if message["user"]["nickname"] == "Chad Ayop" %>
+        <p class="font-bold">Admin</p>
+      <% else %>
+        <p class="font-bold"><%= message["user"]["nickname"].split("_")[0] %></p>
+      <% end %>
+      <div class="bg-blue-500 text-white inline-block rounded-l-md rounded-r-md py-1 px-2"><%= message["message"] %></div>
+    </div>
+  <% end %>
+<% end %>
