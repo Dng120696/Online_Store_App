@@ -37,17 +37,17 @@
       <div class='grid grid-cols-[0.85fr,3fr] gap-6'>
         <%= render 'layouts/admin_side_bar' %>
       <% end %>
-      <div class='w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center'>
-        <%= yield %>
-        <% unless admin_signed_in? %>
-          <% unless devise_page? %>
-            <% if request.path == root_path || request.path == customer_client_dashboard_index_path %>
-              <%= render 'shared/footer' %>
+        <div class='w-[clamp(300px,90%,1300px)] mx-auto min-h-screen grid place-items-center'>
+          <%= yield %>
+          <% unless admin_signed_in? %>
+            <% unless devise_page? %>
+              <% if request.path == root_path || request.path == customer_client_dashboard_index_path %>
+                <%= render 'shared/footer' %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
     <%= render 'layouts/modal', cart_items: @cart_items %>
     <div class='overlay hidden'></div>
     <% if user_signed_in?%>
@@ -70,8 +70,6 @@
     <%end%>
     <script>
       document.addEventListener('turbo:load', function() {
-
-
         const messageContainers = document.querySelectorAll('.message-container');
 
         const fadeOut = (element) => {
