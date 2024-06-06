@@ -1,55 +1,82 @@
 <!-- app/views/devise/registrations/new.html.erb -->
-<h2>Sign up</h2>
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-  <div class="field">
-    <%= f.label :firstname %><br />
-    <%= f.text_field :firstname %>
-  </div>
-  <div class="field">
-    <%= f.label :lastname %><br />
-    <%= f.text_field :lastname %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-  <%= f.fields_for :address do |a| %>
-    <%= a.hidden_field :id %>
-    <div class="field">
-      <%= a.label :street, 'Street/Barangay' %><br />
-      <%= a.text_field :street %>
+<body class="fp-background">
+  <div class="min-h-screen flex fle-col items-center justify-center py-6 px-4">
+    <div class="grid items-center gap-2 w-full">
+      <div class = 'max-w-lg w-full border py-8 px-6 rounded border-gray-300 bg-white'>
+        <h3 class="text-2xl font-extrabold text-center mt-5 mb-5">Create an account</h3>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= devise_error_messages! %>
+            <div class="flex gap-3">
+              <div class="w-full mb-2">
+              <%= f.label 'First name', class:"text-sm block mb-2" %>
+              <%= f.text_field :firstname, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+              </div>
+
+              <div class="w-full mb-2">
+                <%= f.label 'Last name', class:"text-sm block mb-2" %>
+                <%= f.text_field :lastname, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+              </div>
+            </div>
+            
+            <div class="w-full mb-2">
+              <%= f.label 'Email', class:"text-sm block mb-2" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+            </div>
+
+            <div class="w-full mb-2">
+              <%= f.label :password, class:"text-sm inline" %>
+              <% if @minimum_password_length %>
+                <span class="text-xs text-gray-700">(<%= @minimum_password_length %> characters minimum)</span>
+              <% end %>
+              <%= f.password_field :password, autocomplete: "new-password", class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+            </div>
+
+            <div class="w-full mb-2">
+              <%= f.label :password_confirmation, class:"text-sm block mb-2" %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]"%>
+            </div>
+            <%= f.fields_for :address do |a| %>
+              <%= a.hidden_field :id %>
+              <div class="w-full mb-2">
+                <%= a.label :street, 'Street/Barangay', class:"text-sm block mb-2" %>
+                <%= a.text_field :street, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+              </div>
+              <div class="w-full mb-2">
+                <%= a.label :city, class:"text-sm block mb-2" %>
+                <%= a.text_field :city, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+              </div>
+              <div class="flex gap-3">
+                   <div class="w-full mb-2">
+                    <%= a.label :state_or_province, 'State/Province', class:"text-sm block mb-2" %>
+                    <%= a.text_field :state_or_province, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+                  </div>
+                  <div class="w-full mb-2">
+                    <%= a.label :zip_code, class:"text-sm block mb-2" %>
+                    <%= a.text_field :zip_code, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+                  </div>
+              </div>
+             
+              <div class="w-full mb-2">
+                <%= a.label :country, class:"text-sm block mb-2" %>
+                <%= a.text_field :country, class: "w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]" %>
+              </div>
+            <% end %>
+            <div class="actions">
+              <%= f.submit "Sign up", class:"mt-6 mb-4 w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-800 focus:outline-none" %>
+            </div>              
+
+            <div class="text-center">
+              <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %><br/>
+                  <%= link_to "Didn't receive confirmation instructions?", new_user_confirmation_path(resource_name), class: "text-blue-600 hover:underline text-sm center" %><br />
+              <% end %>
+
+              <%- if controller_name != 'sessions' %>
+                <%= link_to "Back to login", new_session_path(resource_name), class: "text-blue-600 hover:underline text-sm" %> <br/>
+              <% end %>
+            </div> 
+          <% end %>
+      </div>
     </div>
-    <div class="field">
-      <%= a.label :city %><br />
-      <%= a.text_field :city %>
-    </div>
-    <div class="field">
-      <%= a.label :state_or_province, 'State/Province' %><br />
-      <%= a.text_field :state_or_province %>
-    </div>
-    <div class="field">
-      <%= a.label :zip_code%><br />
-      <%= a.text_field :zip_code %>
-    </div>
-    <div class="field">
-      <%= a.label :country %><br />
-      <%= a.text_field :country %>
-    </div>
-  <% end %>
-  <div class="actions">
-    <%= f.submit "Sign up" %>
   </div>
-<% end %>
-<%= render "devise/shared/links" %>
+
+</body>

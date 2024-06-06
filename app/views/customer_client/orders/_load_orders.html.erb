@@ -1,0 +1,125 @@
+  
+<div class="grid grid-cols-7 text-base font-semibold tracking-[1px] text-gray-600 text-center">
+  <%= render 'status_tab'%>
+</div>
+<h1 class="text-2xl  pt-10 border-b-[1px] border-b-gray-300 pb-4">Orders</h1>
+<% if @orders&.present? %>
+  <% @orders&.each do |order| %>
+    <div class="bg-white  border-b-[1px] border-b-gray-300 py-6 ">
+      <div class = 'flex items-center justify-between'>
+        <h2 class="text-lg font-normal">Order #<%= order.id %></h2>
+        <p class="text-[12px] bg-[rgb(185,189,195)] opacity-90  py-1 px-2 rounded-sm  text-gray-100 uppercase font-thin tracking-[2px]"><strong>
+            <%= order.status %>
+          </strong> </p>
+      </div>
+      <% order.order_items.each do |order_item| %>
+        <ul class="flex items-center gap-4 py-2 justify-between">
+          <div class = 'flex  gap-4'>
+            <li class=" ">
+              <% if order_item.product.image.attached? %>
+                <%= image_tag url_for(order_item.product.image), class: 'w-14 h-14 object-cover rounded-md' %>
+              <% else %>
+                <%= image_tag 'default_image.jpg', class: 'w-14 h-14 object-cover  rounded-md' %>
+              </li>
+            <% end %>
+            <li class="text-lg text-gray-500 mr-2">
+              <li>
+                <span class = 'block '>
+                  <%= order_item.product.name %>
+                </span>
+                <span>
+                  <%= order_item.quantity %>
+                </span> x 
+                <span class = 'mr-2'>
+                  <%= number_to_currency(order_item.product.price) %>
+                </span>
+                <strong>
+                  <%= number_to_currency(order_item.product.price * order_item.quantity) %>
+                </strong>
+              </li>
+            </li>
+          </div>
+          <% if order.status == 'completed'%>
+            <% if order_item.product.reviews.where(user_id: current_user.id).exists? %>
+              <li class="font-medium tracking-[1px]">
+                <i class="fa-regular fa-star"></i> Rated
+              </li>
+            <%else %>
+              <!-- Show rate modal button -->
+              <li id="rate_modal_<%= order_item.id %>" class="font-medium tracking-[1px] cursor-pointer">
+                <i class="fa-solid fa-star" style="color: #FFD43B;"></i> Rate
+              </li>
+            <% end %>
+          <%end%>
+          <%# RATE MODAL %>
+          <%= render 'rate_modal', order_item:order_item %>
+        </div>
+      </ul>
+    <% end %>
+    <p class="  pt-3 ">
+      <span class = 'pl-28 text-lg'>Total</span>
+      <span class ='pl-8 text-xl font-bold'>
+        <%= number_to_currency(order.total) %>
+      </span>
+    </p>
+    <div class = 'text-sm pl-24 py-6 flex items-center justify-between gap-10'>
+      <div class = 'flex items-center gap-10'>
+        <p class = 'text-gray-600'>
+          <span class = 'uppercase  block mb-2 font-semibold '>
+            Order Placed
+          </span>
+          <span>
+            <% date_created = order.created_at + 8.hours%>
+            <%= date_created.strftime("%B %d, %Y %H:%M:%S %p")  %>
+          </span>
+        </p>
+        <p class = 'text-gray-600'>
+          <span class = 'uppercase  block mb-2 font-semibold text-gray-600s'>
+            Last Update
+          </span>
+          <span>
+            <% date_updated = order.updated_at + 8.hours%>
+            <%= date_updated.strftime("%B %d, %Y %H:%M:%S %p")  %>
+          </span>
+        </p>
+      </div>
+      <div>
+        <% if order.status == 'received' %>
+          <button id = "refund_modal_<%=order.id%>" class = 'text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Refund Order</button>
+        <% elsif order.status == 'pending' %>
+          <button id = "cancel_modal_<%=order.id%>" class = 'cancel_modal text-sm font-semibold text-gray-50 bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md' >Cancel Order</button>
+        <%end %>
+        <%# Cancel Modal %>
+        <div id = "confirm_cancel_container_<%=order.id%>" class = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[350px] h-auto bg-white shadow-lg z-[120] px-8 py-6 rounded-lg  text-center hidden">
+          <h1 class = 'text-xl font-normal'>Are you sure you want to <strong>Cancel </strong> this Order?</h1>
+          <div class = 'grid grid-cols-2 gap-6 items-center'>
+            <button class = 'bg-red-600 py-2 rounded-md text-gray-50 font-semibold'>
+              <%= link_to 'Confirm', cancel_order_customer_client_order_path(order), data: {turbo_method: :patch}%>
+            </button>
+            <button id = "close_order_modal_<%=order.id%>"  class = 'bg-green-600 py-2 rounded-md text-gray-50 font-semibold'>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if order.comment.body.present? %>
+      <button class="btn btn-primary view-comment-btn" data-comment="<%= order.comment %>">View Comment</button>
+      <div class="comment-box hidden bg-gray-100 p-4 mt-4 rounded-md">
+        <p class="text-gray-600"><%= order.comment.body %></p>
+      </div>
+    <% end %>
+  </div>
+  <!--Refund Modal -->
+  <%= render 'refund_modal', order: order%>
+<% end %>
+<%else%>
+  <div class='w-full h-[62vh] text-gray-400 flex items-center justify-center'>
+    <%unless params[:cancelled]%>
+      <p>No orders available</p>
+    <%else%>
+      <p>No orders Cancelled</p>
+    <%end%>
+  </div>
+<%end%>
+</div>

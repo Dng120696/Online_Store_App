@@ -4,6 +4,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "./cart-modal.js"
 import "./update_order_status.js"
+import "chartkick"
+import "Chart.bundle"
 
 function scrollBottom() {
   var messages = document.getElementById("chat-messages");
@@ -13,7 +15,6 @@ function scrollBottom() {
 
   }
 }
-
 
 document.addEventListener("turbo:load",function(){
   scrollBottom();
