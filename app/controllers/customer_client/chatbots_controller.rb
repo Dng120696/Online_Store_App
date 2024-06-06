@@ -21,7 +21,8 @@ class CustomerClient::ChatbotsController < ApplicationController
   end
 
   def send_message
-    @chatbot_client.send_message(@custom_user_id, @channel_url, params[:message])
+    send_message = @chatbot_client.send_message(@custom_user_id, @channel_url, params[:message])
+    p send_message
     redirect_to root_path
   end
 
@@ -32,8 +33,8 @@ class CustomerClient::ChatbotsController < ApplicationController
   end
 
   def initialize_values
-    @custom_user_id = "#{current_user.email.split("@").first}"
-    @user_nick_name = "#{current_user.firstname}"
+    @custom_user_id = "#{current_user.id}_#{current_user.email.split("@").first}"
+    @user_nick_name = "#{current_user.firstname} #{current_user.lastname}"
     @channel_name = "Private Message by #{current_user.firstname}"
     @channel_url = "conversation_channel_url_#{current_user.id}_#{current_user.email.split("@").first}"
   end
