@@ -42,7 +42,7 @@ class CustomerClient::OrdersController < ApplicationController
     if @order.update(status: :cancelled)
 
       UserMailer.notify_order_cancelled(@user, @order).deliver_later
-      
+
       redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled successfully.'
 
     end
@@ -82,7 +82,7 @@ class CustomerClient::OrdersController < ApplicationController
 
     if @order.save
          UserMailer.notify_order_placed(@user).deliver_later
-      
+
          @cart.cart_items.each do |cart_item|
             @order.order_items.create(
               product: cart_item.product,

@@ -7,7 +7,9 @@
     <button class="absolute top-6 right-6 text-gray-500 focus:outline-none text-2xl" id="chatbot-close" type="button" onclick="toggleChatbot()">
       <i class="fa-solid fa-xmark"></i>
     </button>
-    <% if @get_messages.nil? || @get_messages.empty? || @get_messages.try(:[], "error") == true%>
+
+    <% if @get_messages.nil? || @get_messages.empty? || @get_messages.try(:[], "error") == true %>
+
       <p>No messages yet.</p>
     <% else %>
       <ul id="chat-messages" class = 'h-[40vh] overflow-y-scroll'>
