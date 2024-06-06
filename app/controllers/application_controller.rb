@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_cart,:set_chatbot_messages, if: :user_signed_in?
+  before_action :get_channel_list, if: :admin_signed_in?
   before_action :set_categories
 
   def configure_permitted_parameters
@@ -35,8 +36,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_channel_list
+    @chatbot_client ||= SendbirdAPI::V1::ClientChatbot.new
+    @channel_list = @chatbot_client.channel_list
+    p @channel_list
+
+  end
   def set_chatbot_messages
     @chatbot_client ||= SendbirdAPI::V1::ClientChatbot.new
+
     @channel_url = "conversation_channel_url_#{current_user.id}_#{current_user.email.split("@").first}"
     @custom_user_id = "#{current_user.id}_#{current_user.email.split("@").first}"
     @channel_name = "Private Message by #{current_user.firstname}"

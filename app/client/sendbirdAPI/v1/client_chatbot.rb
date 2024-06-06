@@ -65,7 +65,13 @@ class SendbirdAPI::V1::ClientChatbot
       true
     end
   end
-
+  def unread_messages(user_id)
+    response = request(
+      method: :get,
+      endpoint: "#{BASE_URL_CHAT}/users/#{user_id}/unread_message_count"
+      )
+      handle_response(response)
+  end
   # GET https://api-{application_id}.sendbird.com/v3/users/{user_id}/my_group_channels
   # admin
   def channel_list

@@ -32,8 +32,8 @@ class CustomerClient::ChatbotsController < ApplicationController
   end
 
   def initialize_values
-    @custom_user_id = "#{current_user.id}_#{current_user.email.split("@").first}"
-    @user_nick_name = "#{current_user.firstname} #{current_user.lastname[0]}"
+    @custom_user_id = "#{current_user.email.split("@").first}"
+    @user_nick_name = "#{current_user.firstname}"
     @channel_name = "Private Message by #{current_user.firstname}"
     @channel_url = "conversation_channel_url_#{current_user.id}_#{current_user.email.split("@").first}"
   end
