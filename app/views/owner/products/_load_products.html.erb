@@ -1,5 +1,5 @@
 <%if @products.present? %>
-  <ul class="space-y-4 product_items h-[75vh] overflow-x-hidden">
+  <ul class=" w-full space-y-4 product_items h-[75vh] overflow-x-hidden">
     <% @products.reverse.each do |product| %>
       <li class="grid grid-cols-[1fr,1fr,1.25fr,1fr,1.25fr] items-center py-3 pr-3 border-b-gray-300 border-b-[1px]">
         <div id="image_container_<%= product.id %>" class="relative w-24 h-24">
