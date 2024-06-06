@@ -2,9 +2,14 @@ class Owner::CustomersController < ApplicationController
   before_action :authenticate_admin!
   before_action :find_user, only: [:update,:show, :edit,:destroy]
 
-  def index
-      @users =  User.all
+  def index;end
+
+  def load_customer
+    @users =  User.all
+    render partial: 'load_customer'
   end
+
+
   def edit
    @address = @user.address
 

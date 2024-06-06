@@ -9,16 +9,14 @@ module ApplicationHelper
     end
     def greeting
         current_hour = Time.zone.now + 8.hours
-
+        p current_hour.hour
         case current_hour.hour
-        when 6..11
+        when 0..12
           "Morning"
-        when 12..17
+        when 12..18
           "Afternoon"
-        when 18..21
-          "Evening"
         else
-          "Night"
+          "Evening"
         end
       end
 end

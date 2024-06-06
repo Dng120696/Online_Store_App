@@ -3,10 +3,10 @@
     <h1 class="text-3xl font-bold"><%= @user.firstname %> <%= @user.lastname %></h1>
     <%= link_to 'Edit', edit_owner_customer_path(@user), class: 'bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600' %>
   </div>
-  <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+  <div class="w-full grid gap-6 items-start">
     <!-- User Details -->
-    <div class="flex flex-col justify-start items-start space-y-4">
-      <h2 class="text-xl font-bold text-gray-700">User Details</h2>
+    <div class="flex flex-col justify-start items-start space-y-4 border rounded-lg p-4 shadow-md">
+      <h2 class="text-2xl font-bold text-gray-700">User Details</h2>
       <p class="text-gray-600"><strong>Email:</strong> <%= @user.email %></p>
       <p class="text-gray-600"><strong>Street/Barangay:</strong> <%= @user.address.street %></p>
       <p class="text-gray-600"><strong>City/Town:</strong> <%= @user.address.city %></p>
@@ -14,39 +14,7 @@
       <p class="text-gray-600"><strong>Zip Code:</strong> <%= @user.address.zip_code %></p>
       <p class="text-gray-600"><strong>Country:</strong> <%= @user.address.country %></p>
     </div>
-    <!-- Order List -->
-    <div class="flex flex-col justify-start items-start space-y-4">
-      <h2 class="text-xl font-bold text-gray-700">Order List</h2>
-      <% if @user.orders.any? %>
-        <% @user.orders.each do |order| %>
-          <div class="border rounded-lg p-4 shadow-md w-full">
-            <h3 class="text-lg font-semibold text-gray-800">Order #<%= order.id %></h3>
-            <h4 class="text-md font-semibold text-gray-700 mt-2">Items:</h4>
-            <% order.order_items.each do |order_item| %>
-              <ul class="list-disc list-inside mt-2 space-y-2">
-                <li class="flex items-center space-x-4">
-                  <% if order_item.product.image.attached? %>
-                    <%= image_tag url_for(order_item.product.image), class: 'w-16 h-16 rounded object-cover' %>
-                  <% else %>
-                    <%= image_tag 'default_image.jpg', class: 'w-16 h-16 rounded object-cover' %>
-                  <% end %>
-                  <div>
-                    <p class="text-gray-800"><%= order_item.product.name %></p>
-                    <p class="text-gray-600"><%= number_to_currency(order_item.price) %> x <%= order_item.quantity %></p>
-                  </div>
-                </li>
-              </ul>
-            <% end %>
-            <p class="text-gray-600"><strong>Order Date:</strong> <%= order.created_at.strftime("%B %d, %Y") %></p>
-            <p class="text-gray-600"><strong>Total Price:</strong> <%= number_to_currency(order.total) %></p>
-          </div>
-        <% end %>
-      <% else %>
-        <p class="text-gray-600">No orders found for this user.</p>
-      <% end %>
+    <div class="w-full mt-6 flex justify-start">
+      <%= link_to 'Back to Customers', owner_customers_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
     </div>
   </div>
-  <div class="w-full mt-6 flex justify-start">
-    <%= link_to 'Back to Customers', owner_customers_path, class: 'bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600' %>
-  </div>
-</div>

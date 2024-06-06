@@ -51,6 +51,8 @@
 .product_review::-webkit-scrollbar,
 #chat-messages::-webkit-scrollbar,
 .messages::-webkit-scrollbar,
+.categories::-webkit-scrollbar,
+.dashboard_order::-webkit-scrollbar,
 .product_items::-webkit-scrollbar {
   width: 12px;
 }
@@ -61,6 +63,8 @@
 #chat-messages::-webkit-scrollbar-track,
 .product_review::-webkit-scrollbar-track,
 .messages::-webkit-scrollbar-track,
+.categories::-webkit-scrollbar-track,
+.dashboard_order::-webkit-scrollbar-track,
 .product_items::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -71,6 +75,8 @@
 #chat-messages::-webkit-scrollbar-thumb,
 .product_review::-webkit-scrollbar-thumb,
 .messages::-webkit-scrollbar-thumb,
+.categories::-webkit-scrollbar-thumb,
+.dashboard_order::-webkit-scrollbar-thumb,
 .product_items::-webkit-scrollbar-thumb {
   @apply bg-gray-200;
   border-radius: 6px;

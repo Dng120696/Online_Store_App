@@ -3,7 +3,8 @@ class CustomerClient::DashboardController < ApplicationController
   def index; end
 
   def load_products
-    @category = Category.find_by(title: params[:category].empty? ? 'Shop All' : params[:category])
+    @category = Category.find_by(title: params[:category].empty? ? 'Best Seller' : params[:category])
+
     search_product = params[:search]
 
     if @category

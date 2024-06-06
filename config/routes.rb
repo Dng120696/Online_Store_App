@@ -13,18 +13,22 @@ Rails.application.routes.draw do
   namespace :owner do
     resources :products do
       post 'upload_image', on: :member
+      get :load_products, on: :collection
     end
     resources :customers do
-      resources :addresses
+      get :load_customer , on: :collection
     end
-    resources :orders,only: [:index,:update]
-    resources :categories
+    resources :orders,only: [:index,:update] do
+      get :load_orders , on: :collection
+    end
+    resources :categories do
+      get :load_categories , on: :collection
+    end
     resources :dashboard, only: [:index]
-    get 'search_user', to: 'orders#search_user'
-
     resources :chatbots do
       get :load_messages, on: :collection
     end
+    get 'search_user', to: 'orders#search_user'
     match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
   end
 

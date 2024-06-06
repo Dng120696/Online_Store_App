@@ -10,46 +10,24 @@
       <li class="py-2 px-4">Status</li>
       <li class="py-2 px-4">Total</li>
     </ul>
-    <div class="space-y-4 orders h-[75vh] overflow-x-hidden">
-      <% if @orders.present?%>
-        <% @orders.each do |order| %>
-          <ul id="order_container_<%= order.id %>" class="grid grid-cols-5 gap-4 items-center py-3 pr-3 border-b-[1px] border-b-gray-300">
-            <% order_date = order[:created_at] + 8.hours %>
-            <li class="py-2 px-4"><%= order_date.strftime("%B %d, %Y") %></li>
-            <li class="py-2 px-4"><%= order[:id] %></li>
-            <li class="py-2 px-4">
-              <% if order.user&.firstname && order.user&.lastname %>
-                <%= order.user.firstname %> <%= order.user.lastname %>
-              <% else %>
-                Patrick Nebab
-              <% end %>
-            </li>
-            <li class="py-2 px-4">
-              <%= form_with model: order, url: owner_order_path(order), method: :patch, data: { remote: true }, id: "order_form_#{order.id}" do |form| %>
-                <%= form.select :status, Order.statuses.keys, selected: order.status, class: "w-full p-2 border border-gray-300 rounded" %>
-              <% end %>
-            </li>
-            <li class="py-2 px-4"><%= number_to_currency(order[:total]) %></li>
-          </ul>
-        <% end %>
-      <%else%>
-        <%= render 'shared/no_available', description: 'No product available'%>
-      <%end %>
+    <div id="owner_orders_container" data-url="<%=load_orders_owner_orders_path  %>" class = "flex items-center flex-col ">
+      <%= render 'shared/loading' %>
     </div>
   </div>
 </div>
 <script>
   document.addEventListener('turbo:load', function() {
-    const orderContainers = document.querySelectorAll('[id^=order_container_]');
+        const ownerOrdersContainer = document.getElementById('owner_orders_container');
+         const url = ownerOrdersContainer.dataset.url;
+      function load() {
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            ownerOrdersContainer.innerHTML = html;
+            intitializeOwnerOrders();
+          })
+      }
 
-    orderContainers.forEach(container => {
-      const orderId = container.id.split('_')[2];
-      const profileForm = document.getElementById(`order_form_${orderId}`);
-      const selectElement = profileForm.querySelector('select[name="order[status]"]');
-
-      selectElement.addEventListener('change', function() {
-        this.form.submit();
-      });
-    });
-  });
+      load();
+        });
 </script>

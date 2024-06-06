@@ -1,6 +1,6 @@
 <div class =  "w-[clamp(300px,90%,500px)] mx-auto bg-white p-8 rounded-lg shadow-[0_5px_10px_rgba(0,0,0,0.25)]">
   <h1 class = 'text-3xl text-center'>Create Category</h1>
-  <%= form_with(model: @category, url: owner_categories_path,data:{turbo: false}) do |form| %>
+  <%= form_with(model: @category, url: @category.new_record? ? owner_categories_path : owner_category_path(@category),data:{turbo: false}) do |form| %>
     <%= render 'shared/error', obj: @category %>
     <div class="mb-6">
       <div class='flex items-center'>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="actions">
-      <%= form.submit 'Create', class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      <%= form.submit  @category.new_record? ? "Create Customer" : "Update Customer", class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
     </div>
   <% end %>
 </div>

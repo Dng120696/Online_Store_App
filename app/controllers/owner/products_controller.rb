@@ -3,8 +3,12 @@ class Owner::ProductsController < ApplicationController
   before_action :find_product,only: [:show,:edit,:update,:destroy,:upload_image]
   before_action :categories,only: [:new, :edit, :create, :update]
 
-  def index
+  def index; end
+
+  def load_products
     @products = current_admin.products.includes( image_attachment: :blob )
+
+    render partial: 'load_products'
   end
 
   def new
