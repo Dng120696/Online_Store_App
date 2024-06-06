@@ -11,8 +11,9 @@ class CustomerClient::RefundOrderController < ApplicationController
     @user = current_user
 
     if @order.update(status: :refunded)
-      UserMailer.notify_order_cancelled(@user).deliver_later
-       redirect_to customer_client_orders_path(status: 'refunded'), notice: 'Order successfully refunded.'
+      UserMailer.notify_order_refunded(@user, @order).deliver_later
+
+      redirect_to customer_client_orders_path(status: 'refunded'), notice: 'Order successfully refunded.'
     end
   end
 end
