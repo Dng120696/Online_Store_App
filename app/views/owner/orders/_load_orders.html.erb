@@ -1,5 +1,4 @@
- 
-<div class="space-y-4 orders h-[75vh] overflow-x-hidden">
+<div class="w-full space-y-4 orders h-[75vh] overflow-x-hidden">
   <% if @orders.present?%>
     <% @orders.each do |order| %>
       <ul id="order_container_<%= order.id %>" class="grid grid-cols-5 gap-4 items-center py-3 pr-3 border-b-[1px] border-b-gray-300">
