@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to our Online Store App, a robust web application built with Ruby on Rails. This document outlines the key features and customer stories that define our platform's functionality. Our application aims to provide a seamless shopping experience through comprehensive features including user authentication, product management, cart and checkout systems, payment integration with PayMongo, order management, and a chat capabilities via SendBird API.
+Welcome to our Online Store App, a robust web application built with Ruby on Rails. This document outlines the key features and customer stories that define our platform's functionality. Our application aims to provide a seamless shopping experience through comprehensive features including user authentication, product management, cart and checkout systems, payment integration with PayMongo API, order management, and a chat capabilities via SendBird API.
 
 ## Table of Contents
 1. [User Stories](#user-stories)
@@ -13,38 +13,60 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 4. [System Dependencies](#system-dependencies)
 5. [Contact Information](#contact-information)
 
-## User Stories
+## Features
 
 ### Customers
-- **User Story #1:** As a Customer, I want to create an account with an address to buy products.
-- **User Story #2:** As a Customer, I want to log in with my credentials so that I can access my account on the app.
-- **User Story #3:** As a Customer, I want to add a product to my cart.
-- **User Story #4:** As a Customer, I want to view my cart page.
-- **User Story #5:** As a Customer, I want to see all the products.
-- **User Story #6:** As a Customer, I want to see categories per product.
-- **User Story #7:** As a Customer, I want to search for a product.
-- **User Story #8:** As a Customer, I want to checkout my products in the cart.
-- **User Story #9:** As a Customer, I want to see a checkout page.
-- **User Story #10:** As a Customer, I want to add a new shipping address during checkout.
-- **User Story #11:** As a Customer, I want to select an existing shipping address during checkout.
-- **User Story #12:** As a Customer, I want to input payment details using PayMongo API.
-- **User Story #13:** As a Customer, I want to select either GCash or card payment options.
-- **User Story #14:** As a Customer, I want to confirm my order and be redirected to the PayMongo site.
-- **User Story #15:** As a Customer, I want to receive emails for order confirmations.
-- **User Story #16:** As a Customer, I want to see a thank you page after placing an order.
-- **User Story #17:** As a Customer, I want to view my order transaction list with filters for completed, shipped, and cancelled orders.
-- **User Story #18:** As a Customer, I want to cancel an order if it is still pending and receive an email confirmation for the cancellation.
-- **User Story #19:** As a Customer, I want to request a refund if the order status is received and receive an email confirmation for the refund.
-- **User Story #20:** As a Customer, I want to rate products if the order status is completed.
-- **User Story #21:** As a Customer, I want to view comments for my orders if they exist.
 
-### Admin  
+#### Account Management
+- Create an account with an address.
+- Log in with credentials.
+- Confirm email Address
 
-- **User Story #1:** As an Admin, I want to optionally view charts for orders and revenue on the dashboard page.
-- **User Story #1:** As an Admin, I want to manage products (CRUD) on the products page.
-- **User Story #2:** As an Admin, I want to update the status of orders on the orders page.
-- **User Story #3:** As an Admin, I want to manage customers (CRUD) on the customers page.
-- **User Story #4:** As an Admin, I want to manage messages of users (ongoing).
+#### Product Interaction
+- Add products to the cart.
+- View the cart page.
+- Browse all products.
+- View product details.
+- Search for products.
+
+#### Checkout Process (using Paymongo API)
+- Checkout products in the cart.
+- Add a new shipping address during checkout.
+- Select an existing shipping address during checkout.
+- Input payment details using PayMongo API.
+- Choose between GCash or card payment options.
+- Confirm the order and be redirected to PayMongo.
+- Receive order email notification.
+
+#### Order Management
+- View order transaction list with filters (completed, shipped, cancelled, etc).
+- Can Cancel a pending order and receive email notification.
+- Can Request a refund for received orders and receive email notification.
+- Can Rate products for completed orders.
+- View comments on orders if available.
+
+#### Chat (using SendBird API)
+- Can Ask questions to an AIChatbot chat
+- Can Message the Admin
+
+### Admin
+
+#### Dashboard
+- Chart for Order Total Amount per day for 1 month
+- Can See the Total Order Amount, Cancelled Amount, and Refund Amount
+
+#### Product Management
+- Create, read, update, and delete products.
+
+#### Order Management
+- Update the status of orders.
+
+#### Customer Management
+- Create, read, update, and delete customers.
+
+#### Message Management
+- Admin Can Receive Messages from Customer.
+- Can Send Messages to Customer.
 
 ## Images
 ### **ERD**
