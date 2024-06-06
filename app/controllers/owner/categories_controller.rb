@@ -7,6 +7,12 @@ class Owner::CategoriesController < ApplicationController
     @categories = current_admin.categories
   end
 
+  def load_categories
+    @categories = current_admin.categories
+
+    render partial: 'load_categories'
+  end
+
   def show
   end
 
@@ -30,7 +36,7 @@ class Owner::CategoriesController < ApplicationController
 
   def update
     if @category.update(category_params)
-      redirect_to owner_category_path(@category), notice: "Category was successfully updated."
+      redirect_to owner_categories_path, notice: "Category was successfully updated."
     else
       render :edit
     end
