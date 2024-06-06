@@ -12,7 +12,7 @@
     </div>
   <% end %>
   <% if params[:channel_url].present? %>
-    <div id="messages_container" data-url="<%=  load_messages_owner_chatbots_path(channel_url:params[:channel_url]) %>" class = "flex items-center flex-col">
+    <div id="messages_container" data-url="<%=  load_messages_owner_chatbots_path(channel_url:params[:channel_url]) %>" class = "flex items-center flex-col ">
       <%= render 'shared/loading' %>
     </div>
     <%= render 'owner/chatbots/send_message', channel_url: params[:channel_url] %>
