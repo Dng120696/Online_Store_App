@@ -142,6 +142,11 @@ body.fp-background {
   background-position: center center;
 }
 
+.icon {
+  width: 2em;
+  height: 2em;
+  vertical-align: -0.125em;
+}
 
 
 @media (min-width: 1280px) {
