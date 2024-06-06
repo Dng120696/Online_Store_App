@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
     get 'search_user', to: 'orders#search_user'
 
-    resources :chatbots
+    resources :chatbots do
+      get :load_messages, on: :collection
+    end
     match 'send_message', to: 'chatbots#send_message', via: [:get, :post]
   end
 

@@ -1,35 +1,35 @@
-<div class="channel-list bg-gray-100 p-4 max-w-500 mx-auto">
-  <h2 class="text-2xl font-bold mb-4">Channel List</h2>
-
+<div class="channel-list bg-gray-100 p-4 w-full mx-auto">
+  <h2 class="text-2xl font-bold mb-4">User Messages</h2>
   <%= form_tag(owner_chatbots_path, method: "get", class: "channel-form", id: "channel_form") do %>
-    <div class="channel flex items-center mb-4">
-      <label for="channel_select" class="mr-2">Select Channel:</label>
+    <div class="channel flex items-center pb-4 border-b-[1px] border-b-gray-300 mb-2">
+      <label for="channel_select" class="mr-2">Select User:</label>
       <%= select_tag(:channel_url,
                     options_for_select(@channel_list["channels"].map { |channel| [channel["name"], channel["channel_url"]] }, params[:channel_url]),
                     id: "channel_select",
-                    class: "px-2 py-1 border border-gray-300 rounded"
+                    class: "px-2 py-1 border border-gray-300 w-1/2 rounded"
       ) %>
       <%= submit_tag 'Submit', id: "submit_button_trigger", class: "hidden" %>
     </div>
   <% end %>
+  <% if params[:channel_url].present? %>
+    <div id="messages_container" data-url="<%=  load_messages_owner_chatbots_path(channel_url:params[:channel_url]) %>" class = "flex items-center flex-col">
+      <%= render 'shared/loading' %>
+    </div>
+    <%= render 'owner/chatbots/send_message', channel_url: params[:channel_url] %>
+  <% end %>
+  <script>
+    document.addEventListener('turbo:load', function() {
+      const messagesContainer = document.getElementById('messages_container');
+       const url = messagesContainer.dataset.url;
+    function load() {
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          messagesContainer.innerHTML = html;
+          initializeChatBotMessage();
+        })
+    }
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let select = document.getElementById('channel_select');
-    let submitButtonTrigger = document.getElementById('submit_button_trigger');
-
-    select.addEventListener('change', function() {
-      submitButtonTrigger.click();
-    });
-
-    submitButtonTrigger.addEventListener('click', function() {
-      let form = document.getElementById('channel_form');
-      form.submit();
-    });
-  });
-</script>
-
-<% if params[:channel_url].present? %>
-  <%= render 'owner/chatbots/view_messages', messages: @messages %>
-  <%= render 'owner/chatbots/send_message', channel_url: params[:channel_url] %>
-<% end %>
+    load();
+      });
+  </script>
