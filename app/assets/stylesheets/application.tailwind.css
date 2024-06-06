@@ -50,6 +50,7 @@
 .orders::-webkit-scrollbar,
 .product_review::-webkit-scrollbar,
 #chat-messages::-webkit-scrollbar,
+.messages::-webkit-scrollbar,
 .product_items::-webkit-scrollbar {
   width: 12px;
 }
@@ -59,6 +60,7 @@
 .orders::-webkit-scrollbar-track,
 #chat-messages::-webkit-scrollbar-track,
 .product_review::-webkit-scrollbar-track,
+.messages::-webkit-scrollbar-track,
 .product_items::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -68,6 +70,7 @@
 .orders::-webkit-scrollbar-thumb,
 #chat-messages::-webkit-scrollbar-thumb,
 .product_review::-webkit-scrollbar-thumb,
+.messages::-webkit-scrollbar-thumb,
 .product_items::-webkit-scrollbar-thumb {
   @apply bg-gray-200;
   border-radius: 6px;

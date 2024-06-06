@@ -10,7 +10,7 @@
   <%= link_to 'Customers', owner_customers_path,class: "py-3 font-semibold   #{request.path == owner_customers_path || request.path == new_owner_customer_path  ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to 'Orders', owner_orders_path,class: "py-3  font-semibold  #{request.path == owner_orders_path ? 'bg-blue-600 text-white' : ''}" %>
   <%= link_to 'Categories', owner_categories_path,class: "py-3 font-semibold   #{request.path == owner_categories_path || request.path == new_owner_category_path  ? 'bg-blue-600 text-white' : ''}" %>
-  <%= link_to 'Messages', owner_chatbots_path, class: "py-3 font-semibold", onclick: "window.location.href = '#{request.referrer}'" %>
+  <%= link_to 'Messages', owner_chatbots_path(channel_url: @channel_list["channels"].last["channel_url"]), class: "py-3 font-semibold" %>
   <%= link_to "Logout", destroy_admin_session_path, data: {
                 turbo_method: :delete,
                 turbo_confirm: "Are you sure?"
