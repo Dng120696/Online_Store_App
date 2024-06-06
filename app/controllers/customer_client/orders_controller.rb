@@ -36,9 +36,13 @@ class CustomerClient::OrdersController < ApplicationController
   def order_failed;  end
 
   def cancel_order
+    @user = current_user
     @order = Order.find(params[:id])
+
     if @order.update(status: :cancelled)
-      redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled successfully.'
+      UserMailer.notify_order_cancelled(@user, @order).deliver_later
+
+      redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled'
     end
   end
 # GET
@@ -72,9 +76,11 @@ class CustomerClient::OrdersController < ApplicationController
     @order = Order.new(user_id: current_user.id, payment_id: payment_method == "card" ? card_payment_id : gcash_payment["data"]["id"] )
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
     @user = current_user
+    # @admin = Admin.last
 
     if @order.save
-      UserMailer.notify_order_placed(@user).deliver_later
+         UserMailer.notify_order_placed(@user).deliver_later
+      
          @cart.cart_items.each do |cart_item|
             @order.order_items.create(
               product: cart_item.product,
