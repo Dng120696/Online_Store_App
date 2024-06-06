@@ -1,5 +1,8 @@
 class CustomerClient::CheckoutController < ApplicationController
-  def index
+  before_action :authenticate_user!
+  def index;  end
+
+  def load_checkout
     @cart = current_user&.cart
     if @cart
       @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
@@ -8,8 +11,8 @@ class CustomerClient::CheckoutController < ApplicationController
     end
     @total_amount = calculate_total_amount(@cart_items)
 
+    render partial: 'load_checkout'
   end
-
   # GET
   def process_checkout
     payment_method = params[:payment_method]

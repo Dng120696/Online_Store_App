@@ -1,4 +1,4 @@
-<div class = 'w-[clamp(300px,90%,500px)] mx-auto flex items-center justify-center min-h-screen'>
+<div class = 'w-full mx-auto flex items-center justify-center min-h-screen gap-4 pt-10'>
   <div class = 'text-center'>
     <h1 class = 'text-5xl'>Thank you for your Order</h1>
     <p class = 'mb-1'>
@@ -6,6 +6,6 @@
     </p>
     <p class = 'mb-4'>You will receive an email with your order details shortly.</p>
     <button class = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'><%= link_to 'See Orders', customer_client_orders_path(status: 'recent') %></button>
-    <%= image_tag 'deliver.webp', class: 'w-[400px]  h-[400px] mx-auto object-cover'%>
   </div>
+  <%= image_tag 'deliver.webp', class: 'w-[400px]  h-[450px] object-cover'%>
 </div>

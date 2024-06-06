@@ -162,7 +162,7 @@ class PaymongoAPI::V1::Client
       request.body = body.to_json
     end
 
-    # p response.body
+    p response.body
     handle_response(response)
   end
 

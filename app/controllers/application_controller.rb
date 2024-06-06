@@ -38,8 +38,12 @@ class ApplicationController < ActionController::Base
   def set_chatbot_messages
     @chatbot_client ||= SendbirdAPI::V1::ClientChatbot.new
     @channel_url = "conversation_channel_url_#{current_user.id}_#{current_user.email.split("@").first}"
-
+    @custom_user_id = "#{current_user.id}_#{current_user.email.split("@").first}"
+    @channel_name = "Private Message by #{current_user.firstname}"
     if @chatbot_client.check_channel?(@channel_url)
+      @get_messages = @chatbot_client.chat_messages(@channel_url)
+    else
+      @chatbot_client.create_channel(@custom_user_id, @channel_name, @channel_url)
       @get_messages = @chatbot_client.chat_messages(@channel_url)
     end
   end

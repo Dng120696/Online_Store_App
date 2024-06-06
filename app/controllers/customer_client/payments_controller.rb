@@ -1,19 +1,25 @@
 class CustomerClient::PaymentsController < ApplicationController
+  before_action :authenticate_user!
 
+  def index
 
-def index
-  @cart = current_user&.cart
-  if @cart
-    @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
-  else
-    @cart_items = []
   end
-  @total_amount = calculate_total_amount(@cart_items)
-  @payment_method = session[:payment_method]
-end
 
-private
-def calculate_total_amount(cart_items)
-  cart_items.sum { |item| (item.product.price || 0) * (item.quantity || 0) }
-end
+  def load_payment
+    @cart = current_user&.cart
+    if @cart
+      @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
+    else
+      @cart_items = []
+    end
+    @total_amount = calculate_total_amount(@cart_items)
+    @payment_method = session[:payment_method]
+
+    render partial: 'load_payment'
+  end
+
+  private
+  def calculate_total_amount(cart_items)
+    cart_items.sum { |item| (item.product.price || 0) * (item.quantity || 0) }
+  end
 end

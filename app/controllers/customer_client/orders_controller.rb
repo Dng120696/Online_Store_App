@@ -2,6 +2,10 @@ class CustomerClient::OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
+
+  end
+
+  def load_orders
     @orders_queries = current_user.orders.includes(:comment,order_items: {product: { image_attachment: :blob }})
     pending_orders = @orders_queries.where(status: :pending).where.not(status: [ :refunded, :canceled])
 
@@ -15,13 +19,18 @@ class CustomerClient::OrdersController < ApplicationController
     completed_orders.update_all(status: :completed)
 
     if  params[:status] == 'recent'
-      @orders = @orders_queries.where('created_at >= ?', 12.hours.ago).where.not(status: :cancelled)
+      @orders = @orders_queries.where('created_at >= ?', 12.hours.ago).where(status: :pending)
 
     elsif params[:status].present?
       @orders = @orders_queries.where(status: params[:status]).order(:id)
     end
 
+    render partial: 'load_orders'
   end
+
+
+
+
   def order_success; end
 
   def order_failed;  end
@@ -29,7 +38,7 @@ class CustomerClient::OrdersController < ApplicationController
   def cancel_order
     @order = Order.find(params[:id])
     if @order.update(status: :cancelled)
-      redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled'
+      redirect_to customer_client_orders_path(status: 'cancelled'), notice: 'Order cancelled successfully.'
     end
   end
 # GET

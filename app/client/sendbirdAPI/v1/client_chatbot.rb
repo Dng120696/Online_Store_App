@@ -8,6 +8,10 @@ class SendbirdAPI::V1::ClientChatbot
   CHATBOT_ID = Rails.application.credentials.sendbird[:chatbot_id]
   BASE_URL_CHAT = "https://api-#{APPLICATION_ID}.sendbird.com/v3"
 
+  def admin_id
+    ADMIN_ID
+  end
+
   def create_customer(user_id, nickname)
     response = request(
       method: :post,
@@ -62,6 +66,16 @@ class SendbirdAPI::V1::ClientChatbot
     end
   end
 
+  # GET https://api-{application_id}.sendbird.com/v3/users/{user_id}/my_group_channels
+  # admin
+  def channel_list
+    response = request(
+      method: :get,
+      endpoint: "#{BASE_URL_CHAT}/users/#{ADMIN_ID}/my_group_channels"
+      )
+      handle_response(response)
+  end
+
   def send_message(user_id, channel_url, message)
     response = request(
       method: :post,
@@ -73,21 +87,6 @@ class SendbirdAPI::V1::ClientChatbot
       })
     handle_response(response)
   end
-
-  # BOT message
-  # POST https://api-{application_id}.sendbird.com/v3/bots/{bot_userid}/send
-  # body: message, channel_URL
-
-  # def send_bot_message(message, channel_url)
-  #   response = request(
-  #     method: :post,
-  #     endpoint: "#{BASE_URL_CHAT}/bots/#{CHATBOT_ID}/send",
-  #     body: {
-  #     message: message,
-  #     channel_url: channel_url
-  #     })
-  #   handle_response(response)
-  # end
 
   def chat_messages(channel_url)
     response = request(
