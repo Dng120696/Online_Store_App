@@ -40,7 +40,7 @@
         </svg>
         <span class="ms-3">Categories</span>
       <% end %>
-      <%= link_to owner_chatbots_path, class: "py-3 font-semibold flex items-center p-2 text-gray-900 rounded-lg hover:bg-blue-400 hover:text-white group #{request.path == owner_chatbots_path  ? 'bg-blue-600 text-white' : ''}" do %>
+      <%= link_to owner_chatbots_path(channel_url: @channel_list["channels"].last["channel_url"]), class: "py-3 font-semibold flex items-center p-2 text-gray-900 rounded-lg hover:bg-blue-400 hover:text-white group #{request.path == owner_chatbots_path  ? 'bg-blue-600 text-white' : ''}" do %>
         <svg class="w-5 h-5 white transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
           <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
         </svg>

@@ -6,6 +6,8 @@ class Owner::ChatbotsController < ApplicationController
 
   def load_messages
     @channel_list = @chatbot_client.channel_list
+
+    p @channel_list
     @messages = @chatbot_client.chat_messages(params[:channel_url])
 
     render partial: 'load_messages'
