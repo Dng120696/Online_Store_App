@@ -21,6 +21,7 @@ User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:
 admin.categories.create(title:"Best Seller")
 admin.categories.create(title:"New Releases")
 admin.categories.create(title:"Books")
+admin.categories.create(title:"Clothes")
 admin.categories.create(title:"Computers")
 admin.categories.create(title:"Fashion")
 admin.categories.create(title:"Health")

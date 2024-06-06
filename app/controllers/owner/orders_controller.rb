@@ -1,11 +1,12 @@
 class Owner::OrdersController < ApplicationController
 
-  def index
-      puts params.inspect
-      @orders = Order.order(:id).includes(:user)
+  def index; end
 
+  def  load_orders
+    @orders = Order.order(:id).includes(:user)
+
+    render partial: 'load_orders'
   end
-
 
   def update
     @order = Order.find(params[:id])
