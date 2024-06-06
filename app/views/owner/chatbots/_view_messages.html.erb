@@ -1,7 +1,7 @@
 <% if messages.blank? || messages.try(:[], "error") == true %>
   <p>No messages found.</p>
 <% else %>
-  <div class = 'messages h-[70vh] overflow-y-auto  pb-4  w-full'>
+  <div class = 'messages h-[70vh] overflow-y-auto  pb-4 '>
     <% messages["messages"].each do |message| %>
       <div class="<%= (message["user"]["nickname"] == "Chat Bot" || message["user"]["nickname"] == "Chad Ayop") ? 'text-left' : 'text-right' %>">
         <% if message["user"]["nickname"] == "Chad Ayop" %>
