@@ -13,7 +13,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Rails.application.routes.default_url_options[:host] = 'localhost'
-  config.action_mailer.default_url_options = { host: 'mysite-jjbq.onrender.com', port: 443 }
+  config.action_mailer.default_url_options = { host: 'online-store-app-development.onrender.com', port: 443 }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
