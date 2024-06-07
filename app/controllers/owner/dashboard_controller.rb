@@ -11,7 +11,7 @@ class Owner::DashboardController < ApplicationController
     orders = Order.where(created_at: 1.month.ago.beginning_of_day..Time.zone.now.end_of_day)
 
     # Group by day and sum the totals
-    orders_data = orders.group_by { |order| order.created_at.end_of_day }
+    orders_data = orders.group_by { |order| order.created_at.beginning_of_day }
                                  .transform_values { |orders| orders.sum(&:total) }
 
    # Prepare data for Chartkick
