@@ -23,11 +23,6 @@ class Owner::ProductsController < ApplicationController
     @product = current_admin.products.new(product_params)
     @product.category_ids.reject!(&:blank?)
     if @product.save
-      params[:product][:category_ids].each do |category_id|
-        unless category_id.blank?
-          @product.product_categories.create(category_id: category_id)
-        end
-      end
       redirect_to owner_products_path, notice: 'Product was successfully created.'
     else
       render :new

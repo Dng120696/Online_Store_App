@@ -69,7 +69,8 @@
                        when 'received' then 'bg-teal-100 text-teal-800'
                        else 'bg-gray-100 text-gray-800'
                      end %>
-        <ul class='grid grid-cols-4 py-2 border-b-[1px]  border-b-gray-300 text-sm even:bg-gray-50'>
+        <ul class='grid grid-cols-4 py-2 border-b-[1px]  border-b-gray-300 text-sm even:bg-gray-50 items-center
+        '>
           <li class='pl-2 text-center w-[150px] <%= status_class %> rounded px-2 py-1'><%= order.status %></li>
           <li class='pl-2'>#<%= order.id %> - <%= order.user.firstname%> <%= order.user.lastname %></li>
           <li class='pl-2'><%= number_to_currency(order.total) %></li>

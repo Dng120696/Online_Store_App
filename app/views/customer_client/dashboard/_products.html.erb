@@ -15,9 +15,9 @@
             <% end %>
             <div class="view-details cursor-pointer" data-product-id="<%= product.id %>">
               <% if product.image.attached? %>
-                <%= image_tag url_for(product.image), class: 'w-full h-[300px] object-cover rounded-lg' %>
+                <%= image_tag url_for(product.image), class: 'w-[300px] h-[300px] object-cover rounded-lg' %>
               <% else %>
-                <%= image_tag 'default_image.jpg', class: 'w-full h-[300px] object-cover rounded-lg' %>
+                <%= image_tag 'default_image.jpg', class: 'w-[300px] h-[300px] object-cover rounded-lg' %>
               <% end %>
             </div>
           </div>
