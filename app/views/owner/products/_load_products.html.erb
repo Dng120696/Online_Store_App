@@ -16,7 +16,7 @@
           <% end %>
         </div>
         <div class=" text-gray-700 font-semibold"><%= product[:inventory_level] %></div>
-        <div class="text-gray-700 font-semibold"><%= product[:name] %></div>
+        <div class="text-gray-700 font-semibold   overflow-hidden text-ellipsis whitespace-nowrap"><%= product[:name] %></div>
         <div class="text-gray-700 font-semibold"><%= number_to_currency(product[:price]) %></div>
         <div class="flex space-x-2">
           <%= link_to 'Show', owner_product_path(product), class: 'bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600' %>

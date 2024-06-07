@@ -30,7 +30,7 @@ class CustomerClient::CheckoutController < ApplicationController
     failed_url = production? ? customer_client_failed_url : 'http://localhost:3000/customer_client/failed'
 
     shipping_address = current_user.shipping_addresses.find(session[:shipping_address_id])
-    p shipping_address
+
     address_details = {
       state: shipping_address&.state_or_province || 'Cagayan',
       postal_code: shipping_address&.zip_code || 3519,

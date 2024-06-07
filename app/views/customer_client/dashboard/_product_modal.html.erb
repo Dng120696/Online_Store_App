@@ -9,7 +9,7 @@
       <% else %>
         <%= image_tag 'default_image.jpg', class: 'w-full h-[350px] object-cover rounded-md shadow-[0_0_10px_rgba(0,0,0,0.15)]' %>
       <% end %>
-      <h2 class="text-lg font-bold mt-4 text-gray-900 w-[full]  break-words"><%= product.name %></h2>
+      <h2 class="text-lg font-bold mt-4 text-gray-900 w-full overflow-hidden text-ellipsis whitespace-nowrap "><%= product.name %></h2>
       <ul class="flex items-center gap-4 text-sm">
         <li class='list-none text-gray-700 font-bold'>
           <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
@@ -22,10 +22,10 @@
       <p class="text-2xl font-semibold mb-2 text-gray-900"><%= number_to_currency(product.price) %></p>
     </div>
     <div class="reviews">
-      <p>Description</p>
+      <p class= 'font-semibold mb-2'>Description</p>
       <p class="text-sm  mb-2 text-gray-600 indent-4"><%= product.description %></p>
       <h3 class="text-xl font-bold mb-2 text-gray-900">Reviews</h3>
-      <div class = "product_review h-[45vh] pr-2 overflow-y-auto flex flex-col gap-4">
+      <div class = "product_review h-[40vh] pr-2 overflow-y-auto flex flex-col gap-4">
         <% if product.reviews.any? %>
           <% product.reviews.includes(:user).each do |review| %>
             <div class="review bg-gray-100 p-3 rounded-lg ">

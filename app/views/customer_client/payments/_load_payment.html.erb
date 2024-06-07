@@ -43,8 +43,8 @@
                   <%= image_tag 'default_image.jpg', class: 'w-20 h-20 object-cover rounded-md' %>
                 <% end %>
               </li>
-              <li class='flex flex-col text-gray-600'>
-                <span><%= item.product.name %></span>
+              <li class='flex flex-col text-gray-600 '>
+                <span class = 'w-[150px] overflow-hidden text-ellipsis whitespace-nowrap'><%= item.product.name %></span>
                 <p>
                   <span><%= item.quantity %></span> x
                   <span><%= number_to_currency(item.product.price) %></span>
