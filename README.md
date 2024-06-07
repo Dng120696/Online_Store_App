@@ -7,6 +7,7 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 ## Table of Contents
 1. [Features](#features)
 2. [Images](#images)
+2. [Testing App](#testing-app)
 3. [Getting Started](#getting-started)
 4. [System Dependencies](#system-dependencies)
 5. [Contact Information](#contact-information)
@@ -107,6 +108,12 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 Check out the live demo of the app in the link below:
 
 [Online Store Application](https://online-store-app-development.onrender.com)
+
+## Testing App
+  ### Customer Account 
+    - Email: "user@user.com"
+    - Password: "password123"
+
 ## Getting Started
 
 ### Prerequisites
