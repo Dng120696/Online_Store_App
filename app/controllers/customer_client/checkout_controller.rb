@@ -26,8 +26,9 @@ class CustomerClient::CheckoutController < ApplicationController
     client = PaymongoAPI::V1::Client.new
     amount = calculate_total_amount(current_user.cart.cart_items)
 
-    success_url = "http://127.0.0.1:3000/customer_client/success"
-    failed_url = "http://127.0.0.1:3000/customer_client/failed"
+    success_url = production? ? customer_client_success_url : 'http://localhost:3000/customer_client/success'
+    failed_url = production? ? customer_client_failed_url : 'http://localhost:3000/customer_client/failed'
+
     shipping_address = current_user.shipping_addresses.find(session[:shipping_address_id])
     p shipping_address
     address_details = {
@@ -118,7 +119,9 @@ class CustomerClient::CheckoutController < ApplicationController
   end
 
   private
-
+  def production?
+    Rails.env.production?
+  end
   def address_params
     params.require(:shipping_address).permit(:street, :city, :state_or_province, :zip_code,:country)
   end

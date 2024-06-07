@@ -106,7 +106,7 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 
 Check out the live demo of the app in the link below:
 
-[Online Store Application]()
+[Online Store Application](https://online-store-app-development.onrender.com)
 ## Getting Started
 
 ### Prerequisites
