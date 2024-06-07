@@ -77,3 +77,5 @@ gem "tailwindcss-rails", "~> 2.6"
 gem 'chartkick'
 
 gem 'groupdate'
+
+gem 'aws-sdk-s3', '~> 1.0'
