@@ -10,7 +10,7 @@
 
 Admin.create(firstname: 'Patrick',lastname: 'Nebab', email: 'admin@admin.com',password:'password123')
 admin = Admin.first
-user = User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123',
+user = User.new(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',password:'password123',
  address_attributes:  {
   street: '123 Tugue Street',
   city: 'Tuguegarao',
@@ -19,6 +19,7 @@ user = User.create(firstname: 'Pat',lastname: 'Nebab', email: 'user@user.com',pa
   zip_code: '3519'
 })
 user.skip_confirmation!
+user.save
 admin.categories.create(title:"Best Seller")
 admin.categories.create(title:"New Releases")
 admin.categories.create(title:"Books")
