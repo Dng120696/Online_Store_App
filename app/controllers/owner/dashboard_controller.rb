@@ -9,7 +9,7 @@ class Owner::DashboardController < ApplicationController
     @order_list = Order.where(status: @params_status)
 
    # get the total ordersales every day
-   orders_data = Order.where(created_at: 1.months.ago..Date.today).group_by_day(:created_at).sum(:total)
+   orders_data = Order.where(created_at: 1.month.ago.beginning_of_day..Time.zone.now.end_of_day).group_by_day(:created_at).sum(:total)
 
    # Prepare data for Chartkick
    @orders_data = []
