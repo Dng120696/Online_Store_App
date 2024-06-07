@@ -7,7 +7,7 @@ class CustomerClient::DashboardController < ApplicationController
     params_category = params[:category]
 
     if params_category == 'Best Seller'
-      @products = Product.where("order_items_count > 10").includes(image_attachment: :blob).order(order_items_count: :desc)
+      @products = Product.where("order_items_count > 1").includes(image_attachment: :blob).order(order_items_count: :desc)
     elsif params_category == 'New Releases'
       @products = Product.where("created_at >= ?", 12.hours.ago).includes(image_attachment: :blob)
     else
