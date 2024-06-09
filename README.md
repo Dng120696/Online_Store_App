@@ -85,6 +85,10 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 
 ![product_page](docs/img/product_page.png)
 
+#### **Product Details**
+
+![product_details_modal](docs/img/product_details_modal.png)
+
 #### **Cart Modal**
 
 ![cart_modal](docs/img/cart_modal.png)
@@ -93,9 +97,6 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 
 ![cart_page](docs/img/cart_page.png)
 
-#### **Product Details**
-
-![product_details_modal](docs/img/product_details_modal.png)
 
 #### **Checkout page**
 
