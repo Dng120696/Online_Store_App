@@ -109,6 +109,10 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 
 ![confirm_orders_page](docs/img/confirm_orders_page.png)
 
+#### **Paymongo Test Payment**
+
+![paymongo_test_payment](docs/img/paymongo_test_payment.png)
+
 #### **Thank you page**
 
 ![thankyou_page](docs/img/thankyou_page.png)
