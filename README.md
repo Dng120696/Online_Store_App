@@ -44,11 +44,11 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 - Can Rate products for completed orders.
 - View comments on orders if available.
 
-#### Chat (using SendBird API)
+#### Chat (using SendBird API)s
 - Can Ask questions to an AIChatbot chat
 - Can Message the Admin
 
-#### Images
+#### Uploaded Image
 - We use aws Amazon S3 storage for the images uploaded in our application
 
 ### Admin
