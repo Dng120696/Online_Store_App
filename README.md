@@ -48,11 +48,15 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 - Can Ask questions to an AIChatbot chat
 - Can Message the Admin
 
+#### Images
+- We use aws Amazon S3 storage for the images uploaded in our application
+
 ### Admin
 
 #### Dashboard
 - Chart for Order Total Amount per day for 1 month
 - Can See the Total Order Amount, Cancelled Amount, and Refund Amount
+- Table List of statuses for the order
 
 #### Product Management
 - Create, read, update, and delete products.
@@ -101,9 +105,25 @@ Welcome to our Online Store App, a robust web application built with Ruby on Rai
 
 ![payment_page](docs/img/payment_page.png)
 
-#### **Orders page**
+#### **Confirm Orders page**
 
-![orders_page](docs/img/orders_page.png)
+![confirm_orders_page](docs/img/confirm_orders_page.png)
+
+#### **Thank you page**
+
+![thankyou_page](docs/img/thankyou_page.png)
+
+#### **Orders Pending page**
+
+![orders_pending_page](docs/img/orders_pending_page.png)
+
+#### **Refund Received Orders**
+
+![refund_received_orders](docs/img/refund_received_orders.png)
+
+#### **Rating Completed Orders**
+
+![rating_completed_orders](docs/img/rating_completed_orders.png)
 
 Check out the live demo of the app in the link below:
 
@@ -112,6 +132,9 @@ Check out the live demo of the app in the link below:
 ## Testing App
   ### Card Payment Test
     - Card Number: 4343434343434345
+  ### User Account
+    - Email: user@user.com  
+    - Password: password123
 
 ## Getting Started
 
@@ -163,6 +186,7 @@ rails db:seed
 - chartkick
 - groupdate
 - faraday
+- aws-sdk-s3
 
 ## Created by
 
