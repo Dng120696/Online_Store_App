@@ -1,5 +1,5 @@
 class CustomerClient::DashboardController < ApplicationController
-
+  include GetCartItems
   def index; end
 
   def load_products
@@ -28,11 +28,10 @@ class CustomerClient::DashboardController < ApplicationController
     end
 
 
-    @cart = current_user&.cart
-    @cart_items = @cart ? @cart.cart_items.includes(product: { image_attachment: :blob }) : []
-
+    get_cart_items()
     render partial: 'products'
   end
+
   def search_product
       redirect_to customer_client_dashboard_index_path(category:params[:category],search:params[:search])
   end

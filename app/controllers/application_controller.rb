@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_cart,:set_chatbot_messages, if: :user_signed_in?
   before_action :get_channel_list, if: :admin_signed_in?
   before_action :set_categories
+  include GetCartItems
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:firstname, :lastname])
@@ -13,12 +14,7 @@ class ApplicationController < ActionController::Base
 
   def set_cart
     if user_signed_in?
-      @cart = current_user.cart
-      if @cart
-        @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
-      else
-        @cart_items = []
-      end
+     get_cart_items()
     end
   end
 

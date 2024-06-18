@@ -1,18 +1,13 @@
 class CustomerClient::CheckoutController < ApplicationController
-  before_action :authenticate_user!
+  include GetCartItems
+  include CalculateAmount
   def index;  end
 
   def load_checkout
-    @cart = current_user&.cart
-    if @cart
-      @cart_items = @cart.cart_items.includes(product: { image_attachment: :blob }) # Include product to avoid N+1 queries
-    else
-      @cart_items = []
-    end
-    @total_amount = calculate_total_amount(@cart_items)
-
+    get_cart_items()
     render partial: 'load_checkout'
   end
+
   # GET
   def process_checkout
     payment_method = params[:payment_method]
@@ -124,9 +119,5 @@ class CustomerClient::CheckoutController < ApplicationController
   end
   def address_params
     params.require(:shipping_address).permit(:street, :city, :state_or_province, :zip_code,:country)
-  end
-
-  def calculate_total_amount(cart_items)
-    cart_items.sum { |item| (item.product.price || 0) * (item.quantity || 0) }
   end
 end

@@ -1,9 +1,7 @@
 class CustomerClient::OrdersController < ApplicationController
-  before_action :authenticate_user!
+  include CalculateAmount
 
-  def index
-
-  end
+  def index; end
 
   def load_orders
     @orders_queries = current_user.orders.includes(:comment,order_items: {product: { image_attachment: :blob }})
@@ -27,9 +25,6 @@ class CustomerClient::OrdersController < ApplicationController
 
     render partial: 'load_orders'
   end
-
-
-
 
   def order_success; end
 
@@ -71,14 +66,12 @@ class CustomerClient::OrdersController < ApplicationController
       end
     end
 
-
     @cart_items = current_user.cart.cart_items
     @total_amount =  @cart_items.sum { |item| (item.product.price) * item.quantity }
     @cart = current_user.cart
     @order = Order.new(user_id: current_user.id, payment_id: payment_method == "card" ? card_payment_id : gcash_payment["data"]["id"] )
     @order.total = @cart&.cart_items.sum { |item| item.product.price * item.quantity }
     @user = current_user
-    # @admin = Admin.last
 
     if @order.save
          UserMailer.notify_order_placed(@user).deliver_later
@@ -92,9 +85,7 @@ class CustomerClient::OrdersController < ApplicationController
         end
         @order.order_items.each do |order_item|
             order_item.product.update!(inventory_level:order_item.product.inventory_level - order_item.quantity )
-
         end
-
 
           Comment.create(order_id:@order[:id],body:order_comment)
           @cart.destroy
@@ -115,8 +106,4 @@ class CustomerClient::OrdersController < ApplicationController
     redirect_to customer_client_dashboard_index_path(category: 'Best Seller',search:''), alert: 'Payment failed! Please try again.'
   end
 
-  private
-  def calculate_total_amount(cart_items)
-    cart_items.sum { |item| (item.product.price || 0) * (item.quantity || 0) }
-  end
 end
